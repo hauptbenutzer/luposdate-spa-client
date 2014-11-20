@@ -1,4 +1,11 @@
-editor = CodeMirror.fromTextArea($('#textarea'),
-    lineNumbers: false
-)
-console.log "faggot"
+require.config baseUrl: "/bower_components"
+
+require [
+    "codemirror/lib/codemirror"
+    "codemirror/mode/javascript/javascript"
+], (CodeMirror) ->
+    CodeMirror.fromTextArea document.getElementById("codemirror"),
+        lineNumbers: true
+        mode: "javascript"
+
+
