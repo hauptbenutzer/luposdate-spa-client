@@ -48,56 +48,15 @@
 
     <div class="row">
         <div class="large-12 columns">
-            <div class="panel">
-                <h1>'Allo, 'Allo!</h1>
-
-                <p class="lead">Always a pleasure scaffolding your apps.</p>
-
-                <p><a class="button" href="#">Splendid!</a></p>
-            </div>
+            <textarea name="codemirror" cols="50" rows="10" id="codemirror">
+                function test() {
+                return false; }
+            </textarea>
         </div>
     </div>
 
-    <div class="row">
-        <div class="large-12 columns">
-            <h4>HTML5 Boilerplate</h4>
 
-            <p>HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps
-                or sites.</p>
-            <h4>Sass (libsass)</h4>
-
-            <p>Sass is the most mature, stable, and powerful professional grade CSS extension language in the world.<br>
-                At the core we're using Libsass which is an implemention of Sass written in C. Gulp-sass utilises
-                node-sass which in turn utilises Libsass.</p>
-            <h4>Foundation 5</h4>
-
-            <p>The most advanced responsive front-end framework in the world.</p>
-        </div>
-    </div>
 </div>
-
-<textarea name="codemirror" cols="50" rows="10" id="codemirror">
-    function test() {
-    return false; }
-</textarea>
-
-<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-<script>
-    (function (b, o, i, l, e, r) {
-        b.GoogleAnalyticsObject = l;
-        b[l] || (b[l] =
-            function () {
-                (b[l].q = b[l].q || []).push(arguments)
-            });
-        b[l].l = +new Date;
-        e = o.createElement(i);
-        r = o.getElementsByTagName(i)[0];
-        e.src = '//www.google-analytics.com/analytics.js';
-        r.parentNode.insertBefore(e, r)
-    }(window, document, 'script', 'ga'));
-    ga('create', 'UA-XXXXX-X');
-    ga('send', 'pageview');
-</script>
 
 <!-- build:js scripts/vendor.js -->
 <!-- bower:js -->
@@ -109,7 +68,6 @@
 <script src="bower_components/foundation/js/foundation.js"></script>
 <script src="bower_components/underscore/underscore.js"></script>
 <script src="bower_components/backbone/backbone.js"></script>
-<script src="bower_components/codemirror/lib/codemirror.js"></script>
 <script src="bower_components/requirejs/require.js"></script>
 <!-- endbower -->
 <!-- endbuild -->

@@ -1,10 +1,10 @@
 require.config({
-  baseUrl: "/bower_components"
+  baseUrl: "/"
 });
 
-require(["codemirror/lib/codemirror", "codemirror/mode/javascript/javascript"], function(CodeMirror) {
+require(["bower_components/codemirror/lib/codemirror", "scripts/codemirror-modes/sparql/sparql.js"], function(CodeMirror) {
   return CodeMirror.fromTextArea(document.getElementById("codemirror"), {
     lineNumbers: true,
-    mode: "javascript"
+    mode: "sparql"
   });
 });

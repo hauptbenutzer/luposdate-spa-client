@@ -1,11 +1,11 @@
-require.config baseUrl: "/bower_components"
+require.config baseUrl: "/"
 
 require [
-    "codemirror/lib/codemirror"
-    "codemirror/mode/javascript/javascript"
+    "bower_components/codemirror/lib/codemirror"
+    "scripts/codemirror-modes/sparql/sparql.js"
 ], (CodeMirror) ->
     CodeMirror.fromTextArea document.getElementById("codemirror"),
         lineNumbers: true
-        mode: "javascript"
+        mode: "sparql"
 
 
