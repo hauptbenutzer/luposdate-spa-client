@@ -49,8 +49,14 @@
     <div class="row">
         <div class="large-12 columns">
             <textarea name="codemirror" cols="50" rows="10" id="codemirror">
-                function test() {
-                return false; }
+                PREFIX abc: <http://example.com/exampleOntology#>
+                SELECT ?capital ?country
+                WHERE {
+                ?x abc:cityname ?capital ;
+                abc:isCapitalOf ?y .
+                ?y abc:countryname ?country ;
+                abc:isInContinent abc:Africa .
+                }
             </textarea>
         </div>
     </div>
