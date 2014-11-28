@@ -1,0 +1,1 @@
+require.config({baseUrl:"/"}),require(["bower_components/codemirror/lib/codemirror","scripts/codemirror-modes/sparql/sparql.js"],function(r){return r.fromTextArea(document.getElementById("codemirror"),{lineNumbers:!0,mode:"sparql"})});

@@ -1,0 +1,66 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title>ld spa</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <link rel="stylesheet" href="styles/vendor.css">
+
+    <link rel="stylesheet" href="styles/main.css">
+
+</head>
+<body>
+<!--[if lt IE 10]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div class="container">
+    <div class="header">
+        <nav class="top-bar" data-topbar="">
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="#">ld spa</a></h1>
+                </li>
+                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
+            </ul>
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </section>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="large-12 columns">
+            <textarea name="codemirror" cols="50" rows="10" id="codemirror">
+                PREFIX abc: <http://example.com/exampleOntology#>
+                SELECT ?capital ?country
+                WHERE {
+                ?x abc:cityname ?capital ;
+                abc:isCapitalOf ?y .
+                ?y abc:countryname ?country ;
+                abc:isInContinent abc:Africa .
+                }
+            </textarea>
+        </div>
+    </div>
+
+
+</div>
+
+<script src="scripts/vendor.js"></script>
+
+<script src="scripts/plugins.js"></script>
+
+<script src="scripts/main.js"></script>
+</body>
+</html>
