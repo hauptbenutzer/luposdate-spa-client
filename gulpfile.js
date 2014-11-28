@@ -5,6 +5,7 @@ var browserSync = require('browser-sync');
 var coffee = require('gulp-coffee');
 var reload = browserSync.reload;
 var gutil = require('gulp-util');
+var deploy = require('gulp-gh-pages');
 
 // load plugins
 var $ = require('gulp-load-plugins')();
@@ -117,4 +118,12 @@ gulp.task('watch', ['serve'], function () {
     gulp.watch('app/scripts/**/*.coffee', ['scripts']);
     gulp.watch('app/images/**/*', ['images']);
     gulp.watch('bower.json', ['wiredep']);
+});
+
+/**
+ * Push build to gh-pages
+ */
+gulp.task('deploy', ['html'], function () {
+    return gulp.src("./dist/**/*")
+        .pipe(deploy())
 });
