@@ -2,11 +2,7 @@
 
 var gulp = require('gulp');
 var browserSync = require('browser-sync');
-var coffee = require('gulp-coffee');
 var reload = browserSync.reload;
-var gutil = require('gulp-util');
-var deploy = require('gulp-gh-pages');
-var inject = require('gulp-inject');
 var mainBowerFiles = require('main-bower-files');
 
 // load plugins
@@ -24,7 +20,7 @@ gulp.task('styles', function () {
 
 gulp.task('scripts', function () {
     return gulp.src('app/scripts/*.coffee')
-        .pipe(coffee({bare: true}).on('error', gutil.log))
+        .pipe($.coffee({bare: true}).on('error', $.util.log))
         .pipe(gulp.dest('app/scripts/'))
 });
 
@@ -111,7 +107,7 @@ gulp.task('wiredep', function () {
 
 gulp.task('inject', function () {
   gulp.src('app/*.html')
-    .pipe(inject(
+    .pipe($.inject(
         // Include all js files in scripts except the ones at top level
         gulp.src(['app/scripts/**/*.js', '!app/scripts/*.js'], {read: false}),
         {ignorePath: 'app/', addRootSlash: false}
@@ -134,5 +130,5 @@ gulp.task('watch', ['serve'], function () {
  */
 gulp.task('deploy', ['html'], function () {
     return gulp.src("./dist/**/*")
-        .pipe(deploy())
+        .pipe(ghPages())
 });
