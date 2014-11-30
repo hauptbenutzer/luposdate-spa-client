@@ -6,6 +6,8 @@ var coffee = require('gulp-coffee');
 var reload = browserSync.reload;
 var gutil = require('gulp-util');
 var deploy = require('gulp-gh-pages');
+var inject = require('gulp-inject');
+var mainBowerFiles = require('main-bower-files');
 
 // load plugins
 var $ = require('gulp-load-plugins')();
@@ -38,7 +40,7 @@ gulp.task('html', ['styles', 'scripts'], function () {
         .pipe(cssFilter)
         .pipe($.csso())
         .pipe(cssFilter.restore())
-        .pipe($.useref.restore())
+        .pipe($.useref.assets().restore())
         .pipe($.useref())
         .pipe(gulp.dest('dist'))
         .pipe($.size());
@@ -59,7 +61,7 @@ gulp.task('images', function () {
 gulp.task('fonts', function () {
     var streamqueue = require('streamqueue');
     return streamqueue({objectMode: true},
-        $.bowerFiles(),
+        gulp.src(mainBowerFiles()),
         gulp.src('app/fonts/**/*')
     )
         .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
@@ -79,17 +81,15 @@ gulp.task('default', ['clean'], function () {
 });
 
 gulp.task('serve', ['styles'], function () {
-    browserSync.init(null, {
+    browserSync({
         server: {
-            baseDir: 'app',
-            directory: true
+            baseDir: 'app'
         },
         debugInfo: false,
-        open: false,
-        hostnameSuffix: ".xip.io"
+        open: false
     }, function (err, bs) {
-        require('opn')(bs.options.url);
-        console.log('Started connect web server on ' + bs.options.url);
+        require('opn')(bs.options.urls.local);
+        console.log('Started connect web server on ' + bs.options.urls.local);
     });
 });
 
@@ -109,11 +109,20 @@ gulp.task('wiredep', function () {
         .pipe(gulp.dest('app'));
 });
 
+gulp.task('inject', function () {
+  gulp.src('app/*.html')
+    .pipe(inject(
+        // Include all js files in scripts except the ones at top level
+        gulp.src(['app/scripts/**/*.js', '!app/scripts/*.js'], {read: false}),
+        {ignorePath: 'app/', addRootSlash: false}
+    ))
+    .pipe(gulp.dest('app'))
+});
+
 gulp.task('watch', ['serve'], function () {
 
     // watch for changes
     gulp.watch(['app/*.html'], reload);
-
     gulp.watch('app/styles/**/*.scss', ['styles']);
     gulp.watch('app/scripts/**/*.coffee', ['scripts']);
     gulp.watch('app/images/**/*', ['images']);
