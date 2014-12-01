@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 var mainBowerFiles = require('main-bower-files');
+var useref = require('gulp-useref');
 
 // load plugins
 var $ = require('gulp-load-plugins')();
@@ -27,9 +28,12 @@ gulp.task('scripts', function () {
 gulp.task('html', ['styles', 'scripts'], function () {
     var jsFilter = $.filter('**/*.js');
     var cssFilter = $.filter('**/*.css');
+    var assets = useref.assets();
 
     return gulp.src('app/*.html')
-        .pipe($.useref.assets())
+        .pipe(assets)
+        .pipe(assets.restore())
+        .pipe(useref())
         .pipe(jsFilter)
         .pipe($.uglify())
         .pipe(jsFilter.restore())
