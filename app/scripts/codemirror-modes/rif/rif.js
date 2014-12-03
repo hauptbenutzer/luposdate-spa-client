@@ -11,7 +11,7 @@
 })(function (CodeMirror) {
     "use strict";
 
-    CodeMirror.defineMode("sparql", function (config) {
+    CodeMirror.defineMode("rif", function (config) {
         var indentUnit = config.indentUnit;
         var curPunc;
 
@@ -22,11 +22,7 @@
         var ops = wordRegexp(["str", "lang", "langmatches", "datatype", "bound", "sameterm", "isiri", "isuri",
             "isblank", "isliteral", "a"]);
 
-        var keywords = wordRegexp(["base", "prefix", "select", "distinct", "reduced", "construct", "describe",
-            "ask", "from", "named", "where", "order", "limit", "offset", "filter", "optional",
-            "graph", "by", "asc", "desc", "as", "having", "undef", "values", "group",
-            "minus", "in", "not", "service", "silent", "using", "insert", "delete", "union",
-            "data", "copy", "to", "move", "add", "create", "drop", "clear", "load"]);
+        var keywords = wordRegexp(["document", "prefix",  "group", "forall"]);
 
         var operatorChars = /[*+\-<>=&|]/;
 
@@ -161,6 +157,6 @@
         };
     });
 
-    CodeMirror.defineMIME("application/x-sparql-query", "sparql");
+    CodeMirror.defineMIME("application/rif+xml", "rif");
 
 });
