@@ -16,3 +16,5 @@ $ gulp
 ```
 
 and you should have the built application in your `./dist` directory.
+
+Alternatively checkout the gh-pages branch, which contains the latest release in built form. 

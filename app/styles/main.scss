@@ -1,3 +1,9 @@
+// Foundation settings and framework
+@import "settings";
+@import "../bower_components/foundation/scss/foundation.scss";
+
+@import "codemirror_overrides";
+
 body {
 	font-family: 'Source Sans Pro';
 }
