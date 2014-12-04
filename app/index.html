@@ -9,8 +9,8 @@
 
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css" />
-    <link rel="stylesheet" href="bower_components/font-source-sans-pro/source-sans-pro.css" />
+    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css"/>
+    <link rel="stylesheet" href="bower_components/font-source-sans-pro/source-sans-pro.css"/>
     <!-- endbower -->
     <!-- endbuild -->
     <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
@@ -27,81 +27,200 @@
 <![endif]-->
 
 <div class="container">
+    <div class="header">
+        <nav class="top-bar" data-topbar="">
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="#">Luposdate</a></h1>
+                </li>
+                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
+            </ul>
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </section>
+        </nav>
+    </div>
     <div class="row">
-        <div class="large-12 columns">
-            <h1>Luposdate Single Page Client</h1>
+        <div class="large-6 columns">
+            <div class="flex-video">
+                <iframe width="420" height="315" src="" frameborder="0" allowfullscreen></iframe>
+                <p>
+                    Zur Lösung dieser Aufgabe können Sie die <a href="http://www.w3.org/TR/rdf-sparql-query/">SPARQL
+                    Spezifikation</a> verwenden. Wir benutzen einen adaptierten Datensatz des <a
+                    href="http://swat.cse.lehigh.edu/projects/lubm/index.htm">Lehigh University Benchmark (LUBM)</a>,
+                    der aus einer Universitäts-Domänen Ontology, aus einem parametrisierbaren Generator von
+                    synthetischen Datensätzen und aus einer Menge von Testanfragen besteht. Bitte entwickeln Sie SPARQL
+                    Anfragen für folgende Problemstellungen (in Englisch) und testen Ihre Anfragen mit einem
+                    Anfrageauswerter im Applet.
+                </p>
+            </div>
+        </div>
+        <div class="large-6 columns">
+            <h2>Aufgaben:</h2>
+            <ol>
+                <li>Return all graduate students of the course &lt;http://www.Department0.University0.edu/GraduateCourse0&gt;</li>
+                <li>Return all publications of the assistant professor &lt;http://www.Department0.University0.edu/AssistantProfessor0&gt;</li>
+                <li>Return all graduate students, their university and department, which have the undergraduate degree
+                    from the same university as they are now member of.
+                </li>
+                <li>Return all professors, their name, email address and telephone number, who work for the university
+                    &lt;http://www.Department0.University0.edu&gt;</li>
+                <li>Return all students S, courses C and professors/lecturers P, where S visits courses C, which are
+                    taught by professor/lecturer P, who is the advisor of S
+                </li>
+                <li>Return all names sorted in lexical order</li>
+                <li>Return all names,which contain "Stud", sorted in descendant lexical order</li>
+                <li>Return all names of students and optionally their advisors</li>
+                <li>Return the names of students, who do not visit any course</li>
+                <li>Return the names of the students 100 to 110 of the sorted list of names, where each name starts with
+                    "Und"
+                </li>
+            </ol>
         </div>
     </div>
     <div class="row">
-        <div class="large-12 columns">
-            <textarea name="codemirror" cols="50" rows="10" id="codemirror">
-Document(
- Prefix(pred <http://www.w3.org/2007/rif-builtin-predicate#>)
- Prefix(func <http://www.w3.org/2007/rif-builtin-function#>)
- Prefix(ex <http://example.org/example#>)
+        <div class="large-6 columns">
+            <dl class="tabs" data-tab>
+                <dd class="active"><a href="#panel1">SPARQL-Query</a></dd>
+                <dd><a href="#panel2">RDF</a></dd>
+                <dd><a href="#panel3">RIF</a></dd>
+                <dd><a href="#panel4">???</a></dd>
+            </dl>
+            <div class="tabs-content">
+                <div class="content active" id="panel1">
+                    <form>
+                        <label>Quelle
+                            <select>
+                                <option value="husker">Husker</option>
+                                <option value="starbuck">Starbuck</option>
+                                <option value="hotdog">Hot Dog</option>
+                                <option value="apollo">Apollo</option>
+                            </select>
+                            <a href="#" class="button [radius round]">Select</a>
+                        </label>
+                        <textarea name="codemirror" cols="50" rows="10" id="codemirror">
+                            function test() {
+                            return false; }
+                        </textarea>
+                        <a href="#" class="button [radius round]">Evaluate</a><a href="#" class="button [radius round]">get
+                        Graph</a>
+                    </form>
+                    <div id="error">Error:
+                        <button id="errortoggle">open</button>
+                    </div>
+                    <div id="error-list">
+                        <textarea name="error-list" cols="5" rows="10"></textarea>
+                    </div>
+                </div>
+                <div class="content" id="panel2">
+                    <form>
+                        <label>Quelle
+                            <select>
+                                <option value="husker">Husker</option>
+                                <option value="starbuck">Starbuck</option>
+                                <option value="hotdog">Hot Dog</option>
+                                <option value="apollo">Apollo</option>
+                            </select>
+                            <a href="#" class="button [radius round]">Select</a>
+                        </label>
+                        <textarea name="codemirror" cols="50" rows="10" id="codemirror_rdf">
+                            RDF
+                        </textarea>
+                        <a href="#" class="button [radius round]">Evaluate</a>
+                    </form>
+                </div>
+                <div class="content" id="panel3">
+                    <form>
+                        <label>Quelle
+                            <select>
+                                <option value="husker">Husker</option>
+                                <option value="starbuck">Starbuck</option>
+                                <option value="hotdog">Hot Dog</option>
+                                <option value="apollo">Apollo</option>
+                            </select>
+                            <a href="#" class="button [radius round]">Select</a>
+                        </label>
+                        <textarea name="codemirror" cols="50" rows="10" id="codemirror_rif">
+                            RIF
+                        </textarea>
+                        <a href="#" class="button [radius round]">Evaluate</a>
+                    </form>
+                </div>
+                <div class="content" id="panel4">
+                    <p>This is the fourth panel of the basic tab example. This is the fourth panel of the basic tab
+                        example.</p>
+                </div>
+            </div>
+        </div>
+        <div class="large-6 columns">
+            <dl class="tabs" data-tab>
+                <dd class="active"><a href="#panel10">Result</a></dd>
+                <dd><a href="#panel11">Graph</a></dd>
+            </dl>
+            <div class="tabs-content">
+                <div class="content active" id="panel10">
+                    <textarea name="result" cols="50" rows="10" id="result">
 
- Group (
-  ex:factorial(0) = 1
-
-  Forall ?N (
-   ex:factorial(?N) = External(func:numeric-multiply(
-    ?N
-    ex:factorial(External(func:numeric-subtract(?N 1))))) :- External(pred:numeric-between(?N 0 10))
-    )
-  )
-)
-
-
-            </textarea>
+                    </textarea>
+                </div>
+                <div class="content" id="panel11">
+                    <p>This is the second panel of the basic tab example. This is the second panel of the basic tab
+                        example.</p>
+                </div>
+            </div>
         </div>
     </div>
 
 
-</div>
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/modernizr/modernizr.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="bower_components/jquery.cookie/jquery.cookie.js"></script>
+    <script src="bower_components/jquery-placeholder/jquery.placeholder.js"></script>
+    <script src="bower_components/foundation/js/foundation.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/backbone/backbone.js"></script>
+    <script src="bower_components/codemirror/lib/codemirror.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
 
-<!-- build:js scripts/vendor.js -->
-<!-- bower:js -->
-<script src="bower_components/modernizr/modernizr.js"></script>
-<script src="bower_components/jquery/dist/jquery.js"></script>
-<script src="bower_components/fastclick/lib/fastclick.js"></script>
-<script src="bower_components/jquery.cookie/jquery.cookie.js"></script>
-<script src="bower_components/jquery-placeholder/jquery.placeholder.js"></script>
-<script src="bower_components/foundation/js/foundation.js"></script>
-<script src="bower_components/underscore/underscore.js"></script>
-<script src="bower_components/backbone/backbone.js"></script>
-<script src="bower_components/codemirror/lib/codemirror.js"></script>
-<!-- endbower -->
-<!-- endbuild -->
+    <!-- build:js scripts/plugins.js -->
+    <script src="bower_components/foundation/js/foundation/foundation.abide.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.accordion.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.alert.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.clearing.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.dropdown.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.equalizer.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.interchange.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.joyride.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.magellan.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.offcanvas.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.orbit.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.reveal.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.slider.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.tab.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.tooltip.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.topbar.js"></script>
+    <!-- endbuild -->
 
-<!-- build:js scripts/plugins.js -->
-<script src="bower_components/foundation/js/foundation/foundation.abide.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.accordion.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.alert.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.clearing.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.dropdown.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.equalizer.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.interchange.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.joyride.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.magellan.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.offcanvas.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.orbit.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.reveal.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.slider.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.tab.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.tooltip.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.topbar.js"></script>
-<!-- endbuild -->
+    <!-- build:js scripts/modules.js -->
+    <!-- inject:js -->
+    <script src="scripts/codemirror-modes/sparql/sparql.js"></script>
+    <script src="scripts/codemirror-modes/rif/rif.js"></script>
+    <!-- endinject -->
+    <!-- endbuild -->
 
-<!-- build:js scripts/modules.js -->
-<!-- inject:js -->
-<script src="scripts/codemirror-modes/sparql/sparql.js"></script>
-<script src="scripts/codemirror-modes/rif/rif.js"></script>
-<!-- endinject -->
-<!-- endbuild -->
-
-<!-- build:js scripts/main.js -->
-<script src="scripts/main.js"></script>
-<!-- endbuild -->
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
 </body>
 </html>
