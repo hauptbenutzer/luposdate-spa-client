@@ -2,7 +2,7 @@
 <html class="no-js">
 <head>
     <meta charset="utf-8">
-    <title>Luposdate Single Page Client</title>
+    <title>Luposdate Web Client</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -13,7 +13,10 @@
     <link rel="stylesheet" href="bower_components/font-source-sans-pro/source-sans-pro.css"/>
     <!-- endbower -->
     <!-- endbuild -->
+    
+    <!-- TODO: Keep fonts in this repo? -->
     <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
@@ -26,63 +29,54 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<div class="container">
-    <div class="header">
-        <nav class="top-bar" data-topbar="">
-            <ul class="title-area">
-                <li class="name">
-                    <h1><a href="#">Luposdate</a></h1>
-                </li>
-                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-                <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
-            </ul>
-            <section class="top-bar-section">
-                <!-- Right Nav Section -->
-                <ul class="right">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
+<div class="off-canvas-wrap" data-offcanvas>
+  <div class="inner-wrap">
+    <nav class="top-bar" data-topbar role="navigation">
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="#">Luposdate Web Client</a></h1>
+        </li>
+         <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+
+      <section class="top-bar-section">
+        <!-- Right Nav Section -->
+        <ul class="right-small">
+                    <li><a href="#">Tutorial</a></li>
+                    <li><a target="_blank" href="https://github.com/hauptbenutzer/luposdate-spa-client">GitHub</a></li>
                 </ul>
-            </section>
-        </nav>
-    </div>
-    <div class="row">
-        <div class="large-6 columns">
-            <div class="flex-video">
-                <iframe width="420" height="315" src="" frameborder="0" allowfullscreen></iframe>
-                <p>
-                    Zur Lösung dieser Aufgabe können Sie die <a href="http://www.w3.org/TR/rdf-sparql-query/">SPARQL
-                    Spezifikation</a> verwenden. Wir benutzen einen adaptierten Datensatz des <a
-                    href="http://swat.cse.lehigh.edu/projects/lubm/index.htm">Lehigh University Benchmark (LUBM)</a>,
-                    der aus einer Universitäts-Domänen Ontology, aus einem parametrisierbaren Generator von
-                    synthetischen Datensätzen und aus einer Menge von Testanfragen besteht. Bitte entwickeln Sie SPARQL
-                    Anfragen für folgende Problemstellungen (in Englisch) und testen Ihre Anfragen mit einem
-                    Anfrageauswerter im Applet.
-                </p>
-            </div>
-        </div>
-        <div class="large-6 columns">
-            <h2>Aufgaben:</h2>
-            <ol>
-                <li>Return all graduate students of the course &lt;http://www.Department0.University0.edu/GraduateCourse0&gt;</li>
-                <li>Return all publications of the assistant professor &lt;http://www.Department0.University0.edu/AssistantProfessor0&gt;</li>
-                <li>Return all graduate students, their university and department, which have the undergraduate degree
-                    from the same university as they are now member of.
-                </li>
-                <li>Return all professors, their name, email address and telephone number, who work for the university
-                    &lt;http://www.Department0.University0.edu&gt;</li>
-                <li>Return all students S, courses C and professors/lecturers P, where S visits courses C, which are
-                    taught by professor/lecturer P, who is the advisor of S
-                </li>
-                <li>Return all names sorted in lexical order</li>
-                <li>Return all names,which contain "Stud", sorted in descendant lexical order</li>
-                <li>Return all names of students and optionally their advisors</li>
-                <li>Return the names of students, who do not visit any course</li>
-                <li>Return the names of the students 100 to 110 of the sorted list of names, where each name starts with
-                    "Und"
-                </li>
-            </ol>
-        </div>
+
+        <!-- Left Nav Section -->
+        <ul class="left">
+          <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a></li>
+        </ul>
+      </section>
+    </nav>
+
+    <aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        <li><label>Preferences</label></li>
+        <li>
+            <form>
+                <label>Source
+                    <em>Choose the client's endpoint.</em>
+                    <select>
+                        <option value="husker">Husker</option>
+                        <option value="starbuck">Starbuck</option>
+                        <option value="hotdog">Hot Dog</option>
+                        <option value="apollo">Apollo</option>
+                    </select>
+                </label>
+            </form>
+        </li>
+      </ul>
+    </aside>
+
+    <section class="main-section">
+      <div class="container">
+    <div class="header">
+        
     </div>
     <div class="row">
         <div class="large-6 columns">
@@ -95,40 +89,29 @@
             <div class="tabs-content">
                 <div class="content active" id="panel1">
                     <form>
-                        <label>Quelle
-                            <select>
-                                <option value="husker">Husker</option>
-                                <option value="starbuck">Starbuck</option>
-                                <option value="hotdog">Hot Dog</option>
-                                <option value="apollo">Apollo</option>
-                            </select>
-                            <a href="#" class="button [radius round]">Select</a>
-                        </label>
                         <textarea name="codemirror" cols="50" rows="10" id="codemirror">
-                            function test() {
-                            return false; }
+Document(
+ Prefix(pred <http://www.w3.org/2007/rif-builtin-predicate#>)
+ Prefix(func <http://www.w3.org/2007/rif-builtin-function#>)
+ Prefix(ex <http://example.org/example#>)
+
+ Group (
+  ex:factorial(0) = 1
+
+  Forall ?N (
+   ex:factorial(?N) = External(func:numeric-multiply(
+    ?N
+    ex:factorial(External(func:numeric-subtract(?N 1))))) :- External(pred:numeric-between(?N 0 10))
+    )
+  )
+)
                         </textarea>
                         <a href="#" class="button [radius round]">Evaluate</a><a href="#" class="button [radius round]">get
                         Graph</a>
                     </form>
-                    <div id="error">Error:
-                        <button id="errortoggle">open</button>
-                    </div>
-                    <div id="error-list">
-                        <textarea name="error-list" cols="5" rows="10"></textarea>
-                    </div>
                 </div>
                 <div class="content" id="panel2">
                     <form>
-                        <label>Quelle
-                            <select>
-                                <option value="husker">Husker</option>
-                                <option value="starbuck">Starbuck</option>
-                                <option value="hotdog">Hot Dog</option>
-                                <option value="apollo">Apollo</option>
-                            </select>
-                            <a href="#" class="button [radius round]">Select</a>
-                        </label>
                         <textarea name="codemirror" cols="50" rows="10" id="codemirror_rdf">
                             RDF
                         </textarea>
@@ -157,7 +140,12 @@
                         example.</p>
                 </div>
             </div>
-        </div>
+            <div id="error">Error:
+                        <button id="errortoggle">open</button>
+                    </div>
+                    <div id="error-list">
+                    </div>
+            </div>
         <div class="large-6 columns">
             <dl class="tabs" data-tab>
                 <dd class="active"><a href="#panel10">Result</a></dd>
@@ -165,9 +153,7 @@
             </dl>
             <div class="tabs-content">
                 <div class="content active" id="panel10">
-                    <textarea name="result" cols="50" rows="10" id="result">
-
-                    </textarea>
+                    
                 </div>
                 <div class="content" id="panel11">
                     <p>This is the second panel of the basic tab example. This is the second panel of the basic tab
@@ -176,6 +162,13 @@
             </div>
         </div>
     </div>
+    </section>
+
+  <a class="exit-off-canvas"></a>
+
+  </div>
+
+
 
 
     <!-- build:js scripts/vendor.js -->
