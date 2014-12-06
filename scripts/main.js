@@ -1,1 +1,1 @@
-CodeMirror.fromTextArea(document.getElementById("codemirror"),{lineNumbers:!0,mode:"rif"});
+$(document).foundation(),CodeMirror.fromTextArea(document.getElementById("codemirror"),{lineNumbers:!0,mode:"rif"});

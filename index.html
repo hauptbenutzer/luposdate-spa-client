@@ -2,12 +2,16 @@
 <html class="no-js">
 <head>
     <meta charset="utf-8">
-    <title>Luposdate Single Page Client</title>
+    <title>Luposdate Web Client</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
     <link rel="stylesheet" href="styles/vendor.css">
+
+    <!-- TODO: Keep fonts in this repo? -->
+    <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="styles/main.css">
 
@@ -18,30 +22,68 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<div class="container">
-    <div class="header">
-        <nav class="top-bar" data-topbar="">
-            <ul class="title-area">
-                <li class="name">
-                    <h1><a href="#">Luposdate Single Page Client</a></h1>
-                </li>
-                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-                <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
-            </ul>
-            <section class="top-bar-section">
-                <!-- Right Nav Section -->
-                <ul class="right">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </section>
-        </nav>
-    </div>
+<div class="off-canvas-wrap" data-offcanvas>
+  <div class="inner-wrap">
+    <nav class="top-bar" data-topbar role="navigation">
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="#">Luposdate Web Client</a></h1>
+        </li>
+         <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
 
+      <section class="top-bar-section">
+        <!-- Right Nav Section -->
+        <ul class="right-small">
+                    <li><a href="#">Tutorial</a></li>
+                    <li><a target="_blank" href="https://github.com/hauptbenutzer/luposdate-spa-client">GitHub</a></li>
+                </ul>
+
+        <!-- Left Nav Section -->
+          
+        <ul class="left">
+          <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a></li>
+        </ul>
+      </section>
+    </nav>
+
+    <aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        <li><label>Preferences</label></li>
+        <li>
+            <form>
+                <label>Source
+                    <em>Choose the client's endpoint.</em>
+                    <select>
+                        <option value="husker">Husker</option>
+                        <option value="starbuck">Starbuck</option>
+                        <option value="hotdog">Hot Dog</option>
+                        <option value="apollo">Apollo</option>
+                    </select>
+                </label>
+            </form>
+        </li>
+      </ul>
+    </aside>
+
+    <section class="main-section">
+      <div class="container">
+    <div class="header">
+
+    </div>
     <div class="row">
-        <div class="large-12 columns">
-            <textarea name="codemirror" cols="50" rows="10" id="codemirror">
+        <div class="large-6 columns">
+            <dl class="tabs" data-tab>
+                <dd class="active"><a href="#panel1">SPARQL-Query</a></dd>
+                <dd><a href="#panel2">RDF</a></dd>
+                <dd><a href="#panel3">RIF</a></dd>
+                <dd><a href="#panel4">???</a></dd>
+            </dl>
+            <div class="tabs-content">
+                <div class="content active" id="panel1">
+                    <form>
+                        <textarea name="codemirror" cols="50" rows="10" id="codemirror">
 Document(
  Prefix(pred <http://www.w3.org/2007/rif-builtin-predicate#>)
  Prefix(func <http://www.w3.org/2007/rif-builtin-function#>)
@@ -57,21 +99,78 @@ Document(
     )
   )
 )
+                        </textarea>
+                        <a href="#" class="button [radius round]">Evaluate</a><a href="#" class="button [radius round]">get
+                        Graph</a>
+                    </form>
+                </div>
+                <div class="content" id="panel2">
+                    <form>
+                        <textarea name="codemirror" cols="50" rows="10" id="codemirror_rdf">
+                            RDF
+                        </textarea>
+                        <a href="#" class="button [radius round]">Evaluate</a>
+                    </form>
+                </div>
+                <div class="content" id="panel3">
+                    <form>
+                        <label>Quelle
+                            <select>
+                                <option value="husker">Husker</option>
+                                <option value="starbuck">Starbuck</option>
+                                <option value="hotdog">Hot Dog</option>
+                                <option value="apollo">Apollo</option>
+                            </select>
+                            <a href="#" class="button [radius round]">Select</a>
+                        </label>
+                        <textarea name="codemirror" cols="50" rows="10" id="codemirror_rif">
+                            RIF
+                        </textarea>
+                        <a href="#" class="button [radius round]">Evaluate</a>
+                    </form>
+                </div>
+                <div class="content" id="panel4">
+                    <p>This is the fourth panel of the basic tab example. This is the fourth panel of the basic tab
+                        example.</p>
+                </div>
+            </div>
+            <div id="error">Error:
+                        <button id="errortoggle">open</button>
+                    </div>
+                    <div id="error-list">
+                    </div>
+            </div>
+        <div class="large-6 columns">
+            <dl class="tabs" data-tab>
+                <dd class="active"><a href="#panel10">Result</a></dd>
+                <dd><a href="#panel11">Graph</a></dd>
+            </dl>
+            <div class="tabs-content">
+                <div class="content active" id="panel10">
 
-
-            </textarea>
+                </div>
+                <div class="content" id="panel11">
+                    <p>This is the second panel of the basic tab example. This is the second panel of the basic tab
+                        example.</p>
+                </div>
+            </div>
         </div>
     </div>
+    </section>
+
+  <a class="exit-off-canvas"></a>
+
+  </div>
 
 
-</div>
 
-<script src="scripts/vendor.js"></script>
 
-<script src="scripts/plugins.js"></script>
+    <script src="scripts/vendor.js"></script>
 
-<script src="scripts/modules.js"></script>
+    <script src="scripts/plugins.js"></script>
 
-<script src="scripts/main.js"></script>
+    <script src="scripts/modules.js"></script>
+
+    <script src="scripts/main.js"></script>
 </body>
 </html>
