@@ -7,3 +7,39 @@
 body {
 	font-family: 'Source Sans Pro';
 }
+
+.top-bar, .top-bar-section ul li, .top-bar-section li:not(.has-form) a:not(.button), .left-off-canvas-menu {
+  background: #008cba;
+  color: #fff;
+}
+
+ul.off-canvas-list li label {
+  background: #008cba;
+  color: #fff;
+  border-top: 1px solid #007095;
+}
+
+.right-small {
+  border-left: 1px solid #007095;
+}
+
+.top-bar-section li:not(.has-form) a:hover:not(.button) {
+  background: #007095;
+}
+
+.buttonarea {
+  text-align: right;
+  .button {
+    margin-left: 5px;
+  } 
+}
+.columns {
+  border: solid 1px #ccc;
+}
+
+.large-6 {
+}
+
+select {
+    width: 68%;
+}
