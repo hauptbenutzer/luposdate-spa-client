@@ -4,5 +4,5 @@ dist
 .sass-cache
 app/bower_components
 .idea
-main.js
-main.css
+app/scripts/main.js
+app/styles/main.css
