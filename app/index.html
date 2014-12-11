@@ -9,11 +9,12 @@
 
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css"/>
-    <link rel="stylesheet" href="bower_components/font-source-sans-pro/source-sans-pro.css"/>
+    <link rel="stylesheet" href="bower_components/foundation/css/foundation.css" />
+    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css" />
+    <link rel="stylesheet" href="bower_components/font-source-sans-pro/source-sans-pro.css" />
     <!-- endbower -->
     <!-- endbuild -->
-    
+
     <!-- TODO: Keep fonts in this repo? -->
     <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -76,7 +77,7 @@
     <section class="main-section">
       <div class="container">
     <div class="header">
-        
+
     </div>
     <div class="row">
         <div class="large-6 columns">
@@ -90,21 +91,7 @@
                 <div class="content active" id="panel1">
                     <form>
                         <textarea name="codemirror" cols="50" rows="10" id="codemirror">
-Document(
- Prefix(pred <http://www.w3.org/2007/rif-builtin-predicate#>)
- Prefix(func <http://www.w3.org/2007/rif-builtin-function#>)
- Prefix(ex <http://example.org/example#>)
 
- Group (
-  ex:factorial(0) = 1
-
-  Forall ?N (
-   ex:factorial(?N) = External(func:numeric-multiply(
-    ?N
-    ex:factorial(External(func:numeric-subtract(?N 1))))) :- External(pred:numeric-between(?N 0 10))
-    )
-  )
-)
                         </textarea>
                         <a href="#" class="button [radius round]">Evaluate</a><a href="#" class="button [radius round]">get
                         Graph</a>
@@ -113,24 +100,17 @@ Document(
                 <div class="content" id="panel2">
                     <form>
                         <textarea name="codemirror" cols="50" rows="10" id="codemirror_rdf">
-                            RDF
+
+
                         </textarea>
                         <a href="#" class="button [radius round]">Evaluate</a>
                     </form>
                 </div>
                 <div class="content" id="panel3">
                     <form>
-                        <label>Quelle
-                            <select>
-                                <option value="husker">Husker</option>
-                                <option value="starbuck">Starbuck</option>
-                                <option value="hotdog">Hot Dog</option>
-                                <option value="apollo">Apollo</option>
-                            </select>
-                            <a href="#" class="button [radius round]">Select</a>
-                        </label>
                         <textarea name="codemirror" cols="50" rows="10" id="codemirror_rif">
-                            RIF
+
+
                         </textarea>
                         <a href="#" class="button [radius round]">Evaluate</a>
                     </form>
@@ -153,7 +133,7 @@ Document(
             </dl>
             <div class="tabs-content">
                 <div class="content active" id="panel10">
-                    
+
                 </div>
                 <div class="content" id="panel11">
                     <p>This is the second panel of the basic tab example. This is the second panel of the basic tab
