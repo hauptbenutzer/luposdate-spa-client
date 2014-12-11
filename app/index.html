@@ -9,8 +9,9 @@
 
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css"/>
-    <link rel="stylesheet" href="bower_components/font-source-sans-pro/source-sans-pro.css"/>
+    <link rel="stylesheet" href="bower_components/foundation/css/foundation.css" />
+    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css" />
+    <link rel="stylesheet" href="bower_components/font-source-sans-pro/source-sans-pro.css" />
     <!-- endbower -->
     <!-- endbuild -->
     
@@ -88,25 +89,11 @@
             </dl>
             <div class="tabs-content">
                 <div class="content active" id="panel1">
-                    <form>
-                        <textarea name="codemirror" cols="50" rows="10" id="codemirror">
-Document(
- Prefix(pred <http://www.w3.org/2007/rif-builtin-predicate#>)
- Prefix(func <http://www.w3.org/2007/rif-builtin-function#>)
- Prefix(ex <http://example.org/example#>)
-
- Group (
-  ex:factorial(0) = 1
-
-  Forall ?N (
-   ex:factorial(?N) = External(func:numeric-multiply(
-    ?N
-    ex:factorial(External(func:numeric-subtract(?N 1))))) :- External(pred:numeric-between(?N 0 10))
-    )
-  )
-)
+                    <form class="query">
+                        <textarea class="editor" name="codemirror" cols="50" rows="10" id="codemirror">
+SELECT * WHERE { ?s ?p ?o. } LIMIT 10
                         </textarea>
-                        <a href="#" class="button [radius round]">Evaluate</a><a href="#" class="button [radius round]">get
+                        <a href="#" class="evaluate button [radius round]">Evaluate</a><a href="#" class="button [radius round]">get
                         Graph</a>
                     </form>
                 </div>

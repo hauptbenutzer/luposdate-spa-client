@@ -1,0 +1,8 @@
+{
+	"endpoints": [
+		{
+			"url": "http://localhost:8080/",
+			"name": "Luposdate Local"
+		}
+	]
+}
