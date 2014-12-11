@@ -8,6 +8,11 @@ var mainBowerFiles = require('main-bower-files');
 // load plugins
 var $ = require('gulp-load-plugins')();
 
+var handleError = function(err) {
+    new $.util.log(err);
+    this.emit('end');
+}
+
 gulp.task('styles', function () {
     return gulp.src('app/styles/main.scss')
         .pipe($.sass({errLogToConsole: true}))
@@ -20,8 +25,10 @@ gulp.task('styles', function () {
 
 gulp.task('scripts', function () {
     return gulp.src('app/scripts/*.coffee')
-        .pipe($.coffee({bare: true}).on('error', $.util.log))
+        .pipe($.coffee({bare: true})).on('error', handleError)
+        .pipe(reload({stream:true}))
         .pipe(gulp.dest('app/scripts/'))
+        .pipe($.notify("Compilation complete."));
 });
 
 gulp.task('html', ['styles', 'scripts'], function () {

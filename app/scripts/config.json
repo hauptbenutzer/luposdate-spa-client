@@ -2,7 +2,8 @@
 	"endpoints": [
 		{
 			"url": "http://localhost:8080/",
-			"name": "Luposdate Local"
+			"name": "Luposdate Local",
+            "json": false
 		}
 	]
 }
