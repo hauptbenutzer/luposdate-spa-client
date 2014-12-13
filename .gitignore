@@ -5,4 +5,5 @@ dist
 app/bower_components
 .idea
 app/scripts/main.js
+app/scripts/jst.js
 app/styles/main.css

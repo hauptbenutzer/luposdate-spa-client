@@ -1,0 +1,7 @@
+<table>
+    <% _.each(results, function(result) { %>
+        <tr>
+        <%= this.JST['results/result']({binding: result.binding}) %>
+        </tr>
+    <% }); %>
+</table>

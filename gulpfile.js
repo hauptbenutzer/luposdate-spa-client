@@ -31,7 +31,7 @@ gulp.task('scripts', function () {
         .pipe($.notify("Compilation complete."));
 });
 
-gulp.task('html', ['styles', 'scripts'], function () {
+gulp.task('html', ['styles', 'scripts', 'JST'], function () {
     var jsFilter = $.filter('**/*.js');
     var cssFilter = $.filter('**/*.css');
     var assets = $.useref.assets();
@@ -85,7 +85,7 @@ gulp.task('default', ['clean'], function () {
     gulp.start('build');
 });
 
-gulp.task('serve', ['styles', 'scripts'], function () {
+gulp.task('serve', ['styles', 'scripts', 'JST'], function () {
     browserSync({
         server: {
             baseDir: 'app'
@@ -114,11 +114,19 @@ gulp.task('wiredep', function () {
         .pipe(gulp.dest('app'));
 });
 
+gulp.task('JST', function () {
+  gulp.src('app/templates/**/*.html')
+    .pipe($.jstConcat('app/scripts/jst.js',{
+      renameKeys: ['^.*templates/(.*).html$', '$1']
+    })).on('error', handleError)
+    .pipe(gulp.dest('.'))
+})
+
 gulp.task('inject', function () {
   gulp.src('app/*.html')
     .pipe($.inject(
         // Include all js files in scripts except the ones at top level
-        gulp.src(['app/scripts/**/*.js', '!app/scripts/*.js'], {read: false}),
+        gulp.src(['app/scripts/**/*.js', '!app/scripts/main.js'], {read: false}),
         {ignorePath: 'app/', addRootSlash: false}
     ))
     .pipe(gulp.dest('app'))
@@ -130,6 +138,7 @@ gulp.task('watch', ['serve'], function () {
     gulp.watch(['app/*.html'], reload);
     gulp.watch('app/styles/**/*.scss', ['styles']);
     gulp.watch('app/scripts/**/*.coffee', ['scripts']);
+    gulp.watch('app/templates/**/*.html', ['JST']);
     gulp.watch('app/images/**/*', ['images']);
     gulp.watch('bower.json', ['wiredep']);
 });

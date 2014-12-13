@@ -167,6 +167,7 @@ SELECT * WHERE { ?s ?p ?o. } LIMIT 10
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/backbone/backbone.js"></script>
     <script src="bower_components/codemirror/lib/codemirror.js"></script>
+    <script src="bower_components/abdmob/x2js/xml2json.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -192,6 +193,8 @@ SELECT * WHERE { ?s ?p ?o. } LIMIT 10
 
     <!-- build:js scripts/modules.js -->
     <!-- inject:js -->
+    <script src="scripts/jst.js"></script>
+    <script src="scripts/codemirror-modes/N3/N3.js"></script>
     <script src="scripts/codemirror-modes/sparql/sparql.js"></script>
     <script src="scripts/codemirror-modes/rif/rif.js"></script>
     <!-- endinject -->

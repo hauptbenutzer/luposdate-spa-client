@@ -22,11 +22,13 @@ App.init = ->
         mode: "n3"
         value: "rdf data"
 
-
     App.cm['rif'] = CodeMirror.fromTextArea document.getElementById("codemirror_rif"),
         lineNumbers: true
         mode: "rif"
         value: "rif rules"
+
+    # Load xml converter
+    App.x2js = new X2JS()
 
     # Load configuration
     $.getJSON('scripts/config.json', (data) ->
@@ -59,18 +61,9 @@ App.play = ->
     App.bindEvents()
     console.log "ready"
 
-App.processResults = (data, json) ->
-    if json
-        try
-            data = $.parseJSON(data)
-        catch error
-            console.log error
-        finally
-            return data
-    else
-        $data = $(data)
-        $data.find('uri').each ->
-            $('#panel10').append "<p>#{$(this).text()}</p>" # TODO: This is just proof of concept
+App.processResults = (data) ->
+    results = App.x2js.xml2json($(data).find('results').get(0))
+    $('#panel10').append JST['results']({results: results.result})
 
 
 $(document).ready ->

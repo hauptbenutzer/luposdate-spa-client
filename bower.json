@@ -6,7 +6,8 @@
     "jquery": "~2.1.1",
     "backbone": "~1.1.2",
     "codemirror": "~4.7.0",
-    "font-source-sans-pro": "~0.1.0"
+    "font-source-sans-pro": "~0.1.0",
+    "abdmob/x2js": "~1.1.7"
   },
   "devDependencies": {}
 }
