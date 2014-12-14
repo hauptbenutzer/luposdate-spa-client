@@ -4,11 +4,6 @@
 # Initialize foundation
 #$(document).foundation();
 
-$("#errortoggle").click ->
-    $("#error-list").toggle "slow", ->
-
-    return
-
 App.init = ->
     # Initialize editors
     App.cm = {}
@@ -57,14 +52,20 @@ App.bindEvents = ->
             content = $(tab.children('a').attr('href'))
             content.find('.CodeMirror')[0].CodeMirror.refresh()
 
+    $('.error-log button').click ->
+        $(this).next().toggleClass 'visible'
+
 App.play = ->
     App.bindEvents()
     console.log "ready"
 
 App.processResults = (data) ->
-    results = App.x2js.xml2json($(data).find('results').get(0))
-    $('#panel10').append JST['results']({results: results.result})
-
+    # Valid data
+    if $.isXMLDoc(data)
+        results = App.x2js.xml2json($(data).find('results').get(0))
+        $('#panel10').append JST['results']({results: results.result})
+    else
+        $('.error-log .list').append "<li>#{data}</li>"
 
 $(document).ready ->
     App.init()

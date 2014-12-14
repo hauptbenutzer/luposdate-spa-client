@@ -124,13 +124,15 @@ SELECT * WHERE { ?s ?p ?o. } LIMIT 10
                         example.</p>
                 </div>
             </div>
-            <div id="error">Error:
-                        <button id="errortoggle">open</button>
-                    </div>
-                    <div id="error-list">
-                        Fehlermeldung:
-                    </div>
+            <div class="error-log">
+                <button class="small"><i class="fa fa-exclamation-triangle"></i> Error log</button>
+                <div class="scroller">
+                    <ul class="list">
+                        <li>test error</li>
+                    </ul>
+                </div>
             </div>
+        </div>
         <div class="large-6 columns">
             <dl class="tabs" data-tab>
                 <dd class="active"><a href="#panel10">Result</a></dd>

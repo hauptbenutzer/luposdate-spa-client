@@ -31,7 +31,7 @@ ul.off-canvas-list li label {
   text-align: right;
   .button {
     margin-left: 5px;
-  } 
+  }
 }
 .columns {
   border: solid 1px #ccc;
@@ -42,4 +42,31 @@ ul.off-canvas-list li label {
 
 select {
     width: 68%;
+}
+
+.error-log {
+    position: fixed;
+    bottom: 0;
+
+    button {
+        margin-bottom: 0;
+    }
+
+    .scroller {
+        transition: 0.5s;
+        height: 0;
+        overflow: hidden;
+    }
+    .scroller.visible {
+        height: 120px;
+    }
+
+    .list {
+        box-sizing: border-box;
+        min-height: 120px;
+        border: 1px solid $secondary-color;
+        padding: 20px;
+        margin: 0;
+        overflow: auto;
+    }
 }
