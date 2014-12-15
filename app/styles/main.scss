@@ -70,3 +70,19 @@ select {
         overflow: auto;
     }
 }
+
+.tabs-content > .content {
+    overflow: auto
+}
+
+.tabs .move {
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    top: 20px;
+    color: $secondary-color;
+    line-height: 100%;
+    &:hover {
+        color: $primary-color;
+    }
+}

@@ -50,10 +50,16 @@ App.bindEvents = ->
         tab:
           callback: (tab) ->
             content = $(tab.children('a').attr('href'))
-            content.find('.CodeMirror')[0].CodeMirror.refresh()
+            if content.find('.CodeMirror').length
+                content.find('.CodeMirror')[0].CodeMirror.refresh()
 
     $('.error-log button').click ->
         $(this).next().toggleClass 'visible'
+    $('.tabs .move').click ->
+        currentTabs = $(this).parents('.tabs')
+        currentContainer = $(this).parents('.tabs-container')
+        $(this).parents('dd').appendTo($('.tabs').not(currentTabs))
+        $($(this).siblings('a').attr('href')).appendTo($('.tabs-container').not(currentContainer).find('.tabs-content'))
 
 App.play = ->
     App.bindEvents()
