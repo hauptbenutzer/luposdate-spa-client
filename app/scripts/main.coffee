@@ -23,7 +23,7 @@ App.init = ->
         value: "rif rules"
 
     # Load xml converter
-    App.x2js = new X2JS()
+    #App.x2js = new X2JS()
 
     # Load configuration
     $.getJSON('scripts/config.json', (data) ->
@@ -68,7 +68,7 @@ App.play = ->
 App.processResults = (data) ->
     # Valid data
     if $.isXMLDoc(data)
-        results = App.x2js.xml2json($(data).find('results').get(0))
+        results = ""#App.x2js.xml2json($(data).find('results').get(0))
         $('#panel10').append JST['results']({results: results.result})
     else
         $('.error-log .list').append "<li>#{data}</li>"
