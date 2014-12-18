@@ -7,20 +7,29 @@
 App.init = ->
     # Initialize editors
     App.cm = {}
+
     App.cm['sparql'] = CodeMirror.fromTextArea document.getElementById("codemirror"),
-        lineNumbers: true
         mode: "sparql"
-        value: "sparql query"
+        lineNumbers: true
+
+    $.get "/resources/Sparql/lubm_asktest.sparql", (data) ->
+        App.cm['sparql'].getDoc().setValue(data)
+
 
     App.cm['rdf'] = CodeMirror.fromTextArea document.getElementById("codemirror_rdf"),
         lineNumbers: true
         mode: "n3"
-        value: "rdf data"
+
+    $.get "/resources/n3/lubm.n3", (data) ->
+        App.cm['rdf'].getDoc().setValue(data)
+
 
     App.cm['rif'] = CodeMirror.fromTextArea document.getElementById("codemirror_rif"),
         lineNumbers: true
         mode: "rif"
-        value: "rif rules"
+
+    $.get "/resources/RIF/rule_And.rif", (data) ->
+        App.cm['rif'].getDoc().setValue(data)
 
     # Load xml converter
     #App.x2js = new X2JS()
