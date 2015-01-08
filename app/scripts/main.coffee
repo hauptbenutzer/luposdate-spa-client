@@ -28,7 +28,10 @@ App.init = ->
         lineNumbers: true
         mode: "rif"
 
-    $.get "/resources/RIF/rule_And.rif", (data) ->
+    $.ajax(
+        url: "/resources/RIF/rule_And.rif"
+        dataType: "text"
+    ).done (data) ->
         App.cm['rif'].getDoc().setValue(data)
 
     # Load xml converter
