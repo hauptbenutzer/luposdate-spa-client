@@ -76,6 +76,18 @@ ul.off-canvas-list li label {
   width: 46%;
 }
 
+.side-nav-right{
+  float: right;
+  margin-right: 10px;
+  margin-top: -455px;
+  width: 35px;
+    
+  img {
+    width: 20px;
+    margin-left: 10px;
+  }
+}
+
 select {
     width: 68%;
 }
