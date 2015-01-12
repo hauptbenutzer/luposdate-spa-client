@@ -13,6 +13,12 @@ body {
   color: #fff;
 }
 
+li.name img {
+  width: 45px;
+  float: left;
+  margin-right: 5px;
+}
+
 .side-nav {
   width: 80%;
   height: 100%;
@@ -51,6 +57,7 @@ ul.off-canvas-list li label {
 
 .buttonarea {
   text-align: right;
+  
   .button {
     margin-left: 5px;
   }

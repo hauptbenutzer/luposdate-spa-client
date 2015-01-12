@@ -65,13 +65,18 @@
         <li>
             <form>
                 <label>Source
-                    <em>Choose the client's endpoint.</em>
+                    <em>Choose the client's endpoint:</em>
                     <select>
                         <option value="husker">Husker</option>
                         <option value="starbuck">Starbuck</option>
                         <option value="hotdog">Hot Dog</option>
                         <option value="apollo">Apollo</option>
-                    </select>
+                    </select><br />
+                    <em>or enter your own:</em>
+                    <input type="text" name="endpoint" />
+                    <div class="buttonarea">
+                        <button class="button" name="endpoint_select">Safe as default</button>
+                    </div>
                 </label>
             </form>
         </li>
@@ -91,6 +96,10 @@
                         <textarea class="editor" name="codemirror" cols="50" rows="40" id="codemirror">
                         </textarea>
                         <div class="buttonarea">
+                            <input class="rule" type="radio" name="rule" value="RDFs" id="rule_rdfs"><label for="rule_rdfs">RDFs</label>
+                            <input class="rule" type="radio" name="rule" value="OWL" id="rule_owl"><label for="rule_owl">OWL</label>
+                            <input class="rule" type="radio" name="rule" value="RIF" id="rule_rif"><label for="rule_rif">RIF</label>
+                            <input class="rule" type="radio" name="rule" value="without" id="rule_without"><label for="rule_without">without</label>
                         <a href="#" class="evaluate button [radius round]">Evaluate</a><a href="#" class="button [radius round]">get
                         Graph</a>
                         </div>
