@@ -13,6 +13,28 @@ body {
   color: #fff;
 }
 
+.side-nav {
+  width: 80%;
+  height: 100%;
+  float: left;
+  background: #008cba;
+  z-index: 500;
+  margin-left: 180px;
+  margin-top: 40px;
+  
+  .fa-cog {
+    margin-left: -10px;
+  }
+  
+  .left-off-canvas-toggle{
+    width: 20px;
+  }
+  
+  ul {
+  list-style: none;
+  }
+}
+
 ul.off-canvas-list li label {
   background: #008cba;
   color: #fff;
@@ -33,11 +55,25 @@ ul.off-canvas-list li label {
     margin-left: 5px;
   }
 }
+
 .columns {
   border: solid 1px #ccc;
+  z-index: 10;
+  margin-top: -55px;
+  background-color: #FFF;
+}
+  
+.left-side {
+  margin-left: 44px;
+}
+  
+.right-side {
+  margin-right: 46px;
 }
 
+
 .large-6 {
+  width: 46%;
 }
 
 select {

@@ -48,14 +48,18 @@
                     <li><a target="_blank" href="https://github.com/hauptbenutzer/luposdate-spa-client">GitHub</a></li>
                 </ul>
 
-        <!-- Left Nav Section -->
-        <ul class="left">
-          <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a></li>
-        </ul>
-      </section>
-    </nav>
+    <section class="main-section">
+      <div class="container">
+    <div class="header">
 
-    <aside class="left-off-canvas-menu">
+    </div>
+    <div class="side-nav">
+                <div class="off-canvas-wrap" data-offcanvas>
+                    <div class="inner-wrap">
+                        <ul>
+                            <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a></li>
+                        </ul>
+                        <aside class="left-off-canvas-menu">
       <ul class="off-canvas-list">
         <li><label>Preferences</label></li>
         <li>
@@ -72,15 +76,9 @@
             </form>
         </li>
       </ul>
-    </aside>
-
-    <section class="main-section">
-      <div class="container">
-    <div class="header">
-
-    </div>
+    </aside>           
     <div class="row">
-        <div class="large-10 columns tabs-container">
+        <div class="large-6 columns tabs-container left-side">
             <dl class="tabs" data-tab>
                 <dd class="active"><a href="#panel1">SPARQL-Query</a></dd>
                 <dd><a href="#panel2">RDF</a></dd>
@@ -92,8 +90,10 @@
                     <form class="query">
                         <textarea class="editor" name="codemirror" cols="50" rows="40" id="codemirror">
                         </textarea>
+                        <div class="buttonarea">
                         <a href="#" class="evaluate button [radius round]">Evaluate</a><a href="#" class="button [radius round]">get
                         Graph</a>
+                        </div>
                     </form>
                 </div>
                 <div class="content" id="panel2">
@@ -128,7 +128,7 @@
                 </div>
             </div>
         </div>
-        <div class="large-2 columns tabs-container">
+        <div class="large-6 columns tabs-container right-side">
             <dl class="tabs" data-tab>
                 <dd class="active"><a href="#panel10">Result</a></dd>
                 <dd><a href="#panel11">Graph</a><span class="move"><i class="fa fa-arrows-h"></i></span></dd>
@@ -144,11 +144,14 @@
             </div>
         </div>
     </div>
+    <div class="side-nav-right">
+        <img scr="images/icon_showleft-01.png" />
+    </div>
+    <a class="exit-off-canvas"></a>
+                    </div>
+                </div>
+            </div>
     </section>
-
-  <a class="exit-off-canvas"></a>
-
-  </div>
 
 
 
