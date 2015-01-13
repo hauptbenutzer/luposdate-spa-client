@@ -48,39 +48,42 @@
                     <li><a target="_blank" href="https://github.com/hauptbenutzer/luposdate-spa-client">GitHub</a></li>
                 </ul>
 
-        <!-- Left Nav Section -->
-        <ul class="left">
-          <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a></li>
-        </ul>
-      </section>
-    </nav>
-
-    <aside class="left-off-canvas-menu">
-      <ul class="off-canvas-list">
-        <li><label>Preferences</label></li>
-        <li>
-            <form>
-                <label>Source
-                    <em>Choose the client's endpoint.</em>
-                    <select>
-                        <option value="husker">Husker</option>
-                        <option value="starbuck">Starbuck</option>
-                        <option value="hotdog">Hot Dog</option>
-                        <option value="apollo">Apollo</option>
-                    </select>
-                </label>
-            </form>
-        </li>
-      </ul>
-    </aside>
-
     <section class="main-section">
       <div class="container">
     <div class="header">
 
     </div>
+    <div class="side-nav">
+                <div class="off-canvas-wrap" data-offcanvas>
+                    <div class="inner-wrap">
+                        <ul>
+                            <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a></li>
+                        </ul>
+                        <aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        <li><label>Preferences</label></li>
+        <li>
+            <form>
+                <label>Source
+                    <em>Choose the client's endpoint:</em>
+                    <select>
+                        <option value="husker">Husker</option>
+                        <option value="starbuck">Starbuck</option>
+                        <option value="hotdog">Hot Dog</option>
+                        <option value="apollo">Apollo</option>
+                    </select><br />
+                    <em>or enter your own:</em>
+                    <input type="text" name="endpoint" />
+                    <div class="buttonarea">
+                        <button class="button" name="endpoint_select">Safe as default</button>
+                    </div>
+                </label>
+            </form>
+        </li>
+      </ul>
+    </aside>           
     <div class="row">
-        <div class="large-10 columns tabs-container">
+        <div class="large-6 columns tabs-container left-side">
             <dl class="tabs" data-tab>
                 <dd class="active"><a href="#panel1">SPARQL-Query</a></dd>
                 <dd><a href="#panel2">RDF</a></dd>
@@ -92,8 +95,14 @@
                     <form class="query">
                         <textarea class="editor" name="codemirror" cols="50" rows="40" id="codemirror">
                         </textarea>
+                        <div class="buttonarea">
+                            <input class="rule" type="radio" name="rule" value="RDFs" id="rule_rdfs"><label for="rule_rdfs">RDFs</label>
+                            <input class="rule" type="radio" name="rule" value="OWL" id="rule_owl"><label for="rule_owl">OWL</label>
+                            <input class="rule" type="radio" name="rule" value="RIF" id="rule_rif"><label for="rule_rif">RIF</label>
+                            <input class="rule" type="radio" name="rule" value="without" id="rule_without"><label for="rule_without">without</label>
                         <a href="#" class="evaluate button [radius round]">Evaluate</a><a href="#" class="button [radius round]">get
                         Graph</a>
+                        </div>
                     </form>
                 </div>
                 <div class="content" id="panel2">
@@ -128,7 +137,7 @@
                 </div>
             </div>
         </div>
-        <div class="large-2 columns tabs-container">
+        <div class="large-6 columns tabs-container right-side">
             <dl class="tabs" data-tab>
                 <dd class="active"><a href="#panel10">Result</a></dd>
                 <dd><a href="#panel11">Graph</a><span class="move"><i class="fa fa-arrows-h"></i></span></dd>
@@ -144,11 +153,16 @@
             </div>
         </div>
     </div>
+    <div class="side-nav-right">
+        <a href="#"><img src="images/icon_showleft-01.png" /></a>
+        <a href="#"><img src="images/icon_showboth-01.png" /></a>
+        <a href="#"><img src="images/icon_showright-01.png" /></a>
+    </div>
+    <a class="exit-off-canvas"></a>
+                    </div>
+                </div>
+            </div>
     </section>
-
-  <a class="exit-off-canvas"></a>
-
-  </div>
 
 
 
