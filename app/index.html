@@ -1,7 +1,7 @@
 <!doctype html>
 <html class="no-js">
 <head>
-    <link rel="shortcut icon" href="images/favicon.png" type="image/png" />
+    <link rel="shortcut icon" href="images/favicon.png" type="image/png"/>
     <meta charset="utf-8">
     <title>Luposdate Web Client</title>
     <meta name="description" content="">
@@ -10,9 +10,9 @@
 
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/foundation/css/foundation.css" />
-    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css" />
-    <link rel="stylesheet" href="bower_components/font-source-sans-pro/source-sans-pro.css" />
+    <link rel="stylesheet" href="bower_components/foundation/css/foundation.css"/>
+    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css"/>
+    <link rel="stylesheet" href="bower_components/font-source-sans-pro/source-sans-pro.css"/>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -31,188 +31,211 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 <div class="off-canvas-wrap" data-offcanvas>
-  <div class="inner-wrap">
-    <nav class="top-bar" data-topbar role="navigation">
-      <ul class="title-area">
-        <li class="name">
-          <img src="images/Icon01-01.png" /><h1><a href="#">Luposdate Web Client</a></h1>
-        </li>
-         <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-      </ul>
+    <div class="inner-wrap">
+        <nav class="top-bar" data-topbar role="navigation">
+            <ul class="title-area">
+                <li class="name">
+                    <img src="images/Icon01-01.png"/>
 
-      <section class="top-bar-section">
-        <!-- Right Nav Section -->
-        <ul class="right-small">
+                    <h1><a href="#">Luposdate Web Client</a></h1>
+                </li>
+                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right-small">
                     <li><a href="#">Tutorial</a></li>
                     <li><a target="_blank" href="https://github.com/hauptbenutzer/luposdate-spa-client">GitHub</a></li>
                 </ul>
 
-    <section class="main-section">
-      <div class="container">
-    <div class="header">
+                <section class="main-section">
+                    <div class="container">
+                        <div class="header">
 
-    </div>
-    <div class="side-nav">
-                <div class="off-canvas-wrap" data-offcanvas>
-                    <div class="inner-wrap">
-                        <ul>
-                            <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a></li>
-                        </ul>
-                        <aside class="left-off-canvas-menu">
-      <ul class="off-canvas-list">
-        <li><label>Preferences</label></li>
-        <li>
-            <form>
-                <label>Source
-                    <em>Choose the client's endpoint:</em>
-                    <select>
-                        <option value="husker">Husker</option>
-                        <option value="starbuck">Starbuck</option>
-                        <option value="hotdog">Hot Dog</option>
-                        <option value="apollo">Apollo</option>
-                    </select><br />
-                    <em>or enter your own:</em>
-                    <input type="text" name="endpoint" />
-                    <div class="buttonarea">
-                        <button class="button" name="endpoint_select">Safe as default</button>
+                        </div>
+                        <div class="side-nav">
+                            <div class="off-canvas-wrap" data-offcanvas>
+                                <div class="inner-wrap">
+                                    <ul>
+                                        <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a>
+                                        </li>
+                                    </ul>
+                                    <aside class="left-off-canvas-menu">
+                                        <ul class="off-canvas-list">
+                                            <li><label>Preferences</label></li>
+                                            <li>
+                                                <form>
+                                                    <label>Source
+                                                        <em>Choose the client's endpoint:</em>
+                                                        <select>
+                                                            <option value="husker">Husker</option>
+                                                            <option value="starbuck">Starbuck</option>
+                                                            <option value="hotdog">Hot Dog</option>
+                                                            <option value="apollo">Apollo</option>
+                                                        </select><br/>
+                                                        <em>or enter your own:</em>
+                                                        <input type="text" name="endpoint"/>
+
+                                                        <div class="buttonarea">
+                                                            <button class="button" name="endpoint_select">Safe as
+                                                                default
+                                                            </button>
+                                                        </div>
+                                                    </label>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                    <div class="row">
+                                        <div class="large-6 columns tabs-container left-side">
+                                            <dl class="tabs" data-tab>
+                                                <dd class="active"><a href="#panel1">SPARQL-Query</a></dd>
+                                                <dd><a href="#panel2">RDF</a></dd>
+                                                <dd><a href="#panel3">RIF</a></dd>
+                                                <dd><a href="#panel4">???</a></dd>
+                                            </dl>
+                                            <div class="tabs-content">
+                                                <div class="content active" id="panel1">
+                                                    <form class="query">
+                                                        <textarea class="editor" name="codemirror" cols="50" rows="40"
+                                                                  id="codemirror">
+                                                        </textarea>
+
+                                                        <div class="buttonarea">
+                                                            <input class="rule" type="radio" name="rule" value="RDFs"
+                                                                   id="rule_rdfs"><label for="rule_rdfs">RDFs</label>
+                                                            <input class="rule" type="radio" name="rule" value="OWL"
+                                                                   id="rule_owl"><label for="rule_owl">OWL</label>
+                                                            <input class="rule" type="radio" name="rule" value="RIF"
+                                                                   id="rule_rif"><label for="rule_rif">RIF</label>
+                                                            <input class="rule" type="radio" name="rule" value="without"
+                                                                   id="rule_without"><label
+                                                            for="rule_without">without</label>
+                                                            <a href="#"
+                                                               class="evaluate button radius round">Evaluate</a><a
+                                                            href="#" class="button radius round">get
+                                                            Graph</a>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="content" id="panel2">
+                                                    <form class="query">
+                                                        <textarea class="editor" name="codemirror" cols="50" rows="40"
+                                                                  id="codemirror_rdf">
+                                                        </textarea>
+
+                                                        <div class="buttonarea">
+                                                            <a href="#" class="button [radius round]">Evaluate</a>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="content" id="panel3">
+                                                    <form class="query">
+                                                        <textarea class="editor" name="codemirror" cols="50" rows="40"
+                                                                  id="codemirror_rif">
+                                                        </textarea>
+
+                                                        <div class="buttonarea">
+                                                            <a href="#" class="button [radius round]">Evaluate</a>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="content" id="panel4">
+                                                    <p>This is the fourth panel of the basic tab example. This is the
+                                                        fourth panel of the basic tab
+                                                        example.</p>
+                                                </div>
+                                            </div>
+                                            <div class="error-log">
+                                                <button class="small"><i class="fa fa-exclamation-triangle"></i> Error
+                                                    log
+                                                </button>
+                                                <div class="scroller">
+                                                    <ul class="list">
+                                                        <li>test error</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="large-6 columns tabs-container right-side">
+                                            <dl class="tabs" data-tab>
+                                                <dd class="active"><a href="#panel10">Result</a></dd>
+                                                <dd><a href="#panel11">Graph</a><span class="move"><i
+                                                    class="fa fa-arrows-h"></i></span></dd>
+                                            </dl>
+                                            <div class="tabs-content">
+                                                <div class="content active" id="panel10">
+
+                                                </div>
+                                                <div class="content" id="panel11">
+                                                    <p>This is the second panel of the basic tab example. This is the
+                                                        second panel of the basic tab
+                                                        example.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="side-nav-right">
+                                        <a href="#"><img src="images/icon_showleft-01.png"/></a>
+                                        <a href="#"><img src="images/icon_showboth-01.png"/></a>
+                                        <a href="#"><img src="images/icon_showright-01.png"/></a>
+                                    </div>
+                                    <a class="exit-off-canvas"></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </label>
-            </form>
-        </li>
-      </ul>
-    </aside>           
-    <div class="row">
-        <div class="large-6 columns tabs-container left-side">
-            <dl class="tabs" data-tab>
-                <dd class="active"><a href="#panel1">SPARQL-Query</a></dd>
-                <dd><a href="#panel2">RDF</a></dd>
-                <dd><a href="#panel3">RIF</a></dd>
-                <dd><a href="#panel4">???</a></dd>
-            </dl>
-            <div class="tabs-content">
-                <div class="content active" id="panel1">
-                    <form class="query">
-                        <textarea class="editor" name="codemirror" cols="50" rows="40" id="codemirror">
-                        </textarea>
-                        <div class="buttonarea">
-                            <input class="rule" type="radio" name="rule" value="RDFs" id="rule_rdfs"><label for="rule_rdfs">RDFs</label>
-                            <input class="rule" type="radio" name="rule" value="OWL" id="rule_owl"><label for="rule_owl">OWL</label>
-                            <input class="rule" type="radio" name="rule" value="RIF" id="rule_rif"><label for="rule_rif">RIF</label>
-                            <input class="rule" type="radio" name="rule" value="without" id="rule_without"><label for="rule_without">without</label>
-                        <a href="#" class="evaluate button [radius round]">Evaluate</a><a href="#" class="button [radius round]">get
-                        Graph</a>
-                        </div>
-                    </form>
-                </div>
-                <div class="content" id="panel2">
-                    <form class="query">
-                        <textarea class="editor" name="codemirror" cols="50" rows="40" id="codemirror_rdf">
-                        </textarea>
-                        <div class="buttonarea">
-                        <a href="#" class="button [radius round]">Evaluate</a>
-                        </div>
-                    </form>
-                </div>
-                <div class="content" id="panel3">
-                    <form class="query">
-                        <textarea class="editor" name="codemirror" cols="50" rows="40" id="codemirror_rif">
-                        </textarea>
-                        <div class="buttonarea">
-                        <a href="#" class="button [radius round]">Evaluate</a>
-                        </div>
-                    </form>
-                </div>
-                <div class="content" id="panel4">
-                    <p>This is the fourth panel of the basic tab example. This is the fourth panel of the basic tab
-                        example.</p>
-                </div>
-            </div>
-            <div class="error-log">
-                <button class="small"><i class="fa fa-exclamation-triangle"></i> Error log</button>
-                <div class="scroller">
-                    <ul class="list">
-                        <li>test error</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="large-6 columns tabs-container right-side">
-            <dl class="tabs" data-tab>
-                <dd class="active"><a href="#panel10">Result</a></dd>
-                <dd><a href="#panel11">Graph</a><span class="move"><i class="fa fa-arrows-h"></i></span></dd>
-            </dl>
-            <div class="tabs-content">
-                <div class="content active" id="panel10">
-
-                </div>
-                <div class="content" id="panel11">
-                    <p>This is the second panel of the basic tab example. This is the second panel of the basic tab
-                        example.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="side-nav-right">
-        <a href="#"><img src="images/icon_showleft-01.png" /></a>
-        <a href="#"><img src="images/icon_showboth-01.png" /></a>
-        <a href="#"><img src="images/icon_showright-01.png" /></a>
-    </div>
-    <a class="exit-off-canvas"></a>
-                    </div>
-                </div>
-            </div>
-    </section>
+                </section>
 
 
+                <!-- build:js scripts/vendor.js -->
+                <!-- bower:js -->
+                <script src="bower_components/modernizr/modernizr.js"></script>
+                <script src="bower_components/jquery/dist/jquery.js"></script>
+                <script src="bower_components/fastclick/lib/fastclick.js"></script>
+                <script src="bower_components/jquery.cookie/jquery.cookie.js"></script>
+                <script src="bower_components/jquery-placeholder/jquery.placeholder.js"></script>
+                <script src="bower_components/foundation/js/foundation.js"></script>
+                <script src="bower_components/underscore/underscore.js"></script>
+                <script src="bower_components/backbone/backbone.js"></script>
+                <script src="bower_components/codemirror/lib/codemirror.js"></script>
 
+                <!-- endbower -->
+                <!-- endbuild -->
 
-    <!-- build:js scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="bower_components/modernizr/modernizr.js"></script>
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="bower_components/jquery.cookie/jquery.cookie.js"></script>
-    <script src="bower_components/jquery-placeholder/jquery.placeholder.js"></script>
-    <script src="bower_components/foundation/js/foundation.js"></script>
-    <script src="bower_components/underscore/underscore.js"></script>
-    <script src="bower_components/backbone/backbone.js"></script>
-    <script src="bower_components/codemirror/lib/codemirror.js"></script>
+                <!-- build:js scripts/plugins.js -->
+                <script src="bower_components/foundation/js/foundation/foundation.abide.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.accordion.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.alert.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.clearing.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.dropdown.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.equalizer.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.interchange.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.joyride.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.magellan.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.offcanvas.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.orbit.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.reveal.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.slider.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.tab.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.tooltip.js"></script>
+                <script src="bower_components/foundation/js/foundation/foundation.topbar.js"></script>
+                <!-- endbuild -->
 
-    <!-- endbower -->
-    <!-- endbuild -->
+                <!-- build:js scripts/modules.js -->
+                <!-- inject:js -->
+                <script src="scripts/jst.js"></script>
+                <script src="scripts/codemirror-modes/N3/N3.js"></script>
+                <script src="scripts/codemirror-modes/sparql/sparql.js"></script>
+                <script src="scripts/codemirror-modes/rif/rif.js"></script>
+                <!-- endinject -->
+                <!-- endbuild -->
 
-    <!-- build:js scripts/plugins.js -->
-    <script src="bower_components/foundation/js/foundation/foundation.abide.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.accordion.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.alert.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.clearing.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.dropdown.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.equalizer.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.interchange.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.joyride.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.magellan.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.offcanvas.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.orbit.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.reveal.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.slider.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.tab.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.tooltip.js"></script>
-    <script src="bower_components/foundation/js/foundation/foundation.topbar.js"></script>
-    <!-- endbuild -->
-
-    <!-- build:js scripts/modules.js -->
-    <!-- inject:js -->
-    <script src="scripts/jst.js"></script>
-    <script src="scripts/codemirror-modes/N3/N3.js"></script>
-    <script src="scripts/codemirror-modes/sparql/sparql.js"></script>
-    <script src="scripts/codemirror-modes/rif/rif.js"></script>
-    <!-- endinject -->
-    <!-- endbuild -->
-
-    <!-- build:js scripts/main.js -->
-    <script src="scripts/main.js"></script>
-    <!-- endbuild -->
+                <!-- build:js scripts/main.js -->
+                <script src="scripts/main.js"></script>
+                <!-- endbuild -->
 </body>
 </html>
