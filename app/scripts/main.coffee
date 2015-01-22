@@ -73,6 +73,7 @@ App.play = ->
     App.loadEditors()
     App.bindEvents()
     App.insertQueryPicker()
+    pleaseWait.finish()
     console.log "ready"
 
 App.insertQueryPicker = ->
