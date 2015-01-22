@@ -56,10 +56,18 @@
                         <div class="side-nav">
                             <div class="off-canvas-wrap" data-offcanvas>
                                 <div class="inner-wrap">
-                                    <ul>
-                                        <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a>
-                                        </li>
-                                    </ul>
+                                    <div style="width: 3%; float: left">
+                                        <ul>
+                                            <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a>
+                                            </li>
+                                            <li><a href="#"><img src="images/icon_showleft-01.png"/></a>
+                                                </li>
+                                            <li><a href="#"><img src="images/icon_showboth-01.png"/></a>
+                                               </li>
+                                            <li> <a href="#"><img src="images/icon_showright-01.png"/></a></li>
+                                        </ul>
+                                    </div>
+
                                     <aside class="left-off-canvas-menu">
                                         <ul class="off-canvas-list">
                                             <li><label>Preferences</label></li>
@@ -86,8 +94,9 @@
                                             </li>
                                         </ul>
                                     </aside>
-                                    <div class="row">
-                                        <div class="large-6 columns tabs-container left-side">
+
+                                    <div style="width: 93%" class="row">
+                                        <div class="medium-6 columns tabs-container left-side">
                                             <dl class="tabs" data-tab>
                                                 <dd class="active"><a href="#panel1">SPARQL-Query</a></dd>
                                                 <dd><a href="#panel2">RDF</a></dd>
@@ -161,7 +170,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="large-6 columns tabs-container right-side">
+                                        <div class="medium-6 columns tabs-container right-side">
                                             <dl class="tabs" data-tab>
                                                 <dd class="active"><a href="#panel10">Result</a></dd>
                                                 <dd><a href="#panel11">Graph</a></dd>
@@ -178,11 +187,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="side-nav-right">
-                                        <a href="#"><img src="images/icon_showleft-01.png"/></a>
-                                        <a href="#"><img src="images/icon_showboth-01.png"/></a>
-                                        <a href="#"><img src="images/icon_showright-01.png"/></a>
-                                    </div>
+
                                     <a class="exit-off-canvas"></a>
                                 </div>
                             </div>

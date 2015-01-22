@@ -27,15 +27,15 @@ li.name img {
   z-index: 500;
   margin-left: 180px;
   margin-top: 40px;
-  
+
   .fa-cog {
     margin-left: -10px;
   }
-  
+
   .left-off-canvas-toggle{
     width: 20px;
   }
-  
+
   ul {
   list-style: none;
   }
@@ -57,7 +57,7 @@ ul.off-canvas-list li label {
 
 .buttonarea {
   text-align: right;
-  
+
   .button {
     margin-left: 5px;
   }
@@ -66,29 +66,17 @@ ul.off-canvas-list li label {
 .columns {
   border: solid 1px #ccc;
   z-index: 10;
-  margin-top: -55px;
   background-color: #FFF;
 }
-  
-.left-side {
-  margin-left: 44px;
-}
-  
-.right-side {
-  margin-right: 46px;
-}
 
 
-.large-6 {
-  width: 46%;
-}
 
 .side-nav-right{
   float: right;
   margin-right: 10px;
   margin-top: -455px;
   width: 35px;
-    
+
   img {
     width: 20px;
     margin-left: 10px;
