@@ -5,7 +5,7 @@
 			"name": "Luposdate Local",
             "json": false
 		}
-	],
+	]
 
     // Set URLs to text data that can be loaded.
     // First array element is picked as default and loaded into the editor.
@@ -14,4 +14,7 @@
         "rdf": ["/resources/n3/lubm.n3"],
         "rif": ["/resources/RIF/rule_And.rif"]
     }
+    // Set the default ontology for look-up
+    // Possible values are 'RIF', 'RDFs', 'OWL' and 'without'
+    "defaultOntology": "without"
 }

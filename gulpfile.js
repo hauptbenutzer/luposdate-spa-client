@@ -138,6 +138,7 @@ gulp.task('watch', ['serve'], function () {
     gulp.watch(['app/*.html'], reload);
     gulp.watch('app/styles/**/*.scss', ['styles']);
     gulp.watch('app/scripts/**/*.coffee', ['scripts']);
+    gulp.watch('app/scripts/**/*.hjson', ['json']);
     gulp.watch('app/templates/**/*.html', ['JST']);
     gulp.watch('app/images/**/*', ['images']);
     gulp.watch('bower.json', ['wiredep']);

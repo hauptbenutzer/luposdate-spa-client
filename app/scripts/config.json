@@ -1,1 +1,1 @@
-{"endpoints":[{"url":"http://localhost:8080/","name":"Luposdate Local","json":false}],"defaultData":{"sparql":["/resources/Sparql/lubm_asktest.sparql"],"rdf":["/resources/n3/lubm.n3"],"rif":["/resources/RIF/rule_And.rif"]}}
+{"endpoints":[{"url":"http://localhost:8080/","name":"Luposdate Local","json":false}],"defaultData":{"sparql":["/resources/Sparql/lubm_asktest.sparql"],"rdf":["/resources/n3/lubm.n3"],"rif":["/resources/RIF/rule_And.rif"]},"defaultOntology":"without"}

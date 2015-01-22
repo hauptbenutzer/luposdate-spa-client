@@ -96,12 +96,14 @@
                                             </dl>
                                             <div class="tabs-content">
                                                 <div class="content active" id="panel1">
+                                                    <select name="" id="query-select-sparql"></select>
+
                                                     <form class="query">
                                                         <textarea class="editor" name="codemirror" cols="50" rows="40"
                                                                   id="codemirror">
                                                         </textarea>
 
-                                                        <div class="buttonarea">
+                                                        <div class="buttonarea" id="rule_radios">
                                                             <input class="rule" type="radio" name="rule" value="RDFs"
                                                                    id="rule_rdfs"><label for="rule_rdfs">RDFs</label>
                                                             <input class="rule" type="radio" name="rule" value="OWL"
@@ -119,6 +121,7 @@
                                                     </form>
                                                 </div>
                                                 <div class="content" id="panel2">
+                                                    <select name="" id="query-select-rdf"></select>
                                                     <form class="query">
                                                         <textarea class="editor" name="codemirror" cols="50" rows="40"
                                                                   id="codemirror_rdf">
@@ -130,6 +133,7 @@
                                                     </form>
                                                 </div>
                                                 <div class="content" id="panel3">
+                                                    <select name="" id="query-select-rif"></select>
                                                     <form class="query">
                                                         <textarea class="editor" name="codemirror" cols="50" rows="40"
                                                                   id="codemirror_rif">
@@ -160,8 +164,7 @@
                                         <div class="large-6 columns tabs-container right-side">
                                             <dl class="tabs" data-tab>
                                                 <dd class="active"><a href="#panel10">Result</a></dd>
-                                                <dd><a href="#panel11">Graph</a><span class="move"><i
-                                                    class="fa fa-arrows-h"></i></span></dd>
+                                                <dd><a href="#panel11">Graph</a></dd>
                                             </dl>
                                             <div class="tabs-content">
                                                 <div class="content active" id="panel10">

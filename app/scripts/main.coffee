@@ -68,16 +68,19 @@ App.bindEvents = ->
 
     $('.error-log button').click ->
         $(this).next().toggleClass 'visible'
-    $('.tabs .move').click ->
-        currentTabs = $(this).parents('.tabs')
-        currentContainer = $(this).parents('.tabs-container')
-        $(this).parents('dd').appendTo($('.tabs').not(currentTabs))
-        $($(this).siblings('a').attr('href')).appendTo($('.tabs-container').not(currentContainer).find('.tabs-content'))
 
 App.play = ->
     App.loadEditors()
     App.bindEvents()
+    App.insertQueryPicker()
     console.log "ready"
+
+App.insertQueryPicker = ->
+    for lang of {'sparql', 'rdf', 'rif'}
+        console.log lang
+        $("#query-select-#{lang}").html JST['query_picker']({options: App.config['defaultData'][lang] })
+
+    console.log $("#rule_radios input[value=#{App.config['defaultOntology']}]").click()
 
 App.processResults = (data) ->
     # Valid data
@@ -86,6 +89,11 @@ App.processResults = (data) ->
         $('#panel10').append JST['results']({results: results.result})
     else
         $('.error-log .list').append "<li>#{data}</li>"
+
+App.baseName = (str) ->
+  base = new String(str).substring(str.lastIndexOf("/") + 1)
+  base = base.substring(0, base.lastIndexOf("."))  unless base.lastIndexOf(".") is -1
+  base
 
 $(document).ready ->
     App.init()
