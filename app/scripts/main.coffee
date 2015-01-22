@@ -4,7 +4,7 @@
 # Initialize foundation
 #$(document).foundation();
 
-App.init = ->
+App.loadEditors = ->
     # Initialize editors
     App.cm = {}
 
@@ -12,7 +12,7 @@ App.init = ->
         mode: "sparql"
         lineNumbers: true
 
-    $.get "/resources/Sparql/lubm_asktest.sparql", (data) ->
+    $.get App.config.defaultData['sparql'][0], (data) ->
         App.cm['sparql'].getDoc().setValue(data)
 
 
@@ -20,7 +20,7 @@ App.init = ->
         lineNumbers: true
         mode: "n3"
 
-    $.get "/resources/n3/lubm.n3", (data) ->
+    $.get App.config.defaultData['rdf'][0], (data) ->
         App.cm['rdf'].getDoc().setValue(data)
 
 
@@ -29,11 +29,12 @@ App.init = ->
         mode: "rif"
 
     $.ajax(
-        url: "/resources/RIF/rule_And.rif"
+        url: App.config.defaultData['rif'][0]
         dataType: "text"
     ).done (data) ->
         App.cm['rif'].getDoc().setValue(data)
 
+App.init = ->
     # Load xml converter
     #App.x2js = new X2JS()
 
@@ -74,6 +75,7 @@ App.bindEvents = ->
         $($(this).siblings('a').attr('href')).appendTo($('.tabs-container').not(currentContainer).find('.tabs-content'))
 
 App.play = ->
+    App.loadEditors()
     App.bindEvents()
     console.log "ready"
 

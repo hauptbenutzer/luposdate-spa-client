@@ -31,7 +31,7 @@ gulp.task('scripts', function () {
         .pipe($.notify("Compilation complete."));
 });
 
-gulp.task('html', ['styles', 'scripts', 'JST'], function () {
+gulp.task('html', ['styles', 'scripts', 'JST', 'json'], function () {
     var jsFilter = $.filter('**/*.js');
     var cssFilter = $.filter('**/*.css');
     var assets = $.useref.assets();
@@ -85,7 +85,7 @@ gulp.task('default', ['clean'], function () {
     gulp.start('build');
 });
 
-gulp.task('serve', ['styles', 'scripts', 'JST'], function () {
+gulp.task('serve', ['styles', 'scripts', 'JST', 'json'], function () {
     browserSync({
         server: {
             baseDir: 'app'
@@ -141,6 +141,12 @@ gulp.task('watch', ['serve'], function () {
     gulp.watch('app/templates/**/*.html', ['JST']);
     gulp.watch('app/images/**/*', ['images']);
     gulp.watch('bower.json', ['wiredep']);
+});
+
+gulp.task('json', function() {
+  gulp.src(['app/scripts/*.hjson'])
+    .pipe($.hjson({ to: 'json' }))
+    .pipe(gulp.dest('app/scripts'));
 });
 
 /**
