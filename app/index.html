@@ -53,18 +53,23 @@
                         <div class="header">
 
                         </div>
-                        <div class="side-nav">
+                        <div id="wrapper_main" class="side-nav">
                             <div class="off-canvas-wrap" data-offcanvas>
                                 <div class="inner-wrap">
                                     <div style="width: 3%; float: left">
                                         <ul>
                                             <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a>
                                             </li>
-                                            <li><a href="#"><img src="images/icon_showleft-01.png"/></a>
+                                            <li><img class="toggle" src="images/screen_query.png" onclick="query()"/>
                                                 </li>
-                                            <li><a href="#"><img src="images/icon_showboth-01.png"/></a>
+                                            <li><img class="toggle" src="images/screen_both.png" onclick="both()"/>
                                                </li>
-                                            <li> <a href="#"><img src="images/icon_showright-01.png"/></a></li>
+                                            <li><img class="toggle" src="images/screen_results.png" onclick="result()"/>
+                                                </li>
+                                            <li><img id="fullscreen" class="toggle" src="images/fullscreen.png" onclick="fullscreen_()"/>                                              
+                                                </li>
+                                            <li><img id="fullscreen_close" class="toggle hide" src="images/fullscreen_close.png" onclick="fullscreen_close_()"/>                                              
+                                                </li>
                                         </ul>
                                     </div>
 
@@ -94,9 +99,9 @@
                                             </li>
                                         </ul>
                                     </aside>
-
+                                    
                                     <div style="width: 93%" class="row">
-                                        <div class="medium-6 columns tabs-container left-side">
+                                        <div id="query" class="medium-6 columns tabs-container left-side">
                                             <dl class="tabs" data-tab>
                                                 <dd class="active"><a href="#panel1">SPARQL-Query</a></dd>
                                                 <dd><a href="#panel2">RDF</a></dd>
@@ -170,7 +175,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="medium-6 columns tabs-container right-side">
+                                        <div id="result" class="medium-6 columns tabs-container right-side">
                                             <dl class="tabs" data-tab>
                                                 <dd class="active"><a href="#panel10">Result</a></dd>
                                                 <dd><a href="#panel11">Graph</a></dd>
@@ -240,7 +245,8 @@
                 <!-- endbuild -->
 
                 <!-- build:js scripts/main.js -->
-                <script src="scripts/main.js"></script>
+                <script src="scripts/main.js">
+                </script>
                 <!-- endbuild -->
 </body>
 </html>
