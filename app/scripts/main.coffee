@@ -12,27 +12,27 @@ App.loadEditors = ->
         mode: "sparql"
         lineNumbers: true
 
-    $.get App.config.defaultData['sparql'][0], (data) ->
-        App.cm['sparql'].getDoc().setValue(data)
-
+    App.loadQuery('sparql', 0)
 
     App.cm['rdf'] = CodeMirror.fromTextArea document.getElementById("codemirror_rdf"),
         lineNumbers: true
         mode: "n3"
 
-    $.get App.config.defaultData['rdf'][0], (data) ->
-        App.cm['rdf'].getDoc().setValue(data)
+    App.loadQuery('rdf', 0)
 
 
     App.cm['rif'] = CodeMirror.fromTextArea document.getElementById("codemirror_rif"),
         lineNumbers: true
         mode: "rif"
 
+    App.loadQuery('rif', 0)
+
+App.loadQuery = (lang, index) ->
     $.ajax(
-        url: App.config.defaultData['rif'][0]
+        url: App.config.defaultData[lang][index]
         dataType: "text"
     ).done (data) ->
-        App.cm['rif'].getDoc().setValue(data)
+        App.cm[lang].getDoc().setValue(data)
 
 App.init = ->
     # Load xml converter
@@ -69,12 +69,19 @@ App.bindEvents = ->
     $('.error-log button').click ->
         $(this).next().toggleClass 'visible'
 
+    $('.query-select').change () ->
+        lang = $(this).data('lang')
+        index = $(this).find('option:selected').index()
+        console.log index
+        App.loadQuery lang, index
+
 App.play = ->
     App.loadEditors()
     App.bindEvents()
     App.insertQueryPicker()
     pleaseWait.finish()
     console.log "ready"
+    App.cm['sparql'].refresh()
 
 App.insertQueryPicker = ->
     for lang of {'sparql', 'rdf', 'rif'}

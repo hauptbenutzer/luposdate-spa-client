@@ -56,7 +56,7 @@
                         </div>
 
                         <div class="side-nav">
-                            <div style="float: left; width: 44px; margin-left: -44px">
+                            <div class="sidebar-controls">
                                 <ul>
                                     <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a>
                                     </li>
@@ -105,7 +105,7 @@
                                             </dl>
                                             <div class="tabs-content">
                                                 <div class="content active" id="panel1">
-                                                    <select name="" id="query-select-sparql"></select>
+                                                    <select class="query-select" data-lang="sparql" name="" id="query-select-sparql"></select>
 
                                                     <form class="query">
                                                         <textarea class="editor" name="codemirror" cols="50" rows="40"
@@ -130,7 +130,7 @@
                                                     </form>
                                                 </div>
                                                 <div class="content" id="panel2">
-                                                    <select name="" id="query-select-rdf"></select>
+                                                    <select class="query-select" data-lang="rdf" name="" id="query-select-rdf"></select>
                                                     <form class="query">
                                                         <textarea class="editor" name="codemirror" cols="50" rows="40"
                                                                   id="codemirror_rdf">
@@ -142,7 +142,7 @@
                                                     </form>
                                                 </div>
                                                 <div class="content" id="panel3">
-                                                    <select name="" id="query-select-rif"></select>
+                                                    <select class="query-select" data-lang="rif" name="" id="query-select-rif"></select>
                                                     <form class="query">
                                                         <textarea class="editor" name="codemirror" cols="50" rows="40"
                                                                   id="codemirror_rif">

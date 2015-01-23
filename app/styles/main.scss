@@ -8,8 +8,8 @@ body {
 	font-family: 'Source Sans Pro';
 }
 
-.top-bar, .top-bar-section ul li, .top-bar-section li:not(.has-form) a:not(.button), .left-off-canvas-menu {
-  background: #008cba;
+.top-bar, .top-bar-section ul li, .top-bar-section li:not(.has-form) a:not(.button) {
+  background: $primary-color;
   color: #fff;
 }
 
@@ -23,7 +23,7 @@ li.name img {
   width: 80%;
   height: 100%;
   float: left;
-  background: #008cba;
+  background: $primary-color;
   z-index: 500;
   margin-left: 180px;
   margin-top: 40px;
@@ -41,11 +41,6 @@ li.name img {
   }
 }
 
-ul.off-canvas-list li label {
-  background: #008cba;
-  color: #fff;
-  border-top: 1px solid #007095;
-}
 
 .right-small {
   border-left: 1px solid #007095;
@@ -127,5 +122,18 @@ select {
     line-height: 100%;
     &:hover {
         color: $primary-color;
+    }
+}
+
+.sidebar-controls {
+    float: left; width: 44px; margin-left: -44px;
+
+    ul {
+        margin-left: 0;
+        padding-left: 0;
+    }
+    a {
+        width: 40px;
+        padding: 0;
     }
 }
