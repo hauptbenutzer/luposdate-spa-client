@@ -23,47 +23,35 @@ li.name img {
   margin-right: 5px;
 }
 
+.main-section {
+    margin-top: 3%;
+}
+
 .side-nav {
-  width: 80%;
-  height: 100%;
+  width: 3%;
   float: left;
-  background: $primary-color;
-  z-index: 500;
-  margin-left: 180px;
-  margin-top: 40px;
-
-  .fa-cog {
-    margin-left: -10px;
-  }
-
-  .left-off-canvas-toggle{
-    width: 20px;
-  }
+  margin-left: -3%;
 
   ul {
-  list-style: none;
+    list-style: none;
+    margin: 0;
+  }
+  li a:not(.button) {
+    padding-left: 0;
+    padding-right: 0;
+    display: block;
+    text-align: center
+  }
+
+  svg {
+    width: 17px;
+    height: 17px;
+    path {
+        fill: #f00 !important
+    }
   }
 }
 
-.side-nav-full {
-  width: 100%;
-  height: 100%;
-  float: left;
-  background: #008cba;
-  z-index: 500;
-
-  .fa-cog {
-    margin-left: -10px;
-  }
-
-  .left-off-canvas-toggle{
-    width: 20px;
-  }
-
-  ul {
-  list-style: none;
-  }
-}
 .toggle:hover{
   cursor: pointer;
 }
@@ -92,8 +80,10 @@ ul.off-canvas-list li label {
 
 .columns {
   border: solid 1px #ccc;
-  z-index: 10;
   background-color: #FFF;
+  &:last-child {
+    border-left: none
+  }
 }
 
 

@@ -150,6 +150,25 @@ gulp.task('json', function() {
     .pipe(gulp.dest('app/scripts'));
 });
 
+gulp.task('svg', function() {
+    var config = {
+        shape: {
+            id: {
+                separator: '-'
+            }
+        },
+        mode: {
+            symbol: {
+                dest: 'sprites',
+                sprite: 'svgs.svg'
+            }
+        }
+    };
+    gulp.src('app/images/**/*.svg')
+        .pipe($.svgSprite(config))
+        .pipe(gulp.dest('app/images'));
+});
+
 /**
  * Push build to gh-pages
  */

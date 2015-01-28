@@ -10,7 +10,7 @@
 // $rem-base: 16px;
 
 // Allows the use of rem-calc() or lower-bound() in your settings
-//@import "foundation/functions";
+@import "../bower_components/foundation/scss/foundation/functions";
 
 // $experimental: true;
 
@@ -35,7 +35,7 @@
 // $include-html-grid-classes: $include-html-classes;
 // $include-xl-html-grid-classes: false;
 
-// $row-width: rem-calc(1000);
+$row-width: rem-calc(1200);
 // $total-columns: 12;
 
 // Global
@@ -72,7 +72,7 @@ $body-font-family: 'Source Sans Pro', sans-serif;
 // $shiny-edge-color: rgba(#fff, .5);
 // $shiny-edge-active-color: rgba(#000, .2);
 
-// $column-gutter: rem-calc(30);
+$column-gutter: rem-calc(30);
 
 // Media Query Ranges
 // $small-range: (0em, 40em);

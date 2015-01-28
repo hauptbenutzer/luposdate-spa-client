@@ -52,30 +52,24 @@
             </nav>
 
             <section class="main-section">
-                <div class="container">
-                    <div class="header">
-
+                <div class="row">
+                    <div class="side-nav">
+                        <ul>
+                            <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a>
+                            </li>
+                            <li><a class="fullscreen-toggle" href="#"><svg><use xlink:href="images/sprites/svgs.svg#icons-fullscreen"/></svg></a>
+                            </li>
+                            <li><a class="fullscreen-toggle" href="#"><svg><use xlink:href="images/sprites/svgs.svg#icons-screen-both"/></svg></a>
+                            </li>
+                            <li><a class="fullscreen-toggle" href="#"><svg><use xlink:href="images/sprites/svgs.svg#icons-screen-query"/></svg></a>
+                            </li>
+                            <li><a class="fullscreen-toggle" href="#"><svg><use xlink:href="images/sprites/svgs.svg#icons-screen-results"/></svg></a>
+                            </li>
+                        </ul>
                     </div>
-                    <div id="wrapper_main" class="side-nav">
+                    <div id="wrapper_main">
                         <div class="off-canvas-wrap" data-offcanvas>
                             <div class="inner-wrap">
-                                <div style="width: 3%; float: left">
-                                    <ul>
-                                        <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a>
-                                        </li>
-                                        <li><img class="toggle" src="images/screen_query.png" onclick="query()"/>
-                                            </li>
-                                        <li><img class="toggle" src="images/screen_both.png" onclick="both()"/>
-                                           </li>
-                                        <li><img class="toggle" src="images/screen_results.png" onclick="result()"/>
-                                            </li>
-                                        <li><img id="fullscreen" class="toggle" src="images/fullscreen.png" onclick="fullscreen_()"/>
-                                            </li>
-                                        <li><img id="fullscreen_close" class="toggle hide" src="images/fullscreen_close.png" onclick="fullscreen_close_()"/>
-                                            </li>
-                                    </ul>
-                                </div>
-
                                 <aside class="left-off-canvas-menu">
                                     <ul class="off-canvas-list">
                                         <li><label>Preferences</label></li>
@@ -103,7 +97,7 @@
                                     </ul>
                                 </aside>
 
-                                <div style="width: 93%" class="row">
+                                <div>
                                     <div id="query" class="medium-6 columns tabs-container left-side">
                                         <dl class="tabs" data-tab>
                                             <dd class="active"><a href="#panel1">SPARQL-Query</a></dd>
@@ -130,8 +124,8 @@
                                                                id="rule_without"><label
                                                         for="rule_without">without</label>
                                                         <a href="#"
-                                                           class="evaluate button radius round">Evaluate</a><a
-                                                        href="#" class="button radius round">get
+                                                           class="evaluate button">Evaluate</a><a
+                                                        href="#" class="button">get
                                                         Graph</a>
                                                     </div>
                                                 </form>
