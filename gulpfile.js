@@ -85,7 +85,7 @@ gulp.task('default', ['clean'], function () {
     gulp.start('build');
 });
 
-gulp.task('serve', ['styles', 'scripts', 'JST', 'json'], function () {
+gulp.task('serve', ['styles', 'scripts', 'JST', 'json', 'svg'], function () {
     browserSync({
         server: {
             baseDir: 'app'
@@ -126,7 +126,7 @@ gulp.task('inject', function () {
   gulp.src('app/*.html')
     .pipe($.inject(
         // Include all js files in scripts except the ones at top level
-        gulp.src(['app/scripts/**/*.js', '!app/scripts/main.js'], {read: false}),
+        gulp.src(['app/scripts/**/*.js', '!app/scripts/main.js', '!app/scripts/loading.js'], {read: false}),
         {ignorePath: 'app/', addRootSlash: false}
     ))
     .pipe(gulp.dest('app'))
@@ -140,7 +140,7 @@ gulp.task('watch', ['serve'], function () {
     gulp.watch('app/scripts/**/*.coffee', ['scripts']);
     gulp.watch('app/scripts/**/*.hjson', ['json']);
     gulp.watch('app/templates/**/*.html', ['JST']);
-    gulp.watch('app/images/**/*', ['images']);
+    gulp.watch('app/images/icons/*.svg', ['svg']);
     gulp.watch('bower.json', ['wiredep']);
 });
 
@@ -164,7 +164,7 @@ gulp.task('svg', function() {
             }
         }
     };
-    gulp.src('app/images/**/*.svg')
+    gulp.src('app/images/icons/*.svg')
         .pipe($.svgSprite(config))
         .pipe(gulp.dest('app/images'));
 });

@@ -75,6 +75,10 @@ App.bindEvents = ->
         console.log index
         App.loadQuery lang, index
 
+    # Toggle fullscreen and other view options
+    $('.fullscreen-toggle').click ->
+        $('.main-section').toggleClass 'full'
+
 App.play = ->
     App.loadEditors()
     App.bindEvents()
