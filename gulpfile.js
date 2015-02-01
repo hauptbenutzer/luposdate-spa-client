@@ -8,6 +8,9 @@ var mainBowerFiles = require('main-bower-files');
 // load plugins
 var $ = require('gulp-load-plugins')();
 
+
+
+
 var handleError = function(err) {
     new $.util.log(err);
     this.emit('end');
@@ -67,7 +70,7 @@ gulp.task('fonts', function () {
     var streamqueue = require('streamqueue');
     return streamqueue({objectMode: true},
         gulp.src(mainBowerFiles()),
-        gulp.src('app/fonts/**/*')
+        gulp.src('app/bower_components/**/*')
     )
         .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
         .pipe($.flatten())
@@ -85,7 +88,7 @@ gulp.task('default', ['clean'], function () {
     gulp.start('build');
 });
 
-gulp.task('serve', ['styles', 'scripts', 'JST', 'json', 'svg'], function () {
+gulp.task('serve', ['styles', 'scripts', 'JST', 'hjson', 'svg'], function () {
     browserSync({
         server: {
             baseDir: 'app'
@@ -138,16 +141,21 @@ gulp.task('watch', ['serve'], function () {
     gulp.watch(['app/*.html'], reload);
     gulp.watch('app/styles/**/*.scss', ['styles']);
     gulp.watch('app/scripts/**/*.coffee', ['scripts']);
-    gulp.watch('app/scripts/**/*.hjson', ['json']);
+    gulp.watch('app/scripts/**/*.hjson', ['hjson']);
     gulp.watch('app/templates/**/*.html', ['JST']);
     gulp.watch('app/images/icons/*.svg', ['svg']);
     gulp.watch('bower.json', ['wiredep']);
 });
 
-gulp.task('json', function() {
+gulp.task('hjson', function() {
   gulp.src(['app/scripts/*.hjson'])
     .pipe($.hjson({ to: 'json' }))
     .pipe(gulp.dest('app/scripts'));
+});
+
+gulp.task('json', ['hjson'], function () {
+   gulp.src('app/scripts/*.json')
+       .pipe(gulp.dest('dist/scripts'));
 });
 
 gulp.task('svg', function() {
@@ -172,7 +180,7 @@ gulp.task('svg', function() {
 /**
  * Push build to gh-pages
  */
-gulp.task('deploy', ['html'], function () {
+gulp.task('deploy', ['build'], function () {
     return gulp.src("./dist/**/*")
         .pipe($.ghPages())
 });
