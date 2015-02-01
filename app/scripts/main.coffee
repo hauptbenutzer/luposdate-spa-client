@@ -78,6 +78,21 @@ App.bindEvents = ->
     # Toggle fullscreen and other view options
     $('.fullscreen-toggle').click ->
         $('.main-section').toggleClass 'full'
+    $('.right-side-toggle').click -> 
+        if $('.left-side .right-side-tab').length 
+            $('.right-side-tab-content').appendTo($('.right-side .tabs-content'))
+            $('.right-side-tab').appendTo($('.right-side .tabs'))
+            $('.right-side').show()
+            $('.right-side .tabs a').get(0).click()
+        else 
+            $('.right-side-tab-content').appendTo($('.left-side .tabs-content'))
+            $('.right-side-tab').appendTo($('.left-side .tabs'))
+            $('.right-side').hide()
+
+
+        $(this).toggleClass 'active'
+        $('.left-side').toggleClass 'medium-6 medium-12'
+        $('.left-side .tabs a').get(0).click()
 
 App.play = ->
     App.loadEditors()

@@ -161,3 +161,18 @@ select {
         padding: 0;
     }
 }
+
+.right-side-toggle {
+  .query {
+    display: none; 
+  }
+
+  &.active  {
+    svg {
+      display: none;
+    }
+    svg.query {
+      display: inline;
+    }
+  }
+}
