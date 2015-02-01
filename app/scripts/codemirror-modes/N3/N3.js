@@ -1,162 +1,190 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
-(function (mod) {
-    if (typeof exports == "object" && typeof module == "object") // CommonJS
-        mod(require("../../../bower_components/codemirror/lib/codemirror"));
-    else if (typeof define == "function" && define.amd) // AMD
-        define(["../../../bower_components/codemirror/lib/codemirror"], mod);
-    else // Plain browser env
-        mod(CodeMirror);
-})(function (CodeMirror) {
-    "use strict";
+/**********************************************************
+* This script provides syntax highlighting support for
+* the Ntriples format.
+* Ntriples format specification:
+*     http://www.w3.org/TR/rdf-testcases/#ntriples
+***********************************************************/
 
-    CodeMirror.defineMode("n3", function (config) {
-        var indentUnit = config.indentUnit;
-        var curPunc;
+/*
+    The following expression defines the defined ASF grammar transitions.
 
-        function wordRegexp(words) {
-            return new RegExp("^(?:" + words.join("|") + ")$", "i");
-        }
+    pre_subject ->
+        {
+        ( writing_subject_uri | writing_bnode_uri )
+            -> pre_predicate
+                -> writing_predicate_uri
+                    -> pre_object
+                        -> writing_object_uri | writing_object_bnode |
+                          (
+                            writing_object_literal
+                                -> writing_literal_lang | writing_literal_type
+                          )
+                            -> post_object
+                                -> BEGIN
+         } otherwise {
+             -> ERROR
+         }
+*/
 
-        var ops = wordRegexp(["str", "lang", "langmatches", "datatype", "bound", "sameterm", "isiri", "isuri",
-            "isblank", "isliteral", "a"]);
+(function(mod) {
+  if (typeof exports == "object" && typeof module == "object") // CommonJS
+    mod(require("../../lib/codemirror"));
+  else if (typeof define == "function" && define.amd) // AMD
+    define(["../../lib/codemirror"], mod);
+  else // Plain browser env
+    mod(CodeMirror);
+})(function(CodeMirror) {
+"use strict";
 
-        var keywords = wordRegexp(["document", "prefix",  "group", "forall"]);
+CodeMirror.defineMode("ntriples", function() {
 
-        var operatorChars = /[*+\-<>=&|]/;
+  var Location = {
+    PRE_SUBJECT         : 0,
+    WRITING_SUB_URI     : 1,
+    WRITING_BNODE_URI   : 2,
+    PRE_PRED            : 3,
+    WRITING_PRED_URI    : 4,
+    PRE_OBJ             : 5,
+    WRITING_OBJ_URI     : 6,
+    WRITING_OBJ_BNODE   : 7,
+    WRITING_OBJ_LITERAL : 8,
+    WRITING_LIT_LANG    : 9,
+    WRITING_LIT_TYPE    : 10,
+    POST_OBJ            : 11,
+    ERROR               : 12
+  };
+  function transitState(currState, c) {
+    var currLocation = currState.location;
+    var ret;
 
-        function tokenBase(stream, state) {
-            var ch = stream.next();
-            curPunc = null;
-            if (ch == "$" || ch == "?") {
-                stream.match(/^[\w\d]*/);
-                return "variable-2";
-            }
-            else if (ch == "<" && !stream.match(/^[\s\u00a0=]/, false)) {
-                stream.match(/^[^\s\u00a0>]*>?/);
-                return "atom";
-            }
-            else if (ch == "\"" || ch == "'") {
-                state.tokenize = tokenLiteral(ch);
-                return state.tokenize(stream, state);
-            }
-            else if (/[{}\(\),\.;\[\]]/.test(ch)) {
-                curPunc = ch;
-                return null;
-            }
-            else if (ch == "#") {
-                stream.skipToEnd();
-                return "comment";
-            }
-            else if (operatorChars.test(ch)) {
-                stream.eatWhile(operatorChars);
-                return null;
-            }
-            else if (ch == ":") {
-                stream.eatWhile(/[\w\d\._\-]/);
-                return "atom";
-            }
-            else {
-                stream.eatWhile(/[_\w\d]/);
-                if (stream.eat(":")) {
-                    stream.eatWhile(/[\w\d_\-]/);
-                    return "atom";
-                }
-                var word = stream.current();
-                if (ops.test(word))
-                    return null;
-                else if (keywords.test(word))
-                    return "keyword";
-                else
-                    return "variable";
-            }
-        }
+    // Opening.
+    if     (currLocation == Location.PRE_SUBJECT && c == '<') ret = Location.WRITING_SUB_URI;
+    else if(currLocation == Location.PRE_SUBJECT && c == '_') ret = Location.WRITING_BNODE_URI;
+    else if(currLocation == Location.PRE_PRED    && c == '<') ret = Location.WRITING_PRED_URI;
+    else if(currLocation == Location.PRE_OBJ     && c == '<') ret = Location.WRITING_OBJ_URI;
+    else if(currLocation == Location.PRE_OBJ     && c == '_') ret = Location.WRITING_OBJ_BNODE;
+    else if(currLocation == Location.PRE_OBJ     && c == '"') ret = Location.WRITING_OBJ_LITERAL;
 
-        function tokenLiteral(quote) {
-            return function (stream, state) {
-                var escaped = false, ch;
-                while ((ch = stream.next()) != null) {
-                    if (ch == quote && !escaped) {
-                        state.tokenize = tokenBase;
-                        break;
-                    }
-                    escaped = !escaped && ch == "\\";
-                }
-                return "string";
-            };
-        }
+    // Closing.
+    else if(currLocation == Location.WRITING_SUB_URI     && c == '>') ret = Location.PRE_PRED;
+    else if(currLocation == Location.WRITING_BNODE_URI   && c == ' ') ret = Location.PRE_PRED;
+    else if(currLocation == Location.WRITING_PRED_URI    && c == '>') ret = Location.PRE_OBJ;
+    else if(currLocation == Location.WRITING_OBJ_URI     && c == '>') ret = Location.POST_OBJ;
+    else if(currLocation == Location.WRITING_OBJ_BNODE   && c == ' ') ret = Location.POST_OBJ;
+    else if(currLocation == Location.WRITING_OBJ_LITERAL && c == '"') ret = Location.POST_OBJ;
+    else if(currLocation == Location.WRITING_LIT_LANG && c == ' ') ret = Location.POST_OBJ;
+    else if(currLocation == Location.WRITING_LIT_TYPE && c == '>') ret = Location.POST_OBJ;
 
-        function pushContext(state, type, col) {
-            state.context = {prev: state.context, indent: state.indent, col: col, type: type};
-        }
+    // Closing typed and language literal.
+    else if(currLocation == Location.WRITING_OBJ_LITERAL && c == '@') ret = Location.WRITING_LIT_LANG;
+    else if(currLocation == Location.WRITING_OBJ_LITERAL && c == '^') ret = Location.WRITING_LIT_TYPE;
 
-        function popContext(state) {
-            state.indent = state.context.indent;
-            state.context = state.context.prev;
-        }
+    // Spaces.
+    else if( c == ' ' &&
+             (
+               currLocation == Location.PRE_SUBJECT ||
+               currLocation == Location.PRE_PRED    ||
+               currLocation == Location.PRE_OBJ     ||
+               currLocation == Location.POST_OBJ
+             )
+           ) ret = currLocation;
 
-        return {
-            startState: function () {
-                return {
-                    tokenize: tokenBase,
-                    context: null,
-                    indent: 0,
-                    col: 0
-                };
-            },
+    // Reset.
+    else if(currLocation == Location.POST_OBJ && c == '.') ret = Location.PRE_SUBJECT;
 
-            token: function (stream, state) {
-                if (stream.sol()) {
-                    if (state.context && state.context.align == null) state.context.align = false;
-                    state.indent = stream.indentation();
-                }
-                if (stream.eatSpace()) return null;
-                var style = state.tokenize(stream, state);
+    // Error
+    else ret = Location.ERROR;
 
-                if (style != "comment" && state.context && state.context.align == null && state.context.type != "pattern") {
-                    state.context.align = true;
-                }
+    currState.location=ret;
+  }
 
-                if (curPunc == "(") pushContext(state, ")", stream.column());
-                else if (curPunc == "[") pushContext(state, "]", stream.column());
-                else if (curPunc == "{") pushContext(state, "}", stream.column());
-                else if (/[\]\}\)]/.test(curPunc)) {
-                    while (state.context && state.context.type == "pattern") popContext(state);
-                    if (state.context && curPunc == state.context.type) popContext(state);
-                }
-                else if (curPunc == "." && state.context && state.context.type == "pattern") popContext(state);
-                else if (/atom|string|variable/.test(style) && state.context) {
-                    if (/[\}\]]/.test(state.context.type))
-                        pushContext(state, "pattern", stream.column());
-                    else if (state.context.type == "pattern" && !state.context.align) {
-                        state.context.align = true;
-                        state.context.col = stream.column();
-                    }
-                }
+  return {
+    startState: function() {
+       return {
+           location : Location.PRE_SUBJECT,
+           uris     : [],
+           anchors  : [],
+           bnodes   : [],
+           langs    : [],
+           types    : []
+       };
+    },
+    token: function(stream, state) {
+      var ch = stream.next();
+      if(ch == '<') {
+         transitState(state, ch);
+         var parsedURI = '';
+         stream.eatWhile( function(c) { if( c != '#' && c != '>' ) { parsedURI += c; return true; } return false;} );
+         state.uris.push(parsedURI);
+         if( stream.match('#', false) ) return 'variable-3';
+         stream.next();
+         transitState(state, '>');
+         return 'variable-3';
+      }
+      if(ch == '#') {
+        var parsedAnchor = '';
+        stream.eatWhile(function(c) { if(c != '>' && c != ' ') { parsedAnchor+= c; return true; } return false;});
+        state.anchors.push(parsedAnchor);
+        return 'variable-2';
+      }
+      if(ch == '>') {
+          transitState(state, '>');
+          return 'variable-3';
+      }
+      if(ch == '_') {
+          transitState(state, ch);
+          var parsedBNode = '';
+          stream.eatWhile(function(c) { if( c != ' ' ) { parsedBNode += c; return true; } return false;});
+          state.bnodes.push(parsedBNode);
+          stream.next();
+          transitState(state, ' ');
+          return 'builtin';
+      }
+      if(ch == '"') {
+          transitState(state, ch);
+          stream.eatWhile( function(c) { return c != '"'; } );
+          stream.next();
+          if( stream.peek() != '@' && stream.peek() != '^' ) {
+              transitState(state, '"');
+          }
+          return 'string';
+      }
+      if( ch == '@' ) {
+          transitState(state, '@');
+          var parsedLang = '';
+          stream.eatWhile(function(c) { if( c != ' ' ) { parsedLang += c; return true; } return false;});
+          state.langs.push(parsedLang);
+          stream.next();
+          transitState(state, ' ');
+          return 'string-2';
+      }
+      if( ch == '^' ) {
+          stream.next();
+          transitState(state, '^');
+          var parsedType = '';
+          stream.eatWhile(function(c) { if( c != '>' ) { parsedType += c; return true; } return false;} );
+          state.types.push(parsedType);
+          stream.next();
+          transitState(state, '>');
+          return 'attribute';
+      }
+      if( ch == ' ' ) {
+          transitState(state, ch);
+      }
+      if( ch == '.' ) {
+          transitState(state, ch);
+          return 'operator';
+      }
+      if( ch == ':' ) {
+        return 'tag';
+      }
+    }
+  };
+});
 
-                return style;
-            },
-
-            indent: function (state, textAfter) {
-                var firstChar = textAfter && textAfter.charAt(0);
-                var context = state.context;
-                if (/[\]\}]/.test(firstChar))
-                    while (context && context.type == "pattern") context = context.prev;
-
-                var closing = context && firstChar == context.type;
-                if (!context)
-                    return 0;
-                else if (context.type == "pattern")
-                    return context.col;
-                else if (context.align)
-                    return context.col + (closing ? 0 : 1);
-                else
-                    return context.indent + (closing ? 0 : indentUnit);
-            }
-        };
-    });
-
-    CodeMirror.defineMIME("application/rdf+n3", "n3");
+CodeMirror.defineMIME("text/n-triples", "ntriples");
 
 });
