@@ -1,0 +1,195 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <link rel="shortcut icon" href="images/favicon.png" type="image/png"/>
+    <meta charset="utf-8">
+    <title>Luposdate Web Client</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="styles/vendor.css">
+
+    <!-- TODO: Keep fonts in this repo? -->
+    <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/main.css">
+
+</head>
+<body>
+<!--[if lt IE 10]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+    <div class="inner" data-offcanvas>
+        <div class="inner-wrap">
+            <nav class="top-bar" data-topbar role="navigation">
+                <ul class="title-area">
+                    <li class="name">
+                        <img src="images/logo.svg"/>
+
+                        <h1><a href="#">Luposdate Web Client</a></h1>
+                    </li>
+                    <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                    <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+                </ul>
+
+                <section class="top-bar-section">
+                    <!-- Right Nav Section -->
+                    <ul class="right-small">
+                        <li><a href="#">Tutorial</a></li>
+                        <li><a target="_blank" href="https://github.com/hauptbenutzer/luposdate-spa-client">GitHub</a></li>
+                    </ul>
+                </section>
+            </nav>
+
+            <section class="main-section">
+                <div class="row">
+                    <div class="side-nav">
+                        <ul>
+                            <li><a class="left-off-canvas-toggle" href="#"><i class="fa fa-cog"></i></a>
+                            </li>
+                            <li><a class="fullscreen-toggle" href="#"><svg><use xlink:href="images/sprites/svgs.svg#fullscreen"/></svg></a>
+                            </li>
+                            <li><a class="right-side-toggle" href="#"><svg><use xlink:href="images/sprites/svgs.svg#screen-both"/></svg>
+                                <svg class="query"><use xlink:href="images/sprites/svgs.svg#screen-query"/></svg>
+                            </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="wrapper_main">
+                        <div class="off-canvas-wrap" data-offcanvas>
+                            <div class="inner-wrap">
+                                <aside class="left-off-canvas-menu">
+                                    <ul class="off-canvas-list">
+                                        <li><label>Preferences</label></li>
+                                        <li>
+                                            <form>
+                                                <label>Source
+                                                    <em>Choose the client's endpoint:</em>
+                                                    <select>
+                                                        <option value="husker">Husker</option>
+                                                        <option value="starbuck">Starbuck</option>
+                                                        <option value="hotdog">Hot Dog</option>
+                                                        <option value="apollo">Apollo</option>
+                                                    </select><br/>
+                                                    <em>or enter your own:</em>
+                                                    <input type="text" name="endpoint"/>
+
+                                                    <div class="buttonarea">
+                                                        <button class="button" name="endpoint_select">Safe as
+                                                            default
+                                                        </button>
+                                                    </div>
+                                                </label>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </aside>
+
+                                <div>
+                                    <div id="query" class="medium-6 columns tabs-container left-side">
+                                        <dl class="tabs" data-tab>
+                                            <dd class="active"><a href="#panel1">SPARQL-Query</a></dd>
+                                            <dd><a href="#panel2">RDF</a></dd>
+                                            <dd><a href="#panel3">RIF</a></dd>
+                                        </dl>
+                                        <div class="tabs-content">
+                                            <div class="content active" id="panel1">
+                                                <select class="query-select" data-lang="sparql" name="" id="query-select-sparql"></select>
+
+                                                <form class="query">
+                                                    <textarea class="editor" name="codemirror" cols="50" rows="40"
+                                                              id="codemirror">
+                                                    </textarea>
+
+                                                    <div class="buttonarea" id="rule_radios">
+                                                        <input class="rule" type="radio" name="rule" value="RDFs"
+                                                               id="rule_rdfs"><label for="rule_rdfs">RDFs</label>
+                                                        <input class="rule" type="radio" name="rule" value="OWL"
+                                                               id="rule_owl"><label for="rule_owl">OWL</label>
+                                                        <input class="rule" type="radio" name="rule" value="RIF"
+                                                               id="rule_rif"><label for="rule_rif">RIF</label>
+                                                        <input class="rule" type="radio" name="rule" value="without"
+                                                               id="rule_without"><label
+                                                        for="rule_without">without</label>
+                                                        <a href="#"
+                                                           class="evaluate button">Evaluate</a><a
+                                                        href="#" class="button">get
+                                                        Graph</a>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="content" id="panel2">
+                                                <select class="query-select" data-lang="rdf" name="" id="query-select-rdf"></select>
+                                                <form class="query">
+                                                    <textarea class="editor" name="codemirror" cols="50" rows="40"
+                                                              id="codemirror_rdf">
+                                                    </textarea>
+
+                                                    <div class="buttonarea">
+                                                        <a href="#" class="button [radius round]">Evaluate</a>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="content" id="panel3">
+                                                <select class="query-select" data-lang="rif" name="" id="query-select-rif"></select>
+                                                <form class="query">
+                                                    <textarea class="editor" name="codemirror" cols="50" rows="40"
+                                                              id="codemirror_rif">
+                                                    </textarea>
+
+                                                    <div class="buttonarea">
+                                                        <a href="#" class="button [radius round]">Evaluate</a>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="error-log">
+                                            <button class="small"><i class="fa fa-exclamation-triangle"></i> Error
+                                                log
+                                            </button>
+                                            <div class="scroller">
+                                                <ul class="list">
+                                                    <li>test error</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="result" class="medium-6 columns tabs-container right-side">
+                                        <dl class="tabs" data-tab>
+                                            <dd class="active right-side-tab results-tab"><a href="#panel10">Result</a></dd>
+                                            <dd class="right-side-tab"><a href="#panel11">Graph</a></dd>
+                                        </dl>
+                                        <div class="tabs-content">
+                                            <div class="content active right-side-tab-content" id="panel10">
+
+                                            </div>
+                                            <div class="content right-side-tab-content" id="panel11">
+                                                <p>This is the second panel of the basic tab example. This is the
+                                                    second panel of the basic tab
+                                                    example.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <a class="exit-off-canvas"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script src="scripts/pleasewait.js"></script>
+
+    <script src="scripts/vendor.js"></script>
+
+    <script src="scripts/plugins.js"></script>
+
+    <script src="scripts/modules.js"></script>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html>
