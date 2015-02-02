@@ -1,8 +1,7 @@
 # Attach App as global variable for debugging
-@App = {}
+@App =
+    isMergeView: false
 
-# Initialize foundation
-#$(document).foundation();
 
 App.loadEditors = ->
     # Initialize editors
@@ -36,7 +35,8 @@ App.loadQuery = (lang, index) ->
 
 App.init = ->
     # Load xml converter
-    #App.x2js = new X2JS()
+    App.x2js = new X2JS
+        attributeArray: '_attributes'
 
     # Load configuration
     $.getJSON('scripts/config.json', (data) ->
@@ -51,6 +51,9 @@ App.bindEvents = ->
         App.cm['sparql'].save()
         url = "#{App.config.endpoints[0].url}sparql"
         query = $(this).parents('.query').find('.editor').val()
+        # Switch to results tab if needed
+        if App.isMergeView
+            $('.results-tab a').click()
         $.ajax
             url: url
             method: 'GET'
@@ -72,55 +75,102 @@ App.bindEvents = ->
     $('.query-select').change () ->
         lang = $(this).data('lang')
         index = $(this).find('option:selected').index()
-        console.log index
         App.loadQuery lang, index
 
     # Toggle fullscreen and other view options
     $('.fullscreen-toggle').click ->
         $('.main-section').toggleClass 'full'
-    $('.right-side-toggle').click -> 
-        if $('.left-side .right-side-tab').length 
+
+    # Merge/split tabs
+    $('.right-side-toggle').click ->
+        if $('.left-side .right-side-tab').length
             $('.right-side-tab-content').appendTo($('.right-side .tabs-content'))
             $('.right-side-tab').appendTo($('.right-side .tabs'))
             $('.right-side').show()
+            # Auto-click first tab to refresh view
             $('.right-side .tabs a').get(0).click()
-        else 
+        else
             $('.right-side-tab-content').appendTo($('.left-side .tabs-content'))
             $('.right-side-tab').appendTo($('.left-side .tabs'))
             $('.right-side').hide()
 
-
         $(this).toggleClass 'active'
         $('.left-side').toggleClass 'medium-6 medium-12'
         $('.left-side .tabs a').get(0).click()
+        App.isMergeView = !App.isMergeView
 
 App.play = ->
     App.loadEditors()
     App.bindEvents()
     App.insertQueryPicker()
+
+    # CodeMirror is display:none during loading screen so we need
+    # a delayed refresh to have it display properly
     pleaseWait.finish()
-    console.log "ready"
-    App.cm['sparql'].refresh()
+    delay 1500, ->
+        App.cm['sparql'].refresh()
 
 App.insertQueryPicker = ->
     for lang of {'sparql', 'rdf', 'rif'}
-        console.log lang
         $("#query-select-#{lang}").html JST['query_picker']({options: App.config['defaultData'][lang] })
 
-    console.log $("#rule_radios input[value=#{App.config['defaultOntology']}]").click()
+    $("#rule_radios input[value=#{App.config['defaultOntology']}]").click()
 
 App.processResults = (data) ->
     # Valid data
     if $.isXMLDoc(data)
-        results = ""#App.x2js.xml2json($(data).find('results').get(0))
-        $('#panel10').append JST['results']({results: results.result})
+        document = App.x2js.xml2json(data)
+
+        try
+            # Find and save defined prefixes
+            # Generate random colors while we're at it
+            namespaces = {}
+            colors = {}
+            for key, value of document.sparql._attributes
+                if key.indexOf('xmlns:') != -1
+                    prefix = key.substr(key.indexOf('xmlns:')+6)
+                    namespaces[prefix] = value
+                    colors[prefix] = randomColor({luminosity: 'dark'})
+
+            # List all used variables
+            variables = []
+            for variable in document.sparql.head.variable
+                variables.push variable._attributes.name
+
+            # Replace prefixes
+            # TODO: optimize?
+            for result in document.sparql.results.result
+                for bind in result.binding
+                    for key, pre of namespaces
+                        if bind.uri? and bind.uri.indexOf(pre) != -1
+                            bind.uri = bind.uri.replace pre, ''
+                            bind.prefix = key
+
+
+            $('#panel10').html(
+                JST['results']({
+                    results: document.sparql.results.result
+                    prefixes: namespaces
+                    colors: colors
+                    variables: variables
+                })
+            )
+
+        catch e
+            console.log e.message
+            App.logError e.message
     else
-        $('.error-log .list').append "<li>#{data}</li>"
+        App.logError 'Endpoint answer was not valid XML.'
+
+App.logError = (msg) ->
+    $('.error-log .list').append "<li>#{msg}</li>"
 
 App.baseName = (str) ->
   base = new String(str).substring(str.lastIndexOf("/") + 1)
   base = base.substring(0, base.lastIndexOf("."))  unless base.lastIndexOf(".") is -1
   base
+
+delay = (ms, func) -> setTimeout func, ms
 
 $(document).ready ->
     App.init()

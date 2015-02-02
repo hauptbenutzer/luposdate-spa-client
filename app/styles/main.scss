@@ -3,6 +3,7 @@
 @import "../bower_components/foundation/scss/foundation.scss";
 @import "loading";
 @import "codemirror_overrides";
+@import "results";
 
 body {
 	font-family: 'Source Sans Pro';
@@ -164,7 +165,7 @@ select {
 
 .right-side-toggle {
   .query {
-    display: none; 
+    display: none;
   }
 
   &.active  {

@@ -11,10 +11,10 @@
     // First array element is picked as default and loaded into the editor.
     "defaultData": {
         "sparql": [
+            /resources/Sparql/endpoint_test.sparql
             /resources/Sparql/lubm_asktest.sparql
             /resources/Sparql/lubm_constructtest.sparql
             /resources/Sparql/lubm_test.sparql
-            /resources/Sparql/endpoint_test.sparql
             ]
         "rdf": ["/resources/n3/lubm.n3"],
         "rif": [

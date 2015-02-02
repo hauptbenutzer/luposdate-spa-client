@@ -1,7 +1,29 @@
+<h4>Prefixes</h4>
 <table>
-    <% _.each(results, function(result) { %>
+    <% _.each(prefixes, function(value, prefix) { %>
         <tr>
-        <%= this.JST['results/result']({binding: result.binding}) %>
+            <td class="sparql-prefix" style="color: <%= colors[prefix] %>"><%= prefix %></td>
+            <td><%= value %></td>
         </tr>
     <% }); %>
+</table>
+
+<h4>Results</h4>
+<table>
+    <thead>
+        <tr>
+        <% _.each(variables, function(variable) { %>
+            <th>
+            <%= variable %>
+            </th>
+        <% }); %>
+        </tr>
+    </thead>
+    <tbody>
+        <% _.each(results, function(result) { %>
+            <tr>
+            <%= this.JST['results/result']({binding: result.binding, prefixes: prefixes, colors: colors}) %>
+            </tr>
+        <% }); %>
+    </tbody>
 </table>

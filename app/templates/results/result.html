@@ -1,5 +1,17 @@
 <% _.each(binding, function(bind) { %>
     <td>
-        <%=bind._name %>: <%= bind.uri%>
+        <% if('uri' in bind) { %>
+            <% if('prefix' in bind) { %>
+                <span class="sparql-prefix" style="color: <%= colors[bind.prefix]%>"><%= bind.prefix %>:</span><%= bind.uri %>
+            <% } else { %>
+                <%= bind.uri %>
+            <% } %>
+        <% } %>
+        <% if('literal' in bind) { %>
+            <%= bind.literal.__text %>
+        <% } %>
+        <% if('bnode' in bind) { %>
+            <%= bind.bnode %>
+        <% } %>
     </td>
 <% }); %>
