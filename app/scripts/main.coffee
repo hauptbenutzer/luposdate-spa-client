@@ -15,7 +15,7 @@ App.loadEditors = ->
 
     App.cm['rdf'] = CodeMirror.fromTextArea document.getElementById("codemirror_rdf"),
         lineNumbers: true
-        mode: "ntriples"
+        mode: "n3"
 
     App.loadQuery('rdf', 0)
 

@@ -33,13 +33,13 @@
   if (typeof exports == "object" && typeof module == "object") // CommonJS
     mod(require("../../lib/codemirror"));
   else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
+    define(["../../../bower_components/codemirror/lib/codemirror"], mod);
   else // Plain browser env
     mod(CodeMirror);
 })(function(CodeMirror) {
 "use strict";
 
-CodeMirror.defineMode("ntriples", function() {
+CodeMirror.defineMode("n3", function() {
 
   var Location = {
     PRE_SUBJECT         : 0,
@@ -54,7 +54,8 @@ CodeMirror.defineMode("ntriples", function() {
     WRITING_LIT_LANG    : 9,
     WRITING_LIT_TYPE    : 10,
     POST_OBJ            : 11,
-    ERROR               : 12
+    ERROR               : 12,
+    PREFIX          : 13
   };
   function transitState(currState, c) {
     var currLocation = currState.location;
@@ -67,6 +68,11 @@ CodeMirror.defineMode("ntriples", function() {
     else if(currLocation == Location.PRE_OBJ     && c == '<') ret = Location.WRITING_OBJ_URI;
     else if(currLocation == Location.PRE_OBJ     && c == '_') ret = Location.WRITING_OBJ_BNODE;
     else if(currLocation == Location.PRE_OBJ     && c == '"') ret = Location.WRITING_OBJ_LITERAL;
+
+    // Prefixes.
+    else if( c == 'prefix') ret = Location.PREFIX;
+    else if(currLocation == Location.PREFIX     && c == 'prefixEnd') ret = Location.POST_OBJ;
+
 
     // Closing.
     else if(currLocation == Location.WRITING_SUB_URI     && c == '>') ret = Location.PRE_PRED;
@@ -109,11 +115,21 @@ CodeMirror.defineMode("ntriples", function() {
            anchors  : [],
            bnodes   : [],
            langs    : [],
-           types    : []
+           types    : [],
+           prefixes : []
        };
     },
     token: function(stream, state) {
       var ch = stream.next();
+
+      if (state.location == Location.PREFIX) {
+          var prefix = "";
+          stream.eatWhile(function(c) { if(c != ':') { prefix+= c; return true; } return false;});
+          stream.next();
+          state.prefixes.push(prefix);
+          transitState(state, 'prefixEnd');
+          return 'def';
+      }
       if(ch == '<') {
          transitState(state, ch);
          var parsedURI = '';
@@ -153,12 +169,19 @@ CodeMirror.defineMode("ntriples", function() {
           return 'string';
       }
       if( ch == '@' ) {
+
           transitState(state, '@');
+
           var parsedLang = '';
           stream.eatWhile(function(c) { if( c != ' ' ) { parsedLang += c; return true; } return false;});
+
           state.langs.push(parsedLang);
           stream.next();
-          transitState(state, ' ');
+          if(parsedLang == "prefix") {
+            transitState(state, 'prefix')
+          } else {
+              transitState(state, ' ');
+          }
           return 'string-2';
       }
       if( ch == '^' ) {
@@ -181,10 +204,19 @@ CodeMirror.defineMode("ntriples", function() {
       if( ch == ':' ) {
         return 'tag';
       }
+      if( ch.match(/[a-zA-Z]/)) {
+          var possiblePrefix = '';
+          stream.eatWhile(function(c) { if(c.match(/[a-zA-Z]/) ) { possiblePrefix += c; return true; } return false;});
+          console.log(state.prefixes);
+
+          if (state.prefixes.indexOf(possiblePrefix) != -1) {
+              return 'def';
+          }
+      }
     }
   };
 });
 
-CodeMirror.defineMIME("text/n-triples", "ntriples");
+CodeMirror.defineMIME("text/n-triples", "n3");
 
 });
