@@ -176,7 +176,7 @@ CodeMirror.defineMode("n3", function() {
           stream.eatWhile(function(c) { if( c != ' ' ) { parsedLang += c; return true; } return false;});
 
           state.langs.push(parsedLang);
-          stream.next();
+          
           if(parsedLang == "prefix") {
             transitState(state, 'prefix')
           } else {
@@ -205,7 +205,7 @@ CodeMirror.defineMode("n3", function() {
         return 'tag';
       }
       if( ch.match(/[a-zA-Z]/)) {
-          var possiblePrefix = '';
+          var possiblePrefix = ch;
           stream.eatWhile(function(c) { if(c.match(/[a-zA-Z]/) ) { possiblePrefix += c; return true; } return false;});
           console.log(state.prefixes);
 
