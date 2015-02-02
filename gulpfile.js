@@ -54,13 +54,13 @@ gulp.task('html', ['styles', 'scripts', 'JST', 'json'], function () {
         .pipe($.size());
 });
 
+gulp.task('resources', function() {
+    return gulp.src('app/resources/**/*')
+        .pipe(gulp.dest('dist/resources'));
+});
+
 gulp.task('images', function () {
     return gulp.src('app/images/**/*')
-        .pipe($.cache($.imagemin({
-            optimizationLevel: 3,
-            progressive: true,
-            interlaced: true
-        })))
         .pipe(gulp.dest('dist/images'))
         .pipe(reload({stream:true, once:true}))
         .pipe($.size());
@@ -69,12 +69,9 @@ gulp.task('images', function () {
 gulp.task('fonts', function () {
     var streamqueue = require('streamqueue');
     return streamqueue({objectMode: true},
-        gulp.src(mainBowerFiles()),
-        gulp.src('app/bower_components/**/*')
+        gulp.src('app/bower_components/font-source-sans-pro/{EOT,OTF,TTF,WOFF}/**/*.{eot,svg,ttf,woff,otf}')
     )
-        .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
-        .pipe($.flatten())
-        .pipe(gulp.dest('dist/fonts'))
+        .pipe(gulp.dest('dist/styles'))
         .pipe($.size());
 });
 
@@ -82,7 +79,7 @@ gulp.task('clean', function () {
     return gulp.src(['app/styles/main.css', 'dist'], { read: false }).pipe($.clean());
 });
 
-gulp.task('build', ['html', 'images', 'fonts']);
+gulp.task('build', ['html', 'images', 'fonts', 'resources']);
 
 gulp.task('default', ['clean'], function () {
     gulp.start('build');
