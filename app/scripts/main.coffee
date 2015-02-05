@@ -10,12 +10,16 @@ App.loadEditors = ->
     App.cm['sparql'] = CodeMirror.fromTextArea document.getElementById("codemirror"),
         mode: "sparql"
         lineNumbers: true
+        matchBrackets: true
+        autoCloseBrackets: true
 
     App.loadQuery('sparql', 0)
 
     App.cm['rdf'] = CodeMirror.fromTextArea document.getElementById("codemirror_rdf"),
         lineNumbers: true
         mode: "n3"
+        matchBrackets: true
+        autoCloseBrackets: true
 
     App.loadQuery('rdf', 0)
 
@@ -23,6 +27,8 @@ App.loadEditors = ->
     App.cm['rif'] = CodeMirror.fromTextArea document.getElementById("codemirror_rif"),
         lineNumbers: true
         mode: "rif"
+        matchBrackets: true
+        autoCloseBrackets: true
 
     App.loadQuery('rif', 0)
 
