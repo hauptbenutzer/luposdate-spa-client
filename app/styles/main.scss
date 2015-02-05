@@ -6,22 +6,22 @@
 @import "results";
 
 body {
-	font-family: 'Source Sans Pro';
+    font-family: 'Source Sans Pro';
 }
 
 .top-bar, .top-bar-section ul li, .top-bar-section li:not(.has-form) a:not(.button) {
-  background: $primary-color;
-  color: #fff;
+    background: $primary-color;
+    color: #fff;
 }
 
 .name {
-  width: 225px;
+    width: 225px;
 }
 
 li.name img {
-  width: 45px;
-  float: left;
-  margin-right: 5px;
+    width: 45px;
+    float: left;
+    margin-right: 5px;
 }
 
 .main-section {
@@ -29,59 +29,59 @@ li.name img {
 }
 
 .side-nav {
-  width: 3%;
-  float: left;
-  margin-left: -3%;
+    width: 3%;
+    float: left;
+    margin-left: -3%;
 
-  ul {
-    list-style: none;
-    margin: 0;
-  }
-  li a:not(.button) {
-    padding-left: 0;
-    padding-right: 0;
-    display: block;
-    text-align: center
-  }
+    ul {
+        list-style: none;
+        margin: 0;
+    }
+    li a:not(.button) {
+        padding-left: 0;
+        padding-right: 0;
+        display: block;
+        text-align: center
+    }
 
-  svg {
-    width: 17px;
-    height: 17px;
-  }
+    svg {
+        width: 17px;
+        height: 17px;
+    }
 }
 
-.toggle:hover{
-  cursor: pointer;
+.toggle:hover {
+    cursor: pointer;
 }
 
 ul.off-canvas-list li label {
-  background: #008cba;
-  color: #fff;
-  border-top: 1px solid #007095;
+    background: #008cba;
+    color: #fff;
+    border-top: 1px solid #007095;
 }
 
 .right-small {
-  border-left: 1px solid #007095;
+    border-left: 1px solid #007095;
 }
 
 .top-bar-section li:not(.has-form) a:hover:not(.button) {
-  background: #007095;
+    background: #007095;
 }
 
 .buttonarea {
-  text-align: right;
+    text-align: right;
 
-  .button {
-    margin-left: 5px;
-  }
+    .button {
+        margin-left: 5px;
+    }
 }
 
 .columns {
-  border: solid 1px #ccc;
-  background-color: #FFF;
-  &:last-child {
-    border-left: none
-  }
+    border: solid 1px #ccc;
+    background-color: #FFF;
+    &:last-child {
+        border-left: none
+    }
 }
 
 .main-section.full {
@@ -90,17 +90,16 @@ ul.off-canvas-list li label {
     }
 }
 
+.side-nav-right {
+    float: right;
+    margin-right: 10px;
+    margin-top: -455px;
+    width: 35px;
 
-.side-nav-right{
-  float: right;
-  margin-right: 10px;
-  margin-top: -455px;
-  width: 35px;
-
-  img {
-    width: 20px;
-    margin-left: 10px;
-  }
+    img {
+        width: 20px;
+        margin-left: 10px;
+    }
 }
 
 select {
@@ -151,7 +150,9 @@ select {
 }
 
 .sidebar-controls {
-    float: left; width: 44px; margin-left: -44px;
+    float: left;
+    width: 44px;
+    margin-left: -44px;
 
     ul {
         margin-left: 0;
@@ -164,16 +165,16 @@ select {
 }
 
 .right-side-toggle {
-  .query {
-    display: none;
-  }
+    .query {
+        display: none;
+    }
 
-  &.active  {
-    svg {
-      display: none;
+    &.active {
+        svg {
+            display: none;
+        }
+        svg.query {
+            display: inline;
+        }
     }
-    svg.query {
-      display: inline;
-    }
-  }
 }

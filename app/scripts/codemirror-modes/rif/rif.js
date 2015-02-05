@@ -22,7 +22,7 @@
         var ops = wordRegexp(["str", "lang", "langmatches", "datatype", "bound", "sameterm", "isiri", "isuri",
             "isblank", "isliteral", "a"]);
 
-        var keywords = wordRegexp(["document", "prefix",  "group", "forall"]);
+        var keywords = wordRegexp(["document", "prefix", "group", "forall"]);
 
         var operatorChars = /[*+\-<>=&|]/;
 

@@ -1,3 +1,4 @@
+'use strict'
 # Attach App as global variable for debugging
 @App =
     isMergeView: false
@@ -7,26 +8,26 @@ App.loadEditors = ->
     # Initialize editors
     App.cm = {}
 
-    App.cm['sparql'] = CodeMirror.fromTextArea document.getElementById("codemirror"),
-        mode: "sparql"
+    App.cm['sparql'] = CodeMirror.fromTextArea document.getElementById('codemirror'),
+        mode: 'sparql'
         lineNumbers: true
         matchBrackets: true
         autoCloseBrackets: true
 
     App.loadQuery('sparql', 0)
 
-    App.cm['rdf'] = CodeMirror.fromTextArea document.getElementById("codemirror_rdf"),
+    App.cm['rdf'] = CodeMirror.fromTextArea document.getElementById('codemirror_rdf'),
         lineNumbers: true
-        mode: "n3"
+        mode: 'n3'
         matchBrackets: true
         autoCloseBrackets: true
 
     App.loadQuery('rdf', 0)
 
 
-    App.cm['rif'] = CodeMirror.fromTextArea document.getElementById("codemirror_rif"),
+    App.cm['rif'] = CodeMirror.fromTextArea document.getElementById('codemirror_rif'),
         lineNumbers: true
-        mode: "rif"
+        mode: 'rif'
         matchBrackets: true
         autoCloseBrackets: true
 
@@ -35,7 +36,7 @@ App.loadEditors = ->
 App.loadQuery = (lang, index) ->
     $.ajax(
         url: App.config.defaultData[lang][index]
-        dataType: "text"
+        dataType: 'text'
     ).done (data) ->
         App.cm[lang].getDoc().setValue(data)
 
@@ -70,15 +71,15 @@ App.bindEvents = ->
     # Reload editor when changing tabs
     $(document).foundation
         tab:
-          callback: (tab) ->
-            content = $(tab.children('a').attr('href'))
-            if content.find('.CodeMirror').length
-                content.find('.CodeMirror')[0].CodeMirror.refresh()
+            callback: (tab) ->
+                content = $(tab.children('a').attr('href'))
+                if content.find('.CodeMirror').length
+                    content.find('.CodeMirror')[0].CodeMirror.refresh()
 
     $('.error-log button').click ->
         $(this).next().toggleClass 'visible'
 
-    $('.query-select').change () ->
+    $('.query-select').change ->
         lang = $(this).data('lang')
         index = $(this).find('option:selected').index()
         App.loadQuery lang, index
@@ -103,7 +104,7 @@ App.bindEvents = ->
         $(this).toggleClass 'active'
         $('.left-side').toggleClass 'medium-6 medium-12'
         $('.left-side .tabs a').get(0).click()
-        App.isMergeView = !App.isMergeView
+        App.isMergeView = not App.isMergeView
 
 App.play = ->
     App.loadEditors()
@@ -118,7 +119,7 @@ App.play = ->
 
 App.insertQueryPicker = ->
     for lang of {'sparql', 'rdf', 'rif'}
-        $("#query-select-#{lang}").html JST['query_picker']({options: App.config['defaultData'][lang] })
+        $("#query-select-#{lang}").html JST['query_picker']({options: App.config['defaultData'][lang]})
 
     $("#rule_radios input[value=#{App.config['defaultOntology']}]").click()
 
@@ -128,13 +129,13 @@ App.processResults = (data) ->
         document = App.x2js.xml2json(data)
 
         try
-            # Find and save defined prefixes
-            # Generate random colors while we're at it
+        # Find and save defined prefixes
+        # Generate random colors while we're at it
             namespaces = {}
             colors = {}
             for key, value of document.sparql._attributes
-                if key.indexOf('xmlns:') != -1
-                    prefix = key.substr(key.indexOf('xmlns:')+6)
+                if key.indexOf('xmlns:') isnt -1
+                    prefix = key.substr(key.indexOf('xmlns:') + 6)
                     namespaces[prefix] = value
                     colors[prefix] = randomColor({luminosity: 'dark'})
 
@@ -148,7 +149,7 @@ App.processResults = (data) ->
             for result in document.sparql.results.result
                 for bind in result.binding
                     for key, pre of namespaces
-                        if bind.uri? and bind.uri.indexOf(pre) != -1
+                        if bind.uri? and bind.uri.indexOf(pre) isnt -1
                             bind.uri = bind.uri.replace pre, ''
                             bind.prefix = key
 
@@ -172,9 +173,9 @@ App.logError = (msg) ->
     $('.error-log .list').append "<li>#{msg}</li>"
 
 App.baseName = (str) ->
-  base = new String(str).substring(str.lastIndexOf("/") + 1)
-  base = base.substring(0, base.lastIndexOf("."))  unless base.lastIndexOf(".") is -1
-  base
+    base = new String(str).substring(str.lastIndexOf('/') + 1)
+    base = base.substring(0, base.lastIndexOf('.'))  unless base.lastIndexOf('.') is -1
+    base
 
 delay = (ms, func) -> setTimeout func, ms
 

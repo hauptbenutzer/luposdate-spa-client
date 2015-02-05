@@ -3,15 +3,12 @@
 var gulp = require('gulp');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
-var mainBowerFiles = require('main-bower-files');
 
 // load plugins
 var $ = require('gulp-load-plugins')();
 
 
-
-
-var handleError = function(err) {
+var handleError = function (err) {
     new $.util.log(err);
     this.emit('end');
 }
@@ -21,7 +18,7 @@ gulp.task('styles', function () {
         .pipe($.sass({errLogToConsole: true}))
         .pipe($.autoprefixer('last 1 version'))
         .pipe(gulp.dest('app/styles'))
-        .pipe(reload({stream:true}))
+        .pipe(reload({stream: true}))
         .pipe($.size())
         .pipe($.notify("Compilation complete."));
 });
@@ -29,7 +26,7 @@ gulp.task('styles', function () {
 gulp.task('scripts', function () {
     return gulp.src('app/scripts/*.coffee')
         .pipe($.coffee({bare: true})).on('error', handleError)
-        .pipe(reload({stream:true}))
+        .pipe(reload({stream: true}))
         .pipe(gulp.dest('app/scripts/'))
         .pipe($.notify("Compilation complete."));
 });
@@ -54,7 +51,7 @@ gulp.task('html', ['styles', 'scripts', 'JST', 'json'], function () {
         .pipe($.size());
 });
 
-gulp.task('resources', function() {
+gulp.task('resources', function () {
     return gulp.src('app/resources/**/*')
         .pipe(gulp.dest('dist/resources'));
 });
@@ -62,7 +59,7 @@ gulp.task('resources', function() {
 gulp.task('images', function () {
     return gulp.src('app/images/**/*')
         .pipe(gulp.dest('dist/images'))
-        .pipe(reload({stream:true, once:true}))
+        .pipe(reload({stream: true, once: true}))
         .pipe($.size());
 });
 
@@ -76,7 +73,7 @@ gulp.task('fonts', function () {
 });
 
 gulp.task('clean', function () {
-    return gulp.src(['app/styles/main.css', 'dist'], { read: false }).pipe($.clean());
+    return gulp.src(['app/styles/main.css', 'dist'], {read: false}).pipe($.clean());
 });
 
 gulp.task('build', ['html', 'images', 'fonts', 'resources']);
@@ -115,21 +112,21 @@ gulp.task('wiredep', function () {
 });
 
 gulp.task('JST', function () {
-  gulp.src('app/templates/**/*.html')
-    .pipe($.jstConcat('app/scripts/jst.js',{
-      renameKeys: ['^.*templates/(.*).html$', '$1']
-    })).on('error', handleError)
-    .pipe(gulp.dest('.'))
+    gulp.src('app/templates/**/*.html')
+        .pipe($.jstConcat('app/scripts/jst.js', {
+            renameKeys: ['^.*templates/(.*).html$', '$1']
+        })).on('error', handleError)
+        .pipe(gulp.dest('.'))
 })
 
 gulp.task('inject', function () {
-  gulp.src('app/*.html')
-    .pipe($.inject(
-        // Include all js files in scripts except the ones at top level
-        gulp.src(['app/scripts/**/*.js', '!app/scripts/main.js', '!app/scripts/loading.js'], {read: false}),
-        {ignorePath: 'app/', addRootSlash: false}
-    ))
-    .pipe(gulp.dest('app'))
+    gulp.src('app/*.html')
+        .pipe($.inject(
+            // Include all js files in scripts except the ones at top level
+            gulp.src(['app/scripts/**/*.js', '!app/scripts/main.js', '!app/scripts/loading.js'], {read: false}),
+            {ignorePath: 'app/', addRootSlash: false}
+        ))
+        .pipe(gulp.dest('app'))
 });
 
 gulp.task('watch', ['serve'], function () {
@@ -144,18 +141,18 @@ gulp.task('watch', ['serve'], function () {
     gulp.watch('bower.json', ['wiredep']);
 });
 
-gulp.task('hjson', function() {
-  gulp.src(['app/scripts/*.hjson'])
-    .pipe($.hjson({ to: 'json' }))
-    .pipe(gulp.dest('app/scripts'));
+gulp.task('hjson', function () {
+    gulp.src(['app/scripts/*.hjson'])
+        .pipe($.hjson({to: 'json'}))
+        .pipe(gulp.dest('app/scripts'));
 });
 
 gulp.task('json', ['hjson'], function () {
-   gulp.src('app/scripts/*.json')
-       .pipe(gulp.dest('dist/scripts'));
+    gulp.src('app/scripts/*.json')
+        .pipe(gulp.dest('dist/scripts'));
 });
 
-gulp.task('svg', function() {
+gulp.task('svg', function () {
     var config = {
         shape: {
             id: {
@@ -180,4 +177,16 @@ gulp.task('svg', function() {
 gulp.task('deploy', ['build'], function () {
     return gulp.src("./dist/**/*")
         .pipe($.ghPages())
+});
+
+gulp.task('coffeelint', function() {
+    return gulp.src('./app/scripts/**/*.coffee')
+        .pipe($.coffeelint())
+        .pipe($.coffeelint.reporter());
+});
+
+gulp.task('jshint', function() {
+    return gulp.src('./app/scripts/**/*.js')
+        .pipe($.jshint())
+        .pipe($.jshint.reporter('jshint-stylish'));
 });
