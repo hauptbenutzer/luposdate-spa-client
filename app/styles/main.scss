@@ -4,6 +4,7 @@
 @import "loading";
 @import "codemirror_overrides";
 @import "results";
+@import "graphs";
 
 body {
     font-family: 'Source Sans Pro';
@@ -217,4 +218,10 @@ select {
 
 .query {
     height: 100%;
+}
+
+#send_rdf {
+    position: absolute;
+    top: 1.5rem;
+    left: 0.7rem;
 }

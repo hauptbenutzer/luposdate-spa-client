@@ -114,7 +114,7 @@
                                 <div id="query" class="medium-6 columns tabs-container left-side">
                                     <dl class="tabs" data-tab>
                                         <dd class="active"><a href="#panel1">SPARQL-Query</a></dd>
-                                        <dd><a href="#panel2">RDF</a></dd>
+                                        <dd><a href="#panel2">RDF</a> <input type="checkbox" id="send_rdf"> </dd>
                                         <dd><a href="#panel3">RIF</a></dd>
                                     </dl>
                                     <div class="tabs-content">
@@ -128,18 +128,18 @@
                                                     </textarea>
 
                                                 <div class="buttonarea" id="rule_radios">
-                                                    <input class="rule" type="radio" name="rule" value="rdf"
+                                                    <input class="rule" type="radio" name="rule" value="RDFS"
                                                            id="rule_rdfs"><label for="rule_rdfs">RDFs</label>
-                                                    <input class="rule" type="radio" name="rule" value="owl"
+                                                    <input class="rule" type="radio" name="rule" value="OWL2RL"
                                                            id="rule_owl"><label for="rule_owl">OWL</label>
-                                                    <input class="rule" type="radio" name="rule" value="rif"
+                                                    <input class="rule" type="radio" name="rule" value="RIF"
                                                            id="rule_rif"><label for="rule_rif">RIF</label>
-                                                    <input class="rule" type="radio" name="rule" value="without"
+                                                    <input class="rule" type="radio" name="rule" value="None"
                                                            id="rule_without"><label
-                                                    for="rule_without">without</label>
-                                                    <a href="#"
+                                                    for="rule_without">None</label>
+                                                    <a href="#" data-target="sparql"
                                                        class="evaluate button">Evaluate</a><a
-                                                    href="#" class="button">get
+                                                    href="#" class="button get-graph">get
                                                     Graph</a>
                                                 </div>
                                             </form>
@@ -194,9 +194,10 @@
 
                                         </div>
                                         <div class="content right-side-tab-content" id="panel11">
-                                            <p>This is the second panel of the basic tab example. This is the
-                                                second panel of the basic tab
-                                                example.</p>
+                                            <p>Achtung Graph.</p>
+                                            <div id="luposgraph">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -229,10 +230,12 @@
 <script src="bower_components/x2js/xml2json.min.js"></script>
 <script src="bower_components/randomcolor/randomColor.js"></script>
 <script src="bower_components/trie/trie.js"></script>
+<script src="bower_components/d3/d3.js"></script>
 <!-- endbower -->
 
 <script src="bower_components/codemirror/addon/edit/matchbrackets.js"></script>
 <script src="bower_components/codemirror/addon/edit/closebrackets.js"></script>
+<script src="bower_components/codemirror/mode/sparql/sparql.js"></script>
 <!-- endbuild -->
 
 <!-- build:js scripts/plugins.js -->
@@ -258,9 +261,11 @@
 <!-- build:js scripts/modules.js -->
 <!-- inject:js -->
 <script src="scripts/jst.js"></script>
+<script src="scripts/algos/forceDirected.js"></script>
+<script src="scripts/algos/horTree.js"></script>
+<script src="scripts/algos/vertTree.js"></script>
 <script src="scripts/codemirror-modes/rif/rif.js"></script>
 <script src="scripts/codemirror-modes/N3/N3.js"></script>
-<script src="bower_components/codemirror/mode/sparql/sparql.js"></script>
 <!-- endinject -->
 <!-- endbuild -->
 

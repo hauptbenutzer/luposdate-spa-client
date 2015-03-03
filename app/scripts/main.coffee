@@ -52,26 +52,46 @@ App.init = ->
     )
 
 App.bindEvents = ->
+    $('.query .get-graph').click ->
+        request = {
+            query: "SELECT * WHERE { ?s ?p ?o. } LIMIT 10"
+        }
+        $.ajax
+            url: 'http://localhost:8080/nonstandard/sparql/info'
+            method: 'POST'
+            data: JSON.stringify(request)
+            success: (data) ->
+                createVerticalTree(data)
+
+
     # Send query to endpoint
     $('.query .evaluate').click ->
         # Copy changes to textarea
         for key of App.cm
             App.cm[key].save()
 
-        endpoint = App.config.endpoints[0][ App.config['ontology'] ]
+        target = $(this).data 'target'
+        endpoint = App.config.endpoints[0]
         data =
             query: $(this).parents('.query').find('.editor').val()
 
-        if $.isArray endpoint
-            method = endpoint[1]
-            endpoint = endpoint[0]
-            data[App.config['ontology']] = App.cm[App.config['ontology']].getValue()
+        if endpoint.nonstandard
+            folder = endpoint[target]
+            if App.config['sendRDF']
+                data['rdf'] = App.cm['rdf'].getValue()
+            else
+                data['rdf'] = ''
+
+            method = folder[1]
+            locator = folder[0]
             data['formats'] = ['xml']
+            # Nonstandard endpoints expect JSON-string as request body
             data = JSON.stringify(data)
         else
             method = 'GET'
+            locator = endpoint.without
 
-        url = "#{App.config.endpoints[0].url}#{endpoint}"
+        url = "#{App.config.endpoints[0].url}#{locator}"
 
         # Switch to results tab if needed
         if App.isMergeView
@@ -138,7 +158,7 @@ App.insertQueryPicker = ->
     for lang of {'sparql', 'rdf', 'rif'}
         $("#query-select-#{lang}").html JST['query_picker']({options: App.config['defaultData'][lang]})
 
-    $("#rule_radios input[value=#{App.config['defaultOntology']}]").click()
+    $("#rule_radios input[value=#{App.config['defaultInference']}]").click()
 
 
 
@@ -181,7 +201,7 @@ App.processResults = (data) ->
                     base = App.baseName(bind.uri)
                     bind.uri = bind.uri.replace base, "<em>#{base}</em>"
                     bind.type = 'uri'
-        console.log trie.toJSON()
+        #console.log trie.toJSON()
 
         $('#panel10').html(
             JST['results']({
@@ -193,8 +213,8 @@ App.processResults = (data) ->
         )
 
         #catch e
-        ##    console.log e.message
-         #   App.logError e.message
+        #    console.log e.message
+        #    App.logError e.message
     else
         App.logError 'Endpoint answer was not valid XML.'
 
@@ -210,10 +230,19 @@ App.configComponents =
     Radio: (watchedElementsSelector, callback) ->
         $(watchedElementsSelector).change ->
             callback($(watchedElementsSelector).filter(':checked').val())
+    Check: (watchedElementSelector, defaultVal, callback) ->
+        $(watchedElementSelector).click ->
+            callback($(watchedElementSelector).is(':checked'))
+            return true
+        if defaultVal
+            $(watchedElementSelector).click()
 
 App.initConfigComponents = ->
     App.configComponents.Radio '#rule_radios input', (val) ->
-        App.config['ontology'] = val
+        App.config['inference'] = val
+    App.configComponents.Check '#send_rdf', App.config['defaultSendRDF'], (send) ->
+        App.config['sendRDF'] = send
+
 
 delay = (ms, func) -> setTimeout func, ms
 

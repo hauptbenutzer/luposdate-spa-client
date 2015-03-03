@@ -5,10 +5,12 @@
 			"url": "http://localhost:8080/",
 			"name": "Luposdate Local",
             "json": false,
+            "nonstandard": true,
             // Define endpoints
             "without": "sparql",
-            "rdf": ["nonstandard/sparql", "POST"]
-		}
+            "sparql": ["nonstandard/sparql", "POST"]
+            "rif": ["nonstandard/rif", "POST"]
+        }
 	]
 
     // Set URLs to text data that can be loaded.
@@ -31,7 +33,8 @@
             resources/RIF/rule_fibonacci.rif
         ]
     }
-    // Set the default ontology for look-up
-    // Possible values are 'rif', 'rdf', 'owl' and 'without'
-    "defaultOntology": "rdf"
+    // Set the default inference
+    // Possible values are 'RIF', 'RDFS', 'OWL2RL' and 'None'
+    "defaultInference": "None"
+    "defaultSendRDF": true
 }
