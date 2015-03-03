@@ -3,8 +3,6 @@
 @App =
     isMergeView: false
 
-App.prefixes = []
-
 App.loadEditors = ->
     # Initialize editors
     App.cm = {}

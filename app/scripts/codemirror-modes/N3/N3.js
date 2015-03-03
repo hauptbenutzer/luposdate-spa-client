@@ -115,7 +115,8 @@ CodeMirror.defineMode("n3", function() {
            anchors  : [],
            bnodes   : [],
            langs    : [],
-           types    : []
+           types    : [],
+           prefixes : {}
        };
     },
     token: function(stream, state) {
@@ -125,7 +126,7 @@ CodeMirror.defineMode("n3", function() {
           var prefix = "";
           stream.eatWhile(function(c) { if(c != ':') { prefix+= c; return true; } return false;});
           stream.next();
-          App.prefixes.push(prefix);
+          state.prefixes[prefix] = prefix;
           transitState(state, 'prefixEnd');
           return 'def';
       }
@@ -149,14 +150,14 @@ CodeMirror.defineMode("n3", function() {
           transitState(state, '>');
           return 'variable-3';
       }
-      if(ch == '_') {
+      if(ch == '_' && stream.peek() == ":") {
           transitState(state, ch);
           var parsedBNode = '';
           stream.eatWhile(function(c) { if( c != ' ' ) { parsedBNode += c; return true; } return false;});
           state.bnodes.push(parsedBNode);
           stream.next();
           transitState(state, ' ');
-          return 'builtin';
+          return 'string-2';
       }
       if(ch == '"') {
           transitState(state, ch);
@@ -181,7 +182,7 @@ CodeMirror.defineMode("n3", function() {
           } else {
               transitState(state, ' ');
           }
-          return 'string-2';
+          return 'atom';
       }
       if( ch == '^' ) {
           stream.next();
@@ -207,7 +208,7 @@ CodeMirror.defineMode("n3", function() {
           var possiblePrefix = ch;
           stream.eatWhile(function(c) { if(c.match(/[a-zA-Z]/) ) { possiblePrefix += c; return true; } return false;});
 
-          if (App.prefixes.indexOf(possiblePrefix) != -1) {
+          if (possiblePrefix in state.prefixes) {
               return 'def';
           }
       }

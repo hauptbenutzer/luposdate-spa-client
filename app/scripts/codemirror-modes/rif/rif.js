@@ -20,11 +20,10 @@
         }
 
         var ops = wordRegexp(["str", "lang", "langmatches", "datatype", "bound", "sameterm", "isiri", "isuri",
-            "isblank", "isliteral", "a", "##", "#"]);
+            "isblank", "isliteral", "a"]);
 
-        var keywords = wordRegexp(["document", "prefix", "group", "forall", "and", "exists", "external", "or"]);
+        var keywords = wordRegexp(["document", "prefix", "group", "forall", "and", "exists", "external", "or", "##", "#"]);
 
-        var operatorChars = /[*+\-<>=&|]/;
 
         function tokenBase(stream, state) {
             var ch = stream.next();
@@ -32,35 +31,28 @@
             if (ch == "$" || ch == "?") {
                 stream.match(/^[\w\d]*/);
                 return "variable-2";
-            }
-            else if (ch == "<" && !stream.match(/^[\s\u00a0=]/, false)) {
+            } else if (ch == "<" && !stream.match(/^[\s\u00a0=]/, false)) {
                 stream.match(/^[^\s\u00a0>]*>?/);
                 return "atom";
-            }
-            else if (ch == "\"" || ch == "'") {
+            } else if (ch == "\"" || ch == "'") {
                 state.tokenize = tokenLiteral(ch);
                 return state.tokenize(stream, state);
-            }
-            else if (ch == "(" && stream.eat("*")){
+            } else if (ch == "(" && stream.eat("*")){
                 if (stream.match(/.*\*\)/)) {
                     return "comment";
                 }
                 stream.skipToEnd();
                 return "comment"
-            }
-            else if (/[{}\(\),\.;\[\]]/.test(ch)) {
+            } else if (/[{}\(\),\.;\[\]]/.test(ch)) {
                 curPunc = ch;
                 return null;
-            }
-            else if (operatorChars.test(ch)) {
-                stream.eatWhile(operatorChars);
-                return null;
-            }
-            else if (ch == ":") {
-                stream.eatWhile(/[\w\d\._\-]/);
-                return "atom";
-            }
-            else {
+            } else if (ch == ":" && stream.eat("-")) {
+                return "keyword"
+            } else if (ch == "-" && stream.eat(">")) {
+                return "keyword"
+            }  else if (ch == "^" && stream.eat("^")) {
+                return "keyword"
+            }else {
                 stream.eatWhile(/[_\w\d]/);
                 if (stream.eat(":")) {
                     stream.eatWhile(/[\w\d_\-]/);
