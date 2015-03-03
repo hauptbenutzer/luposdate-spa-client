@@ -3,6 +3,7 @@
 @App =
     isMergeView: false
 
+App.prefixes = []
 
 App.loadEditors = ->
     # Initialize editors
@@ -188,7 +189,6 @@ App.processResults = (data) ->
         # Replace prefixes
         # TODO: optimize?
         trie = new Trie()
-        console.log document
         for result in document.sparql.results.result
             for bind in result.binding
                 if bind.uri?
@@ -201,7 +201,6 @@ App.processResults = (data) ->
                     base = App.baseName(bind.uri)
                     bind.uri = bind.uri.replace base, "<em>#{base}</em>"
                     bind.type = 'uri'
-        #console.log trie.toJSON()
 
         $('#panel10').html(
             JST['results']({
@@ -211,15 +210,24 @@ App.processResults = (data) ->
                 variables: variables
             })
         )
-
-        #catch e
-        #    console.log e.message
-        #    App.logError e.message
     else
-        App.logError 'Endpoint answer was not valid XML.'
+        if 'queryError' of data
+            App.logError 'Sparql: ' + data.queryError.errorMessage, 'sparql', data.queryError.line
+        else if 'rdfError' of data
+            App.logError 'RDF: ' + data.rdfError.errorMessage, 'rdf', data.rdfError.line
+        else if 'rifError' of data
+            App.logError 'RIF: ' + data.rifError.errorMessage, 'rif', data.rifError.line
+        else
+            App.logError 'Endpoint answer was not valid.'
 
-App.logError = (msg) ->
+
+App.logError = (msg, editor, line) ->
+    if editor
+        line--
+        App.cm[editor].setSelection {line: (line), ch: 0}, {line: (line), ch: 80 }
+        $(".#{editor}-tab a").click()
     $('.error-log .list').append "<li>#{msg}</li>"
+    $('.error-log button').next().addClass 'visible'
 
 App.baseName = (str) ->
     base = new String(str).substring(str.lastIndexOf('/') + 1)
@@ -242,7 +250,6 @@ App.initConfigComponents = ->
         App.config['inference'] = val
     App.configComponents.Check '#send_rdf', App.config['defaultSendRDF'], (send) ->
         App.config['sendRDF'] = send
-
 
 delay = (ms, func) -> setTimeout func, ms
 
