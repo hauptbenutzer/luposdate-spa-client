@@ -206,6 +206,7 @@ App.logError = (msg, editor, line) ->
     if editor
         line--
         App.cm[editor].setSelection {line: (line), ch: 0}, {line: (line), ch: 80 }
+        $(".#{editor}-tab a").click()
     $('.error-log .list').append "<li>#{msg}</li>"
     $('.error-log button').next().addClass 'visible'
 
