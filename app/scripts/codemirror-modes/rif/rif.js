@@ -20,7 +20,7 @@
         }
 
         var ops = wordRegexp(["str", "lang", "langmatches", "datatype", "bound", "sameterm", "isiri", "isuri",
-            "isblank", "isliteral", "a"]);
+            "isblank", "isliteral", "a", "##", "#"]);
 
         var keywords = wordRegexp(["document", "prefix", "group", "forall", "and", "exists", "external", "or"]);
 
@@ -41,13 +41,16 @@
                 state.tokenize = tokenLiteral(ch);
                 return state.tokenize(stream, state);
             }
+            else if (ch == "(" && stream.eat("*")){
+                if (stream.match(/.*\*\)/)) {
+                    return "comment";
+                }
+                stream.skipToEnd();
+                return "comment"
+            }
             else if (/[{}\(\),\.;\[\]]/.test(ch)) {
                 curPunc = ch;
                 return null;
-            }
-            else if (ch == "#") {
-                stream.skipToEnd();
-                return "comment";
             }
             else if (operatorChars.test(ch)) {
                 stream.eatWhile(operatorChars);
