@@ -164,9 +164,10 @@ App.insertQueryPicker = ->
 
 
 App.processResults = (data) ->
-    # Valid data
+    # If this is nonstandard then we're getting JSON
     if 'XML' of data
-        data = $.parseXML(data.XML)
+        data = $.parseXML(data.XML[0])
+    # Valid data
     if $.isXMLDoc(data)
         document = App.x2js.xml2json(data)
 
@@ -179,7 +180,13 @@ App.processResults = (data) ->
             if key.indexOf('xmlns:') isnt -1
                 prefix = key.substr(key.indexOf('xmlns:') + 6)
                 namespaces[prefix] = value
-                colors[prefix] = randomColor({luminosity: 'dark'})
+
+        namespaces = $.extend(App.parseRDFPrefixes(App.cm['rdf'].getValue()), namespaces)
+
+        for key, value of namespaces
+            colors[key] = randomColor({luminosity: 'dark'})
+
+
 
         # List all used variables
         variables = []
@@ -188,19 +195,12 @@ App.processResults = (data) ->
 
         # Replace prefixes
         # TODO: optimize?
-        trie = new Trie()
         for result in document.sparql.results.result
+            unless $.isArray result.binding
+                result.binding = [result.binding]
             for bind in result.binding
-                if bind.uri?
-                    trie.add bind.uri
-                    for key, pre of namespaces
-                        if bind.uri.indexOf(pre) isnt -1
-                            bind.uri = bind.uri.replace pre, ''
-                            bind.prefix = key
+                App.replacePrefixes bind, namespaces
 
-                    base = App.baseName(bind.uri)
-                    bind.uri = bind.uri.replace base, "<em>#{base}</em>"
-                    bind.type = 'uri'
 
         $('#panel10').html(
             JST['results']({
@@ -220,6 +220,23 @@ App.processResults = (data) ->
         else
             App.logError 'Endpoint answer was not valid.'
 
+App.replacePrefixes = (bind, namespaces) ->
+    if bind.uri?
+        for key, pre of namespaces
+            if bind.uri.indexOf(pre) isnt -1
+                bind.uri = bind.uri.replace pre, ''
+                bind.prefix = key
+
+        base = App.baseName(bind.uri)
+        bind.uri = bind.uri.replace base, "<em>#{base}</em>"
+        bind.type = 'uri'
+
+App.parseRDFPrefixes = (data) ->
+    reg = /@prefix\s+([A-z0-9-]+):\s*<([^>]+)>\s+\./g
+    prefixes = {}
+    while(m = reg.exec(data))
+        prefixes[m[1]] = m[2]
+    prefixes
 
 App.logError = (msg, editor, line) ->
     if editor
