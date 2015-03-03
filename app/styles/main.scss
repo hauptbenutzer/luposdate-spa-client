@@ -28,7 +28,7 @@ li.name img {
 .side-nav {
     width: 3%;
     float: left;
-    margin-left: -3%;
+    margin-left: -3px;
 
     ul {
         list-style: none;
@@ -112,6 +112,7 @@ select {
 .error-log {
     position: fixed;
     bottom: 0;
+    z-index: 999;
 
     button {
         margin-bottom: 0;
@@ -133,6 +134,7 @@ select {
         padding: 20px;
         margin: 0;
         overflow: auto;
+        background-color: #fff;
     }
 }
 
