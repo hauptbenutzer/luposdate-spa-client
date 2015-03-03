@@ -195,7 +195,13 @@ App.processResults = (data) ->
         ##    console.log e.message
          #   App.logError e.message
     else
-        App.logError 'Endpoint answer was not valid XML.'
+        try
+
+          App.logError data.queryError.errorMessage
+        catch error
+            console.log error
+            App.logError 'Endpoint answer was not valid.'
+
 
 App.logError = (msg) ->
     $('.error-log .list').append "<li>#{msg}</li>"
