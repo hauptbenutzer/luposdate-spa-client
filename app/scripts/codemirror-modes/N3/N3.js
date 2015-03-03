@@ -115,8 +115,7 @@ CodeMirror.defineMode("n3", function() {
            anchors  : [],
            bnodes   : [],
            langs    : [],
-           types    : [],
-           prefixes : []
+           types    : []
        };
     },
     token: function(stream, state) {
@@ -126,7 +125,7 @@ CodeMirror.defineMode("n3", function() {
           var prefix = "";
           stream.eatWhile(function(c) { if(c != ':') { prefix+= c; return true; } return false;});
           stream.next();
-          state.prefixes.push(prefix);
+          App.prefixes.push(prefix);
           transitState(state, 'prefixEnd');
           return 'def';
       }
@@ -208,7 +207,7 @@ CodeMirror.defineMode("n3", function() {
           var possiblePrefix = ch;
           stream.eatWhile(function(c) { if(c.match(/[a-zA-Z]/) ) { possiblePrefix += c; return true; } return false;});
 
-          if (state.prefixes.indexOf(possiblePrefix) != -1) {
+          if (App.prefixes.indexOf(possiblePrefix) != -1) {
               return 'def';
           }
       }

@@ -3,6 +3,7 @@
 @App =
     isMergeView: false
 
+App.prefixes = []
 
 App.loadEditors = ->
     # Initialize editors
@@ -50,6 +51,7 @@ App.init = ->
         App.config = data
         App.play()
     )
+
 
 App.bindEvents = ->
     # Send query to endpoint
