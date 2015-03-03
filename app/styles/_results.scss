@@ -1,3 +1,13 @@
 .sparql-prefix {
     font-weight: bold;
 }
+.results em {
+    font-weight: 600;
+    font-style: normal;
+    font-family: $body-font-family;
+    color: $body-font-color;
+}
+.results td.uri {
+    //font-family: 'Open Sans Condensed';
+    color: #888;
+}

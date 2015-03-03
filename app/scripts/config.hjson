@@ -1,9 +1,13 @@
 {
 	"endpoints": [
 		{
+            // URL with ending slash
 			"url": "http://localhost:8080/",
 			"name": "Luposdate Local",
-            "json": false
+            "json": false,
+            // Define endpoints
+            "without": "sparql",
+            "rdf": ["nonstandard/sparql", "POST"]
 		}
 	]
 
@@ -11,12 +15,12 @@
     // First array element is picked as default and loaded into the editor.
     "defaultData": {
         "sparql": [
+            resources/Sparql/lubm_test.sparql
             resources/Sparql/endpoint_test.sparql
             resources/Sparql/lubm_asktest.sparql
             resources/Sparql/lubm_constructtest.sparql
-            resources/Sparql/lubm_test.sparql
             ]
-        "rdf": ["/resources/n3/lubm.n3"],
+        "rdf": ["resources/N3/lubm.n3"],
         "rif": [
             resources/RIF/rule_And.rif
             resources/RIF/rule_comparison.rif
@@ -28,6 +32,6 @@
         ]
     }
     // Set the default ontology for look-up
-    // Possible values are 'RIF', 'RDFs', 'OWL' and 'without'
-    "defaultOntology": "without"
+    // Possible values are 'rif', 'rdf', 'owl' and 'without'
+    "defaultOntology": "rdf"
 }

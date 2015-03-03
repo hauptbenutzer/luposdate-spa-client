@@ -24,9 +24,6 @@ li.name img {
     margin-right: 5px;
 }
 
-.main-section {
-    margin-top: 3%;
-}
 
 .side-nav {
     width: 3%;
@@ -87,6 +84,12 @@ ul.off-canvas-list li label {
 .main-section.full {
     > .row {
         max-width: none;
+    }
+    .off-canvas-wrap {
+        width: 97%;
+    }
+    .side-nav {
+        margin-left: 0;
     }
 }
 
@@ -177,4 +180,24 @@ select {
             display: inline;
         }
     }
+}
+
+.inner, .inner-wrap, .main-section, .row, .off-canvas-wrap, #wrapper_main, .inner-wrap > div, .tabs-container, .tabs-content {
+    height: 100%;
+}
+.main-section {
+    height: calc(100% - 2.8125rem - 30px);
+    position: relative;
+    top: 15px;
+}
+.tabs-content .content {
+    height: 90%;
+}
+
+.CodeMirror {
+    height: 80%;
+}
+
+.query {
+    height: 100%;
 }
