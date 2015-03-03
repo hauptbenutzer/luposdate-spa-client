@@ -102,6 +102,7 @@ App.bindEvents = ->
     # Toggle fullscreen and other view options
     $('.fullscreen-toggle').click ->
         $('.main-section').toggleClass 'full'
+        $(this).toggleClass 'active'
 
     # Merge/split tabs
     $('.right-side-toggle').click ->

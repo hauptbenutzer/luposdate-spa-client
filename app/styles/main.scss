@@ -184,6 +184,21 @@ select {
     }
 }
 
+.fullscreen-toggle {
+    .fullscreen-close {
+        display: none;
+    }
+
+    &.active {
+        svg {
+            display: none;
+        }
+        svg.fullscreen-close {
+            display: inline;
+        }
+    }
+}
+
 .inner, .inner-wrap, .main-section, .row, .off-canvas-wrap, #wrapper_main, .inner-wrap > div, .tabs-container, .tabs-content {
     height: 100%;
 }
