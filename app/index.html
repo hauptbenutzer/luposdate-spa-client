@@ -121,6 +121,7 @@
                                         <div class="content active" id="panel1">
                                             <select class="query-select" data-lang="sparql" name=""
                                                     id="query-select-sparql"></select>
+                                            <span class="load-query-status" data-lang="sparql"></span>
 
                                             <form class="query">
                                                     <textarea class="editor" name="codemirror" cols="50" rows="40"
@@ -147,20 +148,19 @@
                                         <div class="content" id="panel2">
                                             <select class="query-select" data-lang="rdf" name=""
                                                     id="query-select-rdf"></select>
+                                            <span class="load-query-status" data-lang="rdf"></span>
 
                                             <form class="query">
                                                     <textarea class="editor" name="codemirror" cols="50" rows="40"
                                                               id="codemirror_rdf">
                                                     </textarea>
 
-                                                <div class="buttonarea">
-                                                    <a href="#" class="button [radius round]">Evaluate</a>
-                                                </div>
                                             </form>
                                         </div>
                                         <div class="content" id="panel3">
                                             <select class="query-select" data-lang="rif" name=""
                                                     id="query-select-rif"></select>
+                                            <span class="load-query-status" data-lang="rif"></span>
 
                                             <form class="query">
                                                     <textarea class="editor" name="codemirror" cols="50" rows="40"
@@ -168,7 +168,7 @@
                                                     </textarea>
 
                                                 <div class="buttonarea">
-                                                    <a href="#" class="button [radius round]">Evaluate</a>
+                                                    <a href="#" data-target="rif" class="button evaluate">Evaluate</a>
                                                 </div>
                                             </form>
                                         </div>
@@ -229,6 +229,16 @@
 <script src="bower_components/x2js/xml2json.min.js"></script>
 <script src="bower_components/randomcolor/randomColor.js"></script>
 <script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/uri.js/src/URI.js"></script>
+<script src="bower_components/uri.js/src/IPv6.js"></script>
+<script src="bower_components/uri.js/src/SecondLevelDomains.js"></script>
+<script src="bower_components/uri.js/src/punycode.js"></script>
+<script src="bower_components/uri.js/src/URITemplate.js"></script>
+<script src="bower_components/uri.js/src/jquery.URI.js"></script>
+<script src="bower_components/uri.js/src/URI.min.js"></script>
+<script src="bower_components/uri.js/src/jquery.URI.min.js"></script>
+<script src="bower_components/uri.js/src/URI.fragmentQuery.js"></script>
+<script src="bower_components/uri.js/src/URI.fragmentURI.js"></script>
 <!-- endbower -->
 
 <script src="bower_components/codemirror/addon/edit/matchbrackets.js"></script>

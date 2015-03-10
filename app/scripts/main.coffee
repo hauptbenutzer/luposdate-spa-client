@@ -33,10 +33,13 @@ App.loadEditors = ->
     App.loadQuery('rif', 0)
 
 App.loadQuery = (lang, index) ->
+    $statusElement = $(".load-query-status[data-lang=#{lang}")
+    $statusElement.show().html '<i class="fa fa-spinner"></i>'
     $.ajax(
         url: App.config.defaultData[lang][index]
         dataType: 'text'
     ).done (data) ->
+        $statusElement.html('<i class="fa fa-check-circle"></i>').fadeOut(500)
         App.cm[lang].getDoc().setValue(data)
 
 App.init = ->
@@ -45,10 +48,16 @@ App.init = ->
         attributeArray: '_attributes'
 
     # Load configuration
-    $.getJSON('scripts/config.json', (data) ->
+    App.URIQuery = URI(document.location.href).query(true)
+
+    $.getJSON('scripts/config.json').done (data) ->
         App.config = data
-        App.play()
-    )
+        if App.URIQuery.config 
+            $.getJSON(App.URIQuery.config).done (addData) ->
+                App.config = $.extend(data, addData, {})
+                App.play()
+        else 
+            App.play()
 
 App.bindEvents = ->
     $('.query .get-graph').click ->
@@ -83,7 +92,7 @@ App.bindEvents = ->
 
             method = folder[1]
             locator = folder[0]
-            data['formats'] = ['xml']
+            data['formats'] = ['xml', 'plain']
             # Nonstandard endpoints expect JSON-string as request body
             data = JSON.stringify(data)
         else
@@ -95,6 +104,9 @@ App.bindEvents = ->
         # Switch to results tab if needed
         if App.isMergeView
             $('.results-tab a').click()
+
+        $('#panel10').html JST['spinner']()
+
         $.ajax
             url: url
             method: method
@@ -159,22 +171,31 @@ App.insertQueryPicker = ->
 
     $("#rule_radios input[value=#{App.config['defaultInference']}]").click()
 
-
+App.preprocessResults = (data) ->
+     # If this is nonstandard then we're getting JSON
+    if 'triples' of data 
+        doc = App.processTriples(data.triples)
+    else if 'XML' of data
+        data = $.parseXML(data.XML[0])
+        # Sometimes will return empty XML envelope 
+        if not data?
+            doc = {sparql: {results: ""}}
+    if doc? 
+        return doc
+    else if $.isXMLDoc(data)
+        return App.x2js.xml2json(data)
+    else 
+        return false
 
 App.processResults = (data) ->
-    # If this is nonstandard then we're getting JSON
-    if 'XML' of data
-        data = $.parseXML(data.XML[0])
-    # Valid data
-    if $.isXMLDoc(data)
-        document = App.x2js.xml2json(data)
-
-    #try
-    # Find and save defined prefixes
-    # Generate random colors while we're at it
+    # Check validity, preprocess if necessary 
+    doc = App.preprocessResults(data)
+    if doc and doc.sparql.results != ""
+        # Find and save defined prefixes
+        # Generate random colors while we're at it
         namespaces = {}
         colors = {}
-        for key, value of document.sparql._attributes
+        for key, value of doc.sparql._attributes
             if key.indexOf('xmlns:') isnt -1
                 prefix = key.substr(key.indexOf('xmlns:') + 6)
                 namespaces[prefix] = value
@@ -184,30 +205,35 @@ App.processResults = (data) ->
         for key, value of namespaces
             colors[key] = randomColor({luminosity: 'dark'})
 
+        if 'boolean' of doc.sparql  
+            $('#panel10').html(JST['results/boolean'](boolean: doc.sparql.boolean))
+        else 
+            # List all used variables
+            variables = []
+            unless $.isArray doc.sparql.head.variable 
+                doc.sparql.head.variable = [doc.sparql.head.variable]
+            for variable in doc.sparql.head.variable
+                variables.push variable._attributes.name
+
+            # Replace prefixes
+            # TODO: optimize?
+            for result in doc.sparql.results.result
+                unless $.isArray result.binding
+                    result.binding = [result.binding]
+                for bind in result.binding
+                    App.replacePrefixes bind, namespaces
 
 
-        # List all used variables
-        variables = []
-        for variable in document.sparql.head.variable
-            variables.push variable._attributes.name
-
-        # Replace prefixes
-        # TODO: optimize?
-        for result in document.sparql.results.result
-            unless $.isArray result.binding
-                result.binding = [result.binding]
-            for bind in result.binding
-                App.replacePrefixes bind, namespaces
-
-
-        $('#panel10').html(
-            JST['results']({
-                results: document.sparql.results.result
-                prefixes: namespaces
-                colors: colors
-                variables: variables
-            })
-        )
+            $('#panel10').html(
+                JST['results']({
+                    results: doc.sparql.results.result
+                    prefixes: namespaces
+                    colors: colors
+                    variables: variables
+                })
+            )
+    else if doc.sparql.results == ""
+        $('#panel10').html JST['results/none']()
     else
         if 'queryError' of data
             App.logError 'Sparql: ' + data.queryError.errorMessage, 'sparql', data.queryError.line
@@ -217,6 +243,29 @@ App.processResults = (data) ->
             App.logError 'RIF: ' + data.rifError.errorMessage, 'rif', data.rifError.line
         else
             App.logError 'Endpoint answer was not valid.'
+
+App.processTriples = (data) -> 
+    varnames = ['subject', 'predicate', 'object']
+    doc = 
+        sparql: 
+            head: {variable: [] }
+            results: {result: [] }
+
+    for v in varnames
+        doc.sparql.head.variable.push 
+            _attributes: {name: v}
+
+    for triple in data 
+        result = {binding: []}
+        for variable in varnames
+            if triple[variable].type == "uri"
+                result.binding.push {uri: triple[variable].value}
+            else 
+                result.binding.push {literal: triple[variable].value}
+        doc.sparql.results.result.push result   
+
+    return doc
+
 
 App.replacePrefixes = (bind, namespaces) ->
     if bind.uri?

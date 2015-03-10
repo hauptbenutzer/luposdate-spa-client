@@ -209,15 +209,15 @@ select {
     top: 15px;
 }
 .tabs-content .content {
-    height: 90%;
+    height: 95%;
 }
 
 .CodeMirror {
-    height: 80%;
+    height: 91%;
 }
 
 .query {
-    height: 100%;
+    height: calc(100% - (37px + 1rem));
 }
 
 #send_rdf {

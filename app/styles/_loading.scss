@@ -38,6 +38,10 @@ body.pg-loaded > .inner {
     animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
 }
 
+.sk-spinner-cube-grid.dark .sk-cube {
+    background-color: $primary-color;
+}
+
 .sk-spinner-cube-grid .sk-cube:nth-child(1) {
     -webkit-animation-delay: 0.2s;
     animation-delay: 0.2s;

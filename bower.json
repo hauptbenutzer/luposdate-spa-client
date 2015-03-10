@@ -10,7 +10,8 @@
     "please-wait": "~0.0.2",
     "x2js": "hauptbenutzer/x2js#master",
     "randomcolor": "~0.2.0",
-    "d3": "~3.5.5"
+    "d3": "~3.5.5",
+    "uri.js": "~1.14.2"
   },
   "devDependencies": {}
 }
