@@ -6,8 +6,10 @@
 			"name": "Luposdate Local",
             "json": false,
             "nonstandard": true,
-            // Define endpoints
+
+            // Define standard endpoint (ignored if nonstandard is true)
             "without": "sparql",
+            // Nonstandard endpoints with location and HTTP method respectively
             "sparql": ["nonstandard/sparql", "POST"]
             "rif": ["nonstandard/rif", "POST"]
         }
@@ -41,4 +43,16 @@
     // Possible values are 'RIF', 'RDFS', 'OWL2RL' and 'None'
     "defaultInference": "None"
     "defaultSendRDF": true
+
+    // Hidden tabs are still functional but not visible to the user
+    // Tabs are: ["sparql", "rdf", "rif", "results", "graph"]
+    "hiddenTabs": ["graph"]
+    "readOnlyTabs": []
+
+    # Query Parameters are placed directly in the nonstandard request body 
+    # see github.com/Be-ngt-oH/luposdate-nonstandard-endpoint for reference
+    "queryParameters": {
+        "inference": "NONE"
+        "inferenceGeneration": "GENERATEDOPT"
+    }
 }

@@ -209,7 +209,7 @@ select {
     top: 15px;
 }
 .tabs-content .content {
-    height: 95%;
+    height: 93%;
 }
 
 .CodeMirror {
@@ -224,4 +224,9 @@ select {
     position: absolute;
     top: 1.5rem;
     left: 0.7rem;
+}
+
+div.read-only {
+    pointer-events: none;
+    opacity: 0.5
 }

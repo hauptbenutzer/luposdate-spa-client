@@ -113,12 +113,12 @@
                             <div>
                                 <div id="query" class="medium-6 columns tabs-container left-side">
                                     <dl class="tabs" data-tab>
-                                        <dd class="active sparql-tab"><a href="#panel1">SPARQL-Query</a></dd>
-                                        <dd><a href="#panel2">RDF</a> <input type="checkbox" id="send_rdf"> </dd>
-                                        <dd class="rif-tab"><a href="#panel3">RIF</a></dd>
+                                        <dd class="active sparql-tab"><a href="#sparql-tab">SPARQL-Query</a></dd>
+                                        <dd><a href="#rdf-tab">RDF</a> <input type="checkbox" id="send_rdf"> </dd>
+                                        <dd class="rif-tab"><a href="#rif-tab">RIF</a></dd>
                                     </dl>
                                     <div class="tabs-content">
-                                        <div class="content active" id="panel1">
+                                        <div class="content active" id="sparql-tab">
                                             <select class="query-select" data-lang="sparql" name=""
                                                     id="query-select-sparql"></select>
                                             <span class="load-query-status" data-lang="sparql"></span>
@@ -135,7 +135,7 @@
                                                            id="rule_owl"><label for="rule_owl">OWL</label>
                                                     <input class="rule" type="radio" name="rule" value="RIF"
                                                            id="rule_rif"><label for="rule_rif">RIF</label>
-                                                    <input class="rule" type="radio" name="rule" value="None"
+                                                    <input class="rule" type="radio" name="rule" value="NONE"
                                                            id="rule_without"><label
                                                     for="rule_without">None</label>
                                                     <a href="#" data-target="sparql"
@@ -145,7 +145,7 @@
                                                 </div>
                                             </form>
                                         </div>
-                                        <div class="content" id="panel2">
+                                        <div class="content" id="rdf-tab">
                                             <select class="query-select" data-lang="rdf" name=""
                                                     id="query-select-rdf"></select>
                                             <span class="load-query-status" data-lang="rdf"></span>
@@ -157,7 +157,7 @@
 
                                             </form>
                                         </div>
-                                        <div class="content" id="panel3">
+                                        <div class="content" id="rif-tab">
                                             <select class="query-select" data-lang="rif" name=""
                                                     id="query-select-rif"></select>
                                             <span class="load-query-status" data-lang="rif"></span>
@@ -173,26 +173,17 @@
                                             </form>
                                         </div>
                                     </div>
-                                    <div class="error-log">
-                                        <button class="small"><i class="fa fa-exclamation-triangle"></i>
-                                            Error
-                                        </button>
-                                        <div class="scroller">
-                                            <ul class="list">
-                                            </ul>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div id="result" class="medium-6 columns tabs-container right-side">
                                     <dl class="tabs" data-tab>
-                                        <dd class="active right-side-tab results-tab"><a href="#panel10">Result</a></dd>
-                                        <dd class="right-side-tab"><a href="#panel11">Graph</a></dd>
+                                        <dd class="active right-side-tab results-tab"><a href="#results-tab">Result</a></dd>
+                                        <dd class="right-side-tab"><a href="#graph-tab">Graph</a></dd>
                                     </dl>
                                     <div class="tabs-content">
-                                        <div class="content active right-side-tab-content" id="panel10">
+                                        <div class="content active right-side-tab-content" id="results-tab">
 
                                         </div>
-                                        <div class="content right-side-tab-content" id="panel11">
+                                        <div class="content right-side-tab-content" id="graph-tab">
                                             <p>Achtung Graph.</p>
                                             <div id="luposgraph">
 

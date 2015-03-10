@@ -3,6 +3,35 @@
 @App =
     isMergeView: false
 
+App.init = ->
+    # Load xml converter
+    App.x2js = new X2JS
+        attributeArray: '_attributes'
+
+    # Load configuration
+    App.URIQuery = URI(document.location.href).query(true)
+
+    $.getJSON('scripts/config.json').done (data) ->
+        App.config = data
+        if App.URIQuery.config 
+            $.getJSON(App.URIQuery.config).done (addData) ->
+                App.config = $.extend(data, addData, {})
+                App.play()
+        else 
+            App.play()
+
+App.play = ->
+    App.loadEditors()
+    App.bindEvents()
+    App.initConfigComponents()
+    App.insertQueryPicker()
+
+    # CodeMirror is display:none during loading screen so we need
+    # a delayed refresh to have it display properly
+    pleaseWait.finish()
+    delay 1500, ->
+        App.cm['sparql'].refresh()
+
 App.loadEditors = ->
     # Initialize editors
     App.cm = {}
@@ -42,23 +71,6 @@ App.loadQuery = (lang, index) ->
         $statusElement.html('<i class="fa fa-check-circle"></i>').fadeOut(500)
         App.cm[lang].getDoc().setValue(data)
 
-App.init = ->
-    # Load xml converter
-    App.x2js = new X2JS
-        attributeArray: '_attributes'
-
-    # Load configuration
-    App.URIQuery = URI(document.location.href).query(true)
-
-    $.getJSON('scripts/config.json').done (data) ->
-        App.config = data
-        if App.URIQuery.config 
-            $.getJSON(App.URIQuery.config).done (addData) ->
-                App.config = $.extend(data, addData, {})
-                App.play()
-        else 
-            App.play()
-
 App.bindEvents = ->
     $('.query .get-graph').click ->
         request = {
@@ -93,6 +105,9 @@ App.bindEvents = ->
             method = folder[1]
             locator = folder[0]
             data['formats'] = ['xml', 'plain']
+            # Set query parameters from config 
+            for key of App.config['queryParameters']
+                data[key] = App.config['queryParameters'][key]
             # Nonstandard endpoints expect JSON-string as request body
             data = JSON.stringify(data)
         else
@@ -105,7 +120,7 @@ App.bindEvents = ->
         if App.isMergeView
             $('.results-tab a').click()
 
-        $('#panel10').html JST['spinner']()
+        $('#results-tab').html JST['spinner']()
 
         $.ajax
             url: url
@@ -153,39 +168,33 @@ App.bindEvents = ->
         $('.left-side .tabs a').get(0).click()
         App.isMergeView = not App.isMergeView
 
-App.play = ->
-    App.loadEditors()
-    App.bindEvents()
-    App.initConfigComponents()
-    App.insertQueryPicker()
-
-    # CodeMirror is display:none during loading screen so we need
-    # a delayed refresh to have it display properly
-    pleaseWait.finish()
-    delay 1500, ->
-        App.cm['sparql'].refresh()
-
 App.insertQueryPicker = ->
     for lang of {'sparql', 'rdf', 'rif'}
         $("#query-select-#{lang}").html JST['query_picker']({options: App.config['defaultData'][lang]})
 
-    $("#rule_radios input[value=#{App.config['defaultInference']}]").click()
 
 App.preprocessResults = (data) ->
+    xml = data
+
      # If this is nonstandard then we're getting JSON
     if 'triples' of data 
         doc = App.processTriples(data.triples)
     else if 'XML' of data
-        data = $.parseXML(data.XML[0])
-        # Sometimes will return empty XML envelope 
-        if not data?
+        xml = $.parseXML(data.XML[0])
+        # Sometimes the server will return an empty XML envelope 
+        if not xml?
             doc = {sparql: {results: ""}}
-    if doc? 
-        return doc
-    else if $.isXMLDoc(data)
-        return App.x2js.xml2json(data)
-    else 
+
+    if not doc? and $.isXMLDoc(xml)
+        doc = App.x2js.xml2json(xml)
+    else if not doc?
         return false
+
+    # Save plain response just in case 
+    if 'Plain' of data 
+        doc.plain = data.Plain
+
+    return doc
 
 App.processResults = (data) ->
     # Check validity, preprocess if necessary 
@@ -206,7 +215,7 @@ App.processResults = (data) ->
             colors[key] = randomColor({luminosity: 'dark'})
 
         if 'boolean' of doc.sparql  
-            $('#panel10').html(JST['results/boolean'](boolean: doc.sparql.boolean))
+            $('#results-tab').html(JST['results/boolean'](boolean: doc.sparql.boolean))
         else 
             # List all used variables
             variables = []
@@ -224,7 +233,7 @@ App.processResults = (data) ->
                     App.replacePrefixes bind, namespaces
 
 
-            $('#panel10').html(
+            $('#results-tab').html(
                 JST['results']({
                     results: doc.sparql.results.result
                     prefixes: namespaces
@@ -232,8 +241,8 @@ App.processResults = (data) ->
                     variables: variables
                 })
             )
-    else if doc.sparql.results == ""
-        $('#panel10').html JST['results/none']()
+    else if doc and doc.sparql.results == ""
+        $('#results-tab').html JST['results/none'](plain: doc.plain)
     else
         if 'queryError' of data
             App.logError 'Sparql: ' + data.queryError.errorMessage, 'sparql', data.queryError.line
@@ -286,12 +295,11 @@ App.parseRDFPrefixes = (data) ->
     prefixes
 
 App.logError = (msg, editor, line) ->
-    if editor
+    if editor and line
         line--
         App.cm[editor].setSelection {line: (line), ch: 0}, {line: (line), ch: 80 }
         $(".#{editor}-tab a").click()
-    $('.error-log .list').append "<li>#{msg}</li>"
-    $('.error-log button').next().addClass 'visible'
+    $('#results-tab').html JST['results/error'](msg: msg)
 
 App.baseName = (str) ->
     base = new String(str).substring(str.lastIndexOf('/') + 1)
@@ -299,9 +307,12 @@ App.baseName = (str) ->
     base
 
 App.configComponents =
-    Radio: (watchedElementsSelector, callback) ->
+    Radio: (watchedElementsSelector, defaultVal, callback) ->
         $(watchedElementsSelector).change ->
             callback($(watchedElementsSelector).filter(':checked').val())
+            return true 
+        if defaultVal 
+            $(watchedElementsSelector).filter("[value=#{defaultVal}]").click()
     Check: (watchedElementSelector, defaultVal, callback) ->
         $(watchedElementSelector).click ->
             callback($(watchedElementSelector).is(':checked'))
@@ -310,8 +321,16 @@ App.configComponents =
             $(watchedElementSelector).click()
 
 App.initConfigComponents = ->
-    App.configComponents.Radio '#rule_radios input', (val) ->
-        App.config['inference'] = val
+    for tab in App.config.hiddenTabs
+        $("##{tab}-tab").hide() 
+        $("a[href=##{tab}-tab]").parent("dd").hide()
+
+    for tab in App.config.readOnlyTabs 
+        $("##{tab}-tab, a[href=##{tab}-tab]").addClass 'read-only'
+        $("##{tab}-tab").find('input, textarea, select').attr('readonly', true)
+
+    App.configComponents.Radio '#rule_radios input', App.config['queryParameters']['inference'], (val) ->
+        App.config['queryParameters']['inference'] = val
     App.configComponents.Check '#send_rdf', App.config['defaultSendRDF'], (send) ->
         App.config['sendRDF'] = send
 
