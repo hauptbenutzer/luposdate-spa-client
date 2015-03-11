@@ -135,16 +135,16 @@ gulp.task('watch', ['serve'], function () {
     gulp.watch(['app/*.html'], reload);
     gulp.watch('app/styles/**/*.scss', ['styles']);
     gulp.watch('app/scripts/**/*.coffee', ['scripts']);
-    gulp.watch('app/scripts/**/*.hjson', ['hjson']);
+    gulp.watch('app/config/**/*.hjson', ['hjson']);
     gulp.watch('app/templates/**/*.html', ['JST']);
     gulp.watch('app/images/icons/*.svg', ['svg']);
     gulp.watch('bower.json', ['wiredep']);
 });
 
 gulp.task('hjson', function () {
-    gulp.src(['app/scripts/*.hjson'])
+    gulp.src(['app/config/*.hjson'])
         .pipe($.hjson({to: 'json'}))
-        .pipe(gulp.dest('app/scripts'));
+        .pipe(gulp.dest('app/config'));
 });
 
 gulp.task('json', ['hjson'], function () {

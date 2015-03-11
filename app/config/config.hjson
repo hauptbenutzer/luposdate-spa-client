@@ -15,6 +15,9 @@
         }
 	]
 
+    # Selected endpoint's index
+    "selectedEndpoint": 0
+
     // Set URLs to text data that can be loaded.
     // First array element is picked as default and loaded into the editor.
     "defaultData": {
@@ -39,17 +42,15 @@
             resources/RIF/rule_fibonacci.rif
         ]
     }
-    // Set the default inference
-    // Possible values are 'RIF', 'RDFS', 'OWL2RL' and 'None'
-    "defaultInference": "None"
-    "defaultSendRDF": true
+    # Default behaviour for RDF tab
+    "sendRDF": true
 
     // Hidden tabs are still functional but not visible to the user
     // Tabs are: ["sparql", "rdf", "rif", "results", "graph"]
     "hiddenTabs": ["graph"]
     "readOnlyTabs": []
 
-    # Query Parameters are placed directly in the nonstandard request body 
+    # Query Parameters are placed directly in the nonstandard request body
     # see github.com/Be-ngt-oH/luposdate-nonstandard-endpoint for reference
     "queryParameters": {
         "inference": "NONE"

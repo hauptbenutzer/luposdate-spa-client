@@ -11,13 +11,13 @@ App.init = ->
     # Load configuration
     App.URIQuery = URI(document.location.href).query(true)
 
-    $.getJSON('scripts/config.json').done (data) ->
+    $.getJSON('config/config.json').done (data) ->
         App.config = data
-        if App.URIQuery.config 
+        if App.URIQuery.config
             $.getJSON(App.URIQuery.config).done (addData) ->
                 App.config = $.extend(data, addData, {})
                 App.play()
-        else 
+        else
             App.play()
 
 App.play = ->
