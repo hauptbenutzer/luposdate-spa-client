@@ -291,15 +291,17 @@ App.processPredicates = (preds) ->
     doc.sparql.head.variable.push 
             _attributes: {name: 'Predicate Name'}    
 
-    for v,k in preds[0].parameters
-        doc.sparql.head.variable.push 
-            _attributes: {name: "Arg. #{k+1}"}
+    if preds[0].parameters 
+        for v,k in preds[0].parameters
+            doc.sparql.head.variable.push 
+                _attributes: {name: "Arg. #{k+1}"}
 
     for pred in preds 
         result = {binding: []}
         result.binding.push {literal: pred.predicateName.value}
-        for para in pred.parameters
-            result.binding.push {literal: "\"#{para.value}\"^^#{para.datatype}"}
+        if pred.parameters
+            for para in pred.parameters
+                result.binding.push {literal: "\"#{para.value}\"^^#{para.datatype}"}
         doc.sparql.results.result.push result   
 
     return doc
