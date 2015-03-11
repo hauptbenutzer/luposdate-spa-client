@@ -127,7 +127,7 @@ App.bindEvents = ->
             method: method
             data: data
             success: (data) ->
-                App.processResults data
+                App.processResults data, target
 
     # Reload editor when changing tabs
     $(document).foundation
@@ -179,6 +179,8 @@ App.preprocessResults = (data) ->
      # If this is nonstandard then we're getting JSON
     if 'triples' of data 
         doc = App.processTriples(data.triples)
+    else if 'predicates' of data 
+        doc = App.processPredicates(data.predicates)
     else if 'XML' of data
         xml = $.parseXML(data.XML[0])
         # Sometimes the server will return an empty XML envelope 
@@ -196,7 +198,7 @@ App.preprocessResults = (data) ->
 
     return doc
 
-App.processResults = (data) ->
+App.processResults = (data, lang) ->
     # Check validity, preprocess if necessary 
     doc = App.preprocessResults(data)
     if doc and doc.sparql.results != ""
@@ -209,7 +211,12 @@ App.processResults = (data) ->
                 prefix = key.substr(key.indexOf('xmlns:') + 6)
                 namespaces[prefix] = value
 
-        namespaces = $.extend(App.parseRDFPrefixes(App.cm['rdf'].getValue()), namespaces)
+
+        if App.config.sendRDF
+            $.extend(namespaces, App.parseRDFPrefixes(App.cm['rdf'].getValue()))
+        if lang == 'rif'
+            $.extend(namespaces, App.parseRIFPrefixes(App.cm['rif'].getValue()))
+
 
         for key, value of namespaces
             colors[key] = randomColor({luminosity: 'dark'})
@@ -275,6 +282,27 @@ App.processTriples = (data) ->
 
     return doc
 
+App.processPredicates = (preds) -> 
+    doc = 
+        sparql: 
+            head: {variable: [] }
+
+            results: {result: [] }
+    doc.sparql.head.variable.push 
+            _attributes: {name: 'Predicate Name'}    
+
+    for v,k in preds[0].parameters
+        doc.sparql.head.variable.push 
+            _attributes: {name: "Arg. #{k+1}"}
+
+    for pred in preds 
+        result = {binding: []}
+        result.binding.push {literal: pred.predicateName.value}
+        for para in pred.parameters
+            result.binding.push {literal: "\"#{para.value}\"^^#{para.datatype}"}
+        doc.sparql.results.result.push result   
+
+    return doc
 
 App.replacePrefixes = (bind, namespaces) ->
     if bind.uri?
@@ -289,6 +317,13 @@ App.replacePrefixes = (bind, namespaces) ->
 
 App.parseRDFPrefixes = (data) ->
     reg = /@prefix\s+([A-z0-9-]+):\s*<([^>]+)>\s+\./g
+    prefixes = {}
+    while(m = reg.exec(data))
+        prefixes[m[1]] = m[2]
+    prefixes
+
+App.parseRIFPrefixes = (data) -> 
+    reg = /Prefix\(([^\s]+)\s+<([^>]+)>\)/g
     prefixes = {}
     while(m = reg.exec(data))
         prefixes[m[1]] = m[2]
