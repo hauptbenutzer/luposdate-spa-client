@@ -230,3 +230,11 @@ div.read-only {
     pointer-events: none;
     opacity: 0.5
 }
+
+.tabs a {
+    box-shadow: inset rgba(0,0,0,0.2) 0 -5px 5px -5px;
+}
+
+.tabs dd.active a {
+    box-shadow: inset $primary-color 0 3px 0 0;
+}

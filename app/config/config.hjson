@@ -4,9 +4,7 @@
             // URL with ending slash
 			"url": "http://localhost:8080/",
 			"name": "Luposdate Local",
-            "json": false,
             "nonstandard": true,
-
             // Define standard endpoint (ignored if nonstandard is true)
             "without": "sparql",
             // Nonstandard endpoints with location and HTTP method respectively

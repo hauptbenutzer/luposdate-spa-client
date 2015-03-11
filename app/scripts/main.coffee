@@ -105,7 +105,7 @@ App.bindEvents = ->
             method = folder[1]
             locator = folder[0]
             data['formats'] = ['xml', 'plain']
-            # Set query parameters from config 
+            # Set query parameters from config
             for key of App.config['queryParameters']
                 data[key] = App.config['queryParameters'][key]
             # Nonstandard endpoints expect JSON-string as request body
@@ -174,148 +174,164 @@ App.insertQueryPicker = ->
 
 
 App.preprocessResults = (data) ->
+    resultSets = []
+
     xml = data
 
-     # If this is nonstandard then we're getting JSON
-    if 'triples' of data 
-        doc = App.processTriples(data.triples)
-    else if 'predicates' of data 
-        doc = App.processPredicates(data.predicates)
-    else if 'XML' of data
-        xml = $.parseXML(data.XML[0])
-        # Sometimes the server will return an empty XML envelope 
-        if not xml?
-            doc = {sparql: {results: ""}}
+    if App.config.endpoints[App.config.selectedEndpoint].nonstandard
+        # Process specific response types for nonstandard
+        if 'triples' of data
+            resultSets.push App.processTriples(data.triples)
+        if 'predicates' of data
+            resultSets.push App.processPredicates(data.predicates)
+        if 'XML' of data
+            # Sometimes the server will return an empty string
+            if data.XML[0] == ''
+                resultSets.push App.emptyResultSet()
+            else
+                # In nonstandard we get XML as string
+                try
+                    xml = $.parseXML(data.XML[0])
+                catch error
+                    # Like we care
 
-    if not doc? and $.isXMLDoc(xml)
-        doc = App.x2js.xml2json(xml)
-    else if not doc?
-        return false
+    if $.isXMLDoc(xml)
+        sparql = App.x2js.xml2json(xml)
+        resultSets.push App.processSparql(sparql)
 
-    # Save plain response just in case 
-    if 'Plain' of data 
-        doc.plain = data.Plain
+    # # Save plain response just in case
+    # if 'Plain' of data
+    #     doc.plain = data.Plain
 
-    return doc
+    return resultSets
 
 App.processResults = (data, lang) ->
-    # Check validity, preprocess if necessary 
-    doc = App.preprocessResults(data)
-    if doc and doc.sparql.results != ""
+    # Check validity, preprocess if necessary
+    resultSets = App.preprocessResults(data)
+
+    if resultSets.length
         # Find and save defined prefixes
         # Generate random colors while we're at it
         namespaces = {}
         colors = {}
-        for key, value of doc.sparql._attributes
-            if key.indexOf('xmlns:') isnt -1
-                prefix = key.substr(key.indexOf('xmlns:') + 6)
-                namespaces[prefix] = value
-
-
         if App.config.sendRDF
             $.extend(namespaces, App.parseRDFPrefixes(App.cm['rdf'].getValue()))
         if lang == 'rif'
             $.extend(namespaces, App.parseRIFPrefixes(App.cm['rif'].getValue()))
-
-
         for key, value of namespaces
             colors[key] = randomColor({luminosity: 'dark'})
+        # Actually use them in the result
+        App.prefixResultSets(resultSets, namespaces, colors)
 
-        if 'boolean' of doc.sparql  
-            $('#results-tab').html(JST['results/boolean'](boolean: doc.sparql.boolean))
-        else 
-            # List all used variables
-            variables = []
-            unless $.isArray doc.sparql.head.variable 
-                doc.sparql.head.variable = [doc.sparql.head.variable]
-            for variable in doc.sparql.head.variable
-                variables.push variable._attributes.name
-
-            # Replace prefixes
-            # TODO: optimize?
-            for result in doc.sparql.results.result
-                unless $.isArray result.binding
-                    result.binding = [result.binding]
-                for bind in result.binding
-                    App.replacePrefixes bind, namespaces
-
-
-            $('#results-tab').html(
-                JST['results']({
-                    results: doc.sparql.results.result
-                    prefixes: namespaces
-                    colors: colors
-                    variables: variables
-                })
-            )
-    else if doc and doc.sparql.results == ""
-        $('#results-tab').html JST['results/none'](plain: doc.plain)
+        $('#results-tab').html(
+            JST['results']({
+                resultSets: resultSets
+                prefixes: namespaces
+                colors: colors
+            })
+        )
     else
         if 'queryError' of data
-            App.logError 'Sparql: ' + data.queryError.errorMessage, 'sparql', data.queryError.line
+            App.logError 'Sparql: ' + data.queryError.errorMessage, lang, data.queryError.line
         else if 'rdfError' of data
             App.logError 'RDF: ' + data.rdfError.errorMessage, 'rdf', data.rdfError.line
         else if 'rifError' of data
             App.logError 'RIF: ' + data.rifError.errorMessage, 'rif', data.rifError.line
         else
-            App.logError 'Endpoint answer was not valid.'
+            if App.config.endpoints[App.config.selectedEndpoint].nonstandard
+                App.logError 'Endpoint answer was not valid.'
+            else
+                App.logError data
 
-App.processTriples = (data) -> 
+App.emptyResultSet = ->
+    name: 'Results'
+    head: []
+    results: []
+
+App.processSparql = (doc) ->
+    resultSet = App.emptyResultSet()
+
+    if 'boolean' of doc.sparql
+        resultSet.head.push 'Boolean'
+        resultSet.results.push [doc.sparql.boolean]
+    else if doc.sparql.head != ""
+        unless $.isArray doc.sparql.head.variable
+            doc.sparql.head.variable = [doc.sparql.head.variable]
+        for variable in doc.sparql.head.variable
+            resultSet.head.push variable._attributes.name
+
+        for result in doc.sparql.results.result
+            presult = []
+            unless $.isArray result.binding
+                result.binding = [result.binding]
+            for bind in result.binding
+                value = ''
+                if 'uri' of bind
+                    value = bind.uri
+                else if 'literal' of bind
+                    value = bind.literal
+                else if 'bnode' of bind
+                    value = bind.bnode
+                presult.push value
+            resultSet.results.push presult
+
+    return resultSet
+
+
+App.processTriples = (data) ->
     varnames = ['subject', 'predicate', 'object']
-    doc = 
-        sparql: 
-            head: {variable: [] }
-            results: {result: [] }
+    resultSet =
+        name: 'Triples'
+        head: varnames
+        results: []
 
-    for v in varnames
-        doc.sparql.head.variable.push 
-            _attributes: {name: v}
-
-    for triple in data 
-        result = {binding: []}
+    for triple in data
+        result = []
         for variable in varnames
-            if triple[variable].type == "uri"
-                result.binding.push {uri: triple[variable].value}
-            else 
-                result.binding.push {literal: triple[variable].value}
-        doc.sparql.results.result.push result   
+            result.push triple[variable].value
+        resultSet.results.push result
 
-    return doc
+    return resultSet
 
-App.processPredicates = (preds) -> 
-    doc = 
-        sparql: 
-            head: {variable: [] }
+App.processPredicates = (preds) ->
+    resultSet =
+        name: 'Predicates'
+        head: []
+        results: []
 
-            results: {result: [] }
-    doc.sparql.head.variable.push 
-            _attributes: {name: 'Predicate Name'}    
+    resultSet.head.push 'Predicate Name'
 
-    if preds[0].parameters 
+    if preds[0].parameters
         for v,k in preds[0].parameters
-            doc.sparql.head.variable.push 
-                _attributes: {name: "Arg. #{k+1}"}
+            resultSet.head.push "Arg. #{k+1}"
 
-    for pred in preds 
-        result = {binding: []}
-        result.binding.push {literal: pred.predicateName.value}
+    for pred in preds
+        result = []
+        result.push pred.predicateName.value
         if pred.parameters
             for para in pred.parameters
-                result.binding.push {literal: "\"#{para.value}\"^^#{para.datatype}"}
-        doc.sparql.results.result.push result   
+                if para.datatype
+                    result.push "\"#{para.value}\"^^#{para.datatype}"
+                else
+                    result.push "\"#{para.value}\""
+        resultSet.results.push result
 
-    return doc
+    return resultSet
 
-App.replacePrefixes = (bind, namespaces) ->
-    if bind.uri?
-        for key, pre of namespaces
-            if bind.uri.indexOf(pre) isnt -1
-                bind.uri = bind.uri.replace pre, ''
-                bind.prefix = key
+App.prefixResultSets = (resultSets, namespaces, colors) ->
+    for set in resultSets
+        for result in set.results
+            for bind, i in result
+                result[i] = App.replacePrefixes(bind, namespaces, colors)
 
-        base = App.baseName(bind.uri)
-        bind.uri = bind.uri.replace base, "<em>#{base}</em>"
-        bind.type = 'uri'
+App.replacePrefixes = (str, namespaces, colors) ->
+    str = _.escape(str)
+    for key, prefix of namespaces
+        if str.indexOf(prefix) isnt -1
+            return str.replace prefix, JST['results/prefix']({prefix: key, color: colors[key]})
+
+    base = App.baseName(str)
+    return str.replace base, "<em>#{base}</em>"
 
 App.parseRDFPrefixes = (data) ->
     reg = /@prefix\s+([A-z0-9-]+):\s*<([^>]+)>\s+\./g
@@ -324,7 +340,7 @@ App.parseRDFPrefixes = (data) ->
         prefixes[m[1]] = m[2]
     prefixes
 
-App.parseRIFPrefixes = (data) -> 
+App.parseRIFPrefixes = (data) ->
     reg = /Prefix\(([^\s]+)\s+<([^>]+)>\)/g
     prefixes = {}
     while(m = reg.exec(data))
@@ -347,8 +363,8 @@ App.configComponents =
     Radio: (watchedElementsSelector, defaultVal, callback) ->
         $(watchedElementsSelector).change ->
             callback($(watchedElementsSelector).filter(':checked').val())
-            return true 
-        if defaultVal 
+            return true
+        if defaultVal
             $(watchedElementsSelector).filter("[value=#{defaultVal}]").click()
     Check: (watchedElementSelector, defaultVal, callback) ->
         $(watchedElementSelector).click ->
@@ -359,17 +375,17 @@ App.configComponents =
 
 App.initConfigComponents = ->
     for tab in App.config.hiddenTabs
-        $("##{tab}-tab").hide() 
+        $("##{tab}-tab").hide()
         $("a[href=##{tab}-tab]").parent("dd").hide()
 
-    for tab in App.config.readOnlyTabs 
+    for tab in App.config.readOnlyTabs
         $("##{tab}-tab, a[href=##{tab}-tab]").addClass 'read-only'
         $("##{tab}-tab").find('input, textarea, select').attr('readonly', true)
 
     App.configComponents.Radio '#rule_radios input', App.config['queryParameters']['inference'], (val) ->
         App.config['queryParameters']['inference'] = val
-    App.configComponents.Check '#send_rdf', App.config['defaultSendRDF'], (send) ->
-        App.config['sendRDF'] = send
+    App.configComponents.Check '#send_rdf', App.config.sendRDF, (send) ->
+        App.config.sendRDF = send
 
 delay = (ms, func) -> setTimeout func, ms
 

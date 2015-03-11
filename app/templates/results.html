@@ -1,29 +1,27 @@
-<h4>Prefixes</h4>
-<table>
-    <% _.each(prefixes, function(value, prefix) { %>
-        <tr>
-            <td class="sparql-prefix" style="color: <%= colors[prefix] %>"><%= prefix %></td>
-            <td><%= value %></td>
-        </tr>
-    <% }); %>
-</table>
+<%= JST['results/prefixes']({prefixes: prefixes, colors: colors}) %>
 
-<h4>Results (<%= results.length %>)</h4>
-<table class="results">
-    <thead>
-        <tr>
-        <% _.each(variables, function(variable) { %>
-            <th>
-            <%= variable %>
-            </th>
-        <% }); %>
-        </tr>
-    </thead>
-    <tbody>
-        <% _.each(results, function(result) { %>
+<% _.each(resultSets, function(resultSet) { %>
+    <h4><%= resultSet.name %> (<%= resultSet.results.length %>)</h4>
+    <% if(resultSet.results.length) { %>
+    <table class="results">
+        <thead>
             <tr>
-            <%= this.JST['results/result']({binding: result.binding, prefixes: prefixes, colors: colors}) %>
+            <% _.each(resultSet.head, function(variable) { %>
+                <th>
+                <%= _.escape(variable) %>
+                </th>
+            <% }); %>
             </tr>
-        <% }); %>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <% _.each(resultSet.results, function(result) { %>
+                <tr>
+                    <% _.each(result, function(bind) { %>
+                        <td><%= bind %></td>
+                    <% }); %>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    <% }; %>
+<% }); %>
