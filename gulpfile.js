@@ -148,8 +148,8 @@ gulp.task('hjson', function () {
 });
 
 gulp.task('json', ['hjson'], function () {
-    gulp.src('app/scripts/*.json')
-        .pipe(gulp.dest('dist/scripts'));
+    gulp.src('app/config/*.json')
+        .pipe(gulp.dest('dist/config'));
 });
 
 gulp.task('svg', function () {
