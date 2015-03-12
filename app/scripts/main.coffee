@@ -375,8 +375,14 @@ App.configComponents =
 
 App.initConfigComponents = ->
     for tab in App.config.hiddenTabs
-        $("##{tab}-tab").hide()
-        $("a[href=##{tab}-tab]").parent("dd").hide()
+        $("##{tab}-tab").hide().removeClass 'active'
+        $("a[href=##{tab}-tab]").parent("dd").hide().removeClass 'active'
+    # Find first visible tab and focus it
+    # delay is due to foundation initialization
+    # TODO: use promise instead
+    delay 1000, ->
+        $('.tabs').each ->
+            $(this).find('dd:visible a').first().click()
 
     for tab in App.config.readOnlyTabs
         $("##{tab}-tab, a[href=##{tab}-tab]").addClass 'read-only'
