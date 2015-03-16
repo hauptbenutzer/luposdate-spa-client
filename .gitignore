@@ -8,3 +8,4 @@ app/scripts/main.js
 app/scripts/loading.js
 app/scripts/jst.js
 app/styles/main.css
+deploy.bat
