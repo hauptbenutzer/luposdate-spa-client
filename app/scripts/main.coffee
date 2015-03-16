@@ -173,7 +173,7 @@ App.insertQueryPicker = ->
         $("#query-select-#{lang}").html JST['query_picker']({options: App.config['defaultData'][lang]})
 
 
-App.preprocessResults = (data) ->
+App.preprocessResults = (data, namespaces, colors) ->
     resultSets = []
 
     xml = data
@@ -181,9 +181,9 @@ App.preprocessResults = (data) ->
     if App.config.endpoints[App.config.selectedEndpoint].nonstandard
         # Process specific response types for nonstandard
         if 'triples' of data
-            resultSets.push App.processTriples(data.triples)
+            resultSets.push App.processTriples(data.triples, namespaces, colors)
         if 'predicates' of data
-            resultSets.push App.processPredicates(data.predicates)
+            resultSets.push App.processPredicates(data.predicates, namespaces, colors)
         if 'XML' of data
             # Sometimes the server will return an empty string
             if data.XML[0] == ''
@@ -197,7 +197,7 @@ App.preprocessResults = (data) ->
 
     if $.isXMLDoc(xml)
         sparql = App.x2js.xml2json(xml)
-        resultSets.push App.processSparql(sparql)
+        resultSets.push App.processSparql(sparql, namespaces, colors)
 
     # # Save plain response just in case
     # if 'Plain' of data
@@ -206,23 +206,30 @@ App.preprocessResults = (data) ->
     return resultSets
 
 App.processResults = (data, lang) ->
+
+    # Find and save defined prefixes
+    # Generate random colors while we're at it
+    namespaces = {}
+    colors = {}
+	# define some standard prefixes:
+    namespaces['rdf'] = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+    namespaces['rdfs'] = 'http://www.w3.org/2000/01/rdf-schema#'
+    namespaces['owl'] = 'http://www.w3.org/2002/07/owl#'
+    namespaces['xsd'] = 'http://www.w3.org/2001/XMLSchema#'
+	# get prefixes from user's query, data and rules
+    if App.config.sendRDF
+        $.extend(namespaces, App.parseRDFPrefixes(App.cm['rdf'].getValue()))
+    if lang == 'rif'
+        $.extend(namespaces, App.parseRIFPrefixes(App.cm['rif'].getValue()))
+    if lang == 'sparql'
+        $.extend(namespaces, App.parseSPARQLPrefixes(App.cm['sparql'].getValue()))
+    for key, value of namespaces
+        colors[key] = randomColor({luminosity: 'dark'})
+    # Actually use them in the result
     # Check validity, preprocess if necessary
-    resultSets = App.preprocessResults(data)
+    resultSets = App.preprocessResults(data, namespaces, colors)
 
     if resultSets.length
-        # Find and save defined prefixes
-        # Generate random colors while we're at it
-        namespaces = {}
-        colors = {}
-        if App.config.sendRDF
-            $.extend(namespaces, App.parseRDFPrefixes(App.cm['rdf'].getValue()))
-        if lang == 'rif'
-            $.extend(namespaces, App.parseRIFPrefixes(App.cm['rif'].getValue()))
-        for key, value of namespaces
-            colors[key] = randomColor({luminosity: 'dark'})
-        # Actually use them in the result
-        App.prefixResultSets(resultSets, namespaces, colors)
-
         $('#results-tab').html(
             JST['results']({
                 resultSets: resultSets
@@ -248,7 +255,7 @@ App.emptyResultSet = ->
     head: []
     results: []
 
-App.processSparql = (doc) ->
+App.processSparql = (doc, namespaces, colors) ->
     resultSet = App.emptyResultSet()
 
     if 'boolean' of doc.sparql
@@ -267,18 +274,21 @@ App.processSparql = (doc) ->
             for bind in result.binding
                 value = ''
                 if 'uri' of bind
-                    value = bind.uri
+                    value = App.replacePrefixes(bind.uri, namespaces, colors)
                 else if 'literal' of bind
-                    value = bind.literal
+                    value = "\"" + bind.literal + "\""
+                    if bind.literal._attributes and 'datatype' of bind.literal._attributes
+                        value += "^^" + App.replacePrefixes(bind.literal._attributes.datatype, namespaces, colors)
+                    if bind.literal._attributes and 'xml:lang' of bind.literal._attributes
+                        value += "@" + bind.literal._attributes['xml:lang']
                 else if 'bnode' of bind
-                    value = bind.bnode
+                    value = "_:" + bind.bnode
                 presult.push value
             resultSet.results.push presult
 
     return resultSet
 
-
-App.processTriples = (data) ->
+App.processTriples = (data, namespaces, colors) ->
     varnames = ['subject', 'predicate', 'object']
     resultSet =
         name: 'Triples'
@@ -288,12 +298,12 @@ App.processTriples = (data) ->
     for triple in data
         result = []
         for variable in varnames
-            result.push triple[variable].value
+            App.processLiteral(triple[variable], namespaces, colors, result)
         resultSet.results.push result
 
     return resultSet
 
-App.processPredicates = (preds) ->
+App.processPredicates = (preds, namespaces, colors) ->
     resultSet =
         name: 'Predicates'
         head: []
@@ -307,22 +317,27 @@ App.processPredicates = (preds) ->
 
     for pred in preds
         result = []
-        result.push pred.predicateName.value
+        result.push App.replacePrefixes(pred.predicateName.value, namespaces, colors)
         if pred.parameters
             for para in pred.parameters
-                if para.datatype
-                    result.push "\"#{para.value}\"^^#{para.datatype}"
-                else
-                    result.push "\"#{para.value}\""
+                App.processLiteral(para, namespaces, colors, result)
         resultSet.results.push result
 
     return resultSet
 
-App.prefixResultSets = (resultSets, namespaces, colors) ->
-    for set in resultSets
-        for result in set.results
-            for bind, i in result
-                result[i] = App.replacePrefixes(bind, namespaces, colors)
+App.processLiteral = (para, namespaces, colors, result) ->
+    if para.datatype
+        prefixeddatatype = App.replacePrefixes(para.datatype, namespaces, colors)
+        result.push "\"#{para.value}\"^^#{prefixeddatatype}"
+    else if para.type and para.type=='uri'
+        result.push App.replacePrefixes(para.value, namespaces, colors)
+    else if para.type and para.type=='bnode'
+        result.push "_:#{para.value}"
+    else
+        r = "\"#{para.value}\""
+        if para['xml:lang']
+            r = r + '@' + para['xml:lang']
+        result.push r
 
 App.replacePrefixes = (str, namespaces, colors) ->
     str = _.escape(str)
@@ -331,17 +346,24 @@ App.replacePrefixes = (str, namespaces, colors) ->
             return str.replace prefix, JST['results/prefix']({prefix: key, color: colors[key]})
 
     base = App.baseName(str)
-    return str.replace base, "<em>#{base}</em>"
+    return "&lt;"+str.replace(base, "<em>#{base}</em>")+"&gt;"
 
 App.parseRDFPrefixes = (data) ->
-    reg = /@prefix\s+([A-z0-9-]+):\s*<([^>]+)>\s+\./g
+    reg = /@prefix\s+([A-z0-9-]+):\s*<([^>]+)>\s*\./g
+    prefixes = {}
+    while(m = reg.exec(data))
+        prefixes[m[1]] = m[2]
+    prefixes
+
+App.parseSPARQLPrefixes = (data) ->
+    reg = /prefix\s+([A-z0-9-]+)\s*:\s*<([^>]+)>/ig
     prefixes = {}
     while(m = reg.exec(data))
         prefixes[m[1]] = m[2]
     prefixes
 
 App.parseRIFPrefixes = (data) ->
-    reg = /Prefix\(([^\s]+)\s+<([^>]+)>\)/g
+    reg = /Prefix\(([^\s]+)\s+<([^>]+)>\)/ig
     prefixes = {}
     while(m = reg.exec(data))
         prefixes[m[1]] = m[2]
