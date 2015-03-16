@@ -349,22 +349,37 @@ App.replacePrefixes = (str, namespaces, colors) ->
     return "&lt;"+str.replace(base, "<em>#{base}</em>")+"&gt;"
 
 App.parseRDFPrefixes = (data) ->
-    reg = /@prefix\s+([A-z0-9-]+):\s*<([^>]+)>\s*\./g
     prefixes = {}
+    # first detect base
+    reg = /@prefix\s+:\s*<([^>]+)>\s*\./g
+    while(m = reg.exec(data))
+        prefixes[''] = m[1]
+    # now detect prefixes
+    reg = /@prefix\s+([A-z0-9-]+):\s*<([^>]+)>\s*\./g
     while(m = reg.exec(data))
         prefixes[m[1]] = m[2]
     prefixes
 
 App.parseSPARQLPrefixes = (data) ->
-    reg = /prefix\s+([A-z0-9-]+)\s*:\s*<([^>]+)>/ig
     prefixes = {}
+    # first detect base
+    reg = /base\s+<([^>]+)>/ig
+    while(m = reg.exec(data))
+        prefixes[''] = m[1]
+    # now detect prefixes
+    reg = /prefix\s+([A-z0-9-]+)\s*:\s*<([^>]+)>/ig
     while(m = reg.exec(data))
         prefixes[m[1]] = m[2]
     prefixes
 
 App.parseRIFPrefixes = (data) ->
-    reg = /Prefix\(([^\s]+)\s+<([^>]+)>\)/ig
     prefixes = {}
+    # first detect base
+    reg = /base\(\s*<([^>]+)>\s*\)/ig
+    while(m = reg.exec(data))
+        prefixes[''] = m[1]
+    # now detect prefixes
+    reg = /prefix\(([^\s]+)\s+<([^>]+)>\s*\)/ig
     while(m = reg.exec(data))
         prefixes[m[1]] = m[2]
     prefixes
