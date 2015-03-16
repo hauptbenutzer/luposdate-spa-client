@@ -271,6 +271,8 @@ App.processSparql = (doc, namespaces, colors) ->
             varorder[variable._attributes.name] = i
             i++
 
+        unless $.isArray doc.sparql.results.result
+            doc.sparql.results.result = [doc.sparql.results.result]
         for result in doc.sparql.results.result
             presult = []
             unless $.isArray result.binding
