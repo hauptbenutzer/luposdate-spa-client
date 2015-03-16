@@ -264,13 +264,18 @@ App.processSparql = (doc, namespaces, colors) ->
     else if doc.sparql.head != ""
         unless $.isArray doc.sparql.head.variable
             doc.sparql.head.variable = [doc.sparql.head.variable]
+        i = 0
+        varorder = []
         for variable in doc.sparql.head.variable
             resultSet.head.push variable._attributes.name
+            varorder[variable._attributes.name] = i
+            i++
 
         for result in doc.sparql.results.result
             presult = []
             unless $.isArray result.binding
                 result.binding = [result.binding]
+            varbinding = []
             for bind in result.binding
                 value = ''
                 if 'uri' of bind
@@ -283,7 +288,11 @@ App.processSparql = (doc, namespaces, colors) ->
                         value += "@" + bind.literal._attributes['xml:lang']
                 else if 'bnode' of bind
                     value = "_:" + bind.bnode
-                presult.push value
+                varbinding[bind._attributes.name] = value
+            for varname,index of varorder
+                if varbinding[varname]
+                    presult[index] = varbinding[varname]
+                else presult[index] = ''
             resultSet.results.push presult
 
     return resultSet
