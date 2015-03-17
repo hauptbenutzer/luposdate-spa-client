@@ -283,7 +283,7 @@ App.processSparql = (doc, namespaces, colors) ->
                 if 'uri' of bind
                     value = App.replacePrefixes(bind.uri, namespaces, colors)
                 else if 'literal' of bind
-                    value = "\"" + bind.literal + "\""
+                    value = "\"" + _.escape(bind.literal) + "\""
                     if bind.literal._attributes and 'datatype' of bind.literal._attributes
                         value += "^^" + App.replacePrefixes(bind.literal._attributes.datatype, namespaces, colors)
                     if bind.literal._attributes and 'xml:lang' of bind.literal._attributes
@@ -337,6 +337,7 @@ App.processPredicates = (preds, namespaces, colors) ->
     return resultSet
 
 App.processLiteral = (para, namespaces, colors, result) ->
+    para.value = _.escape(para.value)
     if para.datatype
         prefixeddatatype = App.replacePrefixes(para.datatype, namespaces, colors)
         result.push "\"#{para.value}\"^^#{prefixeddatatype}"
