@@ -62,7 +62,7 @@ App.loadEditors = ->
     App.loadQuery('rif', 0)
 
 App.loadQuery = (lang, index) ->
-    $statusElement = $(".load-query-status[data-lang=#{lang}")
+    $statusElement = $(".load-query-status[data-lang=#{lang}]")
     $statusElement.show().html '<i class="fa fa-spinner"></i>'
     $.ajax(
         url: App.config.defaultData[lang][index]
