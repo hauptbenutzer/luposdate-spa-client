@@ -82,6 +82,8 @@ App.bindEvents = ->
             data: JSON.stringify(request)
             success: (data) ->
                 createVerticalTree(data)
+            error: (xhr, status, error) ->
+                App.logError error
 
 
     # Send query to endpoint
@@ -128,6 +130,8 @@ App.bindEvents = ->
             data: data
             success: (data) ->
                 App.processResults data, target
+            error: (xhr, status, error) ->
+                App.logError error
 
     # Reload editor when changing tabs
     $(document).foundation
@@ -244,6 +248,8 @@ App.processResults = (data, lang) ->
             App.logError 'RDF: ' + data.rdfError.errorMessage, 'rdf', data.rdfError.line
         else if 'rifError' of data
             App.logError 'RIF: ' + data.rifError.errorMessage, 'rif', data.rifError.line
+        else if 'error' of data
+            App.logError data.error
         else
             if App.config.endpoints[App.config.selectedEndpoint].nonstandard
                 App.logError 'Endpoint answer was not valid.'
