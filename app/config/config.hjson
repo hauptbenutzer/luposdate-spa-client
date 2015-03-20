@@ -42,10 +42,16 @@
     }
     # Default behaviour for RDF tab
     "sendRDF": true
-
-    // Hidden tabs are still functional but not visible to the user
-    // Tabs are: ["sparql", "rdf", "rif", "results", "graph"]
-    "hiddenTabs": ["graph"]
+	
+	"hide": {
+        # for hiding the check box at the RDF tab:
+        # "sendRDF": true
+        # for hiding the inference radio buttons (except the checked one in case it is not "NONE"):
+		# "inference": true
+        // Hidden tabs are still functional but not visible to the user
+        // Tabs are: ["sparql", "rdf", "rif", "results", "graph"]
+        "tabs": ["graph"]
+	}
     "readOnlyTabs": []
 
     # Query Parameters are placed directly in the nonstandard request body

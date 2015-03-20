@@ -31,6 +31,8 @@ App.play = ->
     pleaseWait.finish()
     delay 1500, ->
         App.cm['sparql'].refresh()
+        App.cm['rif'].refresh()
+        App.cm['rdf'].refresh()
 
 App.loadEditors = ->
     # Initialize editors
@@ -51,7 +53,6 @@ App.loadEditors = ->
         autoCloseBrackets: true
 
     App.loadQuery('rdf', 0)
-
 
     App.cm['rif'] = CodeMirror.fromTextArea document.getElementById('codemirror_rif'),
         lineNumbers: true
@@ -99,7 +100,7 @@ App.bindEvents = ->
 
         if endpoint.nonstandard
             folder = endpoint[target]
-            if App.config['sendRDF']
+            if App.config.sendRDF
                 data['rdf'] = App.cm['rdf'].getValue()
             else
                 data['rdf'] = ''
@@ -110,6 +111,10 @@ App.bindEvents = ->
             # Set query parameters from config
             for key of App.config['queryParameters']
                 data[key] = App.config['queryParameters'][key]
+            inference = $('input[name="rule"]:checked').val()
+            data['inference'] = inference
+            if(inference=='RIF')
+                data['rif'] = $('#codemirror_rif').val()
             # Nonstandard endpoints expect JSON-string as request body
             data = JSON.stringify(data)
         else
@@ -140,9 +145,6 @@ App.bindEvents = ->
                 content = $(tab.children('a').attr('href'))
                 if content.find('.CodeMirror').length
                     content.find('.CodeMirror')[0].CodeMirror.refresh()
-
-    $('.error-log button').click ->
-        $(this).next().toggleClass 'visible'
 
     $('.query-select').change ->
         lang = $(this).data('lang')
@@ -175,7 +177,6 @@ App.bindEvents = ->
 App.insertQueryPicker = ->
     for lang of {'sparql', 'rdf', 'rif'}
         $("#query-select-#{lang}").html JST['query_picker']({options: App.config['defaultData'][lang]})
-
 
 App.preprocessResults = (data, namespaces, colors) ->
     resultSets = []
@@ -429,9 +430,16 @@ App.configComponents =
             $(watchedElementSelector).click()
 
 App.initConfigComponents = ->
-    for tab in App.config.hiddenTabs
+    for tab in App.config.hide.tabs
         $("##{tab}-tab").hide().removeClass 'active'
         $("a[href=##{tab}-tab]").parent("dd").hide().removeClass 'active'
+    # do not show getGraph button if graph tab is disabled... 
+    if 'graph' in App.config.hide.tabs
+        $('#getGraph').hide()
+    # no RIF inference radio button if rif tab is disabled
+    if 'rif' in App.config.hide.tabs
+        $('#rule_rif').hide()
+        $('#rule_rif_label').hide()
     # Find first visible tab and focus it
     # delay is due to foundation initialization
     # TODO: use promise instead
@@ -439,9 +447,21 @@ App.initConfigComponents = ->
         $('.tabs').each ->
             $(this).find('dd:visible a').first().click()
 
+    if App.config.hide.sendRDF
+        $('#send_rdf').hide()
+
+    if App.config.hide.inference
+       for radio in ["rdfs", "owl", "rif", "without"]
+           actual = App.config['queryParameters']['inference']
+           if actual.toLowerCase() isnt radio and not(actual == "OWL2RL" and radio=="owl")
+               s = '#rule_'+radio
+               $(s).hide()
+               $(s + '_label').hide()
+
     for tab in App.config.readOnlyTabs
-        $("##{tab}-tab, a[href=##{tab}-tab]").addClass 'read-only'
-        $("##{tab}-tab").find('input, textarea, select').attr('readonly', true)
+        # $("##{tab}-tab, a[href=##{tab}-tab]").addClass 'read-only'
+        # $("##{tab}-tab").find('input, textarea, select').attr('readonly', true)
+        App.cm[tab].setOption("readOnly", true)
 
     App.configComponents.Radio '#rule_radios input', App.config['queryParameters']['inference'], (val) ->
         App.config['queryParameters']['inference'] = val
