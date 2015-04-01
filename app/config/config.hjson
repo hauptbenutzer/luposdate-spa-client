@@ -27,6 +27,15 @@
     # Selected endpoint's index
     "selectedEndpoint": 0
 
+    # declare evaluators to be chosen
+    "evaluators": [ 
+            MemoryIndex
+            RDF3X
+            Stream
+            Jena
+            Sesame
+    ]
+
     // Set URLs to text data that can be loaded.
     // First array element is picked as default and loaded into the editor.
     "defaultData": {

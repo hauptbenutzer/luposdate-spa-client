@@ -124,6 +124,7 @@ App.bindEvents = ->
             data['inference'] = inference
             if(inference=='RIF')
                 data['rif'] = $('#codemirror_rif').val()
+            data['evaluator'] = $('#evaluator_selector').val()
             # Nonstandard endpoints expect JSON-string as request body
             data = JSON.stringify(data)
         else
@@ -441,6 +442,8 @@ App.configComponents =
 App.initConfigComponents = ->
     for endpoint in App.config.endpoints
         $("#endpoint_selector").append('<option value="' + endpoint.name + '">' + endpoint.name + '</option>');
+    for evaluator in App.config.evaluators
+        $("#evaluator_selector").append('<option value="' + evaluator + '">' + evaluator + '</option>');
     for tab in App.config.hide.tabs
         $("##{tab}-tab").hide().removeClass 'active'
         $("a[href=##{tab}-tab]").parent("dd").hide().removeClass 'active'
