@@ -2,8 +2,19 @@
 	"endpoints": [
 		{
             // URL with ending slash
+			"url": "http://server01.pool.ifis.uni-luebeck.de:8080/",
+			"name": "IFIS",
+            "nonstandard": true,
+            // Define standard endpoint (ignored if nonstandard is true)
+            "without": "sparql",
+            // Nonstandard endpoints with location and HTTP method respectively
+            "sparql": ["nonstandard/sparql", "POST"]
+            "rif": ["nonstandard/rif", "POST"]
+        },
+		{
+            // URL with ending slash
 			"url": "http://localhost:8080/",
-			"name": "Luposdate Local",
+			"name": "localhost",
             "nonstandard": true,
             // Define standard endpoint (ignored if nonstandard is true)
             "without": "sparql",

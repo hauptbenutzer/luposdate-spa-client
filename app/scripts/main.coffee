@@ -72,6 +72,14 @@ App.loadQuery = (lang, index) ->
         $statusElement.html('<i class="fa fa-check-circle"></i>').fadeOut(500)
         App.cm[lang].getDoc().setValue(data)
 
+App.setSelectedEndpoint = ->
+    endpointname = $("#endpoint_selector").val()
+    i = 0
+    for endpoint in App.config.endpoints
+        if endpoint.name == endpointname
+            App.config.selectedEndpoint = i
+        i++
+
 App.bindEvents = ->
     $('.query .get-graph').click ->
         request = {
@@ -94,7 +102,8 @@ App.bindEvents = ->
             App.cm[key].save()
 
         target = $(this).data 'target'
-        endpoint = App.config.endpoints[0]
+        App.setSelectedEndpoint()
+        endpoint = App.config.endpoints[App.config.selectedEndpoint]
         data =
             query: $(this).parents('.query').find('.editor').val()
 
@@ -121,7 +130,7 @@ App.bindEvents = ->
             method = 'GET'
             locator = endpoint.without
 
-        url = "#{App.config.endpoints[0].url}#{locator}"
+        url = "#{App.config.endpoints[App.config.selectedEndpoint].url}#{locator}"
 
         # Switch to results tab if needed
         if App.isMergeView
@@ -430,6 +439,8 @@ App.configComponents =
             $(watchedElementSelector).click()
 
 App.initConfigComponents = ->
+    for endpoint in App.config.endpoints
+        $("#endpoint_selector").append('<option value="' + endpoint.name + '">' + endpoint.name + '</option>');
     for tab in App.config.hide.tabs
         $("##{tab}-tab").hide().removeClass 'active'
         $("a[href=##{tab}-tab]").parent("dd").hide().removeClass 'active'
