@@ -87,7 +87,6 @@
                                 <ul class="off-canvas-list">
                                     <li><label>Preferences</label></li>
                                     <li>
-                                        <form>
                                             <label>Source<br/>
                                                 <em>Choose the client's endpoint:</em>
                                                 <select id="endpoint_selector">
@@ -95,10 +94,8 @@
                                                 <!--<em>or enter your own:</em>
                                                 <input type="text" name="endpoint"/>-->
                                             </label>
-                                        </form>
                                     </li>
                                     <li>
-                                        <form>
                                             <label>Processing<br/>
                                                 <em>Choose the evaluator:</em>
                                                 <select id="evaluator_selector">
@@ -106,7 +103,11 @@
                                                 <!--<em>or enter your own:</em>
                                                 <input type="text" name="endpoint"/>-->
                                             </label>
-                                        </form>
+                                    </li>
+                                    <li>
+                                        <label>Special<br/>
+                                            <input type="checkbox" id="checkbox_downloadResult"><em> Download Result Button</em><br>
+                                        </label>
                                     </li>
                                 </ul>
                             </aside>

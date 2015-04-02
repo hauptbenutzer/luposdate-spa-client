@@ -245,13 +245,18 @@ App.processResults = (data, lang) ->
     resultSets = App.preprocessResults(data, namespaces, colors)
 
     if resultSets.length
-        $('#results-tab').html(
+        resultTab = 
             JST['results']({
                 resultSets: resultSets
                 prefixes: namespaces
                 colors: colors
             })
-        )
+        $('#results-tab').html(resultTab)
+        if $('#checkbox_downloadResult').is(':checked')
+            $('#results-tab').append('<div class="buttonarea"><a id="downloadHTMLResult" download="Result.html" class="button evaluate">Download Result HTML</a></div>')
+            $("#downloadHTMLResult").attr('href', makeTextFile(JST['results/standalone'](
+                content: resultTab
+            )))
     else
         if 'queryError' of data
             App.logError 'Sparql: ' + data.queryError.errorMessage, lang, data.queryError.line
@@ -486,3 +491,13 @@ delay = (ms, func) -> setTimeout func, ms
 
 $(document).ready ->
     App.init()
+
+textFile = null
+makeTextFile = (text) ->
+    data = new Blob([text], {type: 'text/plain'})
+    # If we are replacing a previously generated file we need to
+    # manually revoke the object URL to avoid memory leaks.
+    if textFile != null
+        window.URL.revokeObjectURL(textFile)
+    textFile = window.URL.createObjectURL(data)
+    return textFile
