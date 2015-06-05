@@ -297,22 +297,24 @@ App.processSparql = (doc, namespaces, colors) ->
             doc.sparql.results.result = [doc.sparql.results.result]
         for result in doc.sparql.results.result
             presult = []
-            unless $.isArray result.binding
-                result.binding = [result.binding]
+            if $.isArray result.binding
+                bindings = result.binding
+            else bindings = [result.binding]
             varbinding = []
-            for bind in result.binding
+            for bind in bindings
                 value = ''
-                if 'uri' of bind
-                    value = App.replacePrefixes(bind.uri, namespaces, colors)
-                else if 'literal' of bind
-                    value = "\"" + _.escape(bind.literal) + "\""
-                    if bind.literal._attributes and 'datatype' of bind.literal._attributes
-                        value += "^^" + App.replacePrefixes(bind.literal._attributes.datatype, namespaces, colors)
-                    if bind.literal._attributes and 'xml:lang' of bind.literal._attributes
-                        value += "@" + bind.literal._attributes['xml:lang']
-                else if 'bnode' of bind
-                    value = "_:" + bind.bnode
-                varbinding[bind._attributes.name] = value
+                if(bind?)
+                     if 'uri' of bind
+                         value = App.replacePrefixes(bind.uri, namespaces, colors)
+                     else if 'literal' of bind
+                         value = "\"" + _.escape(bind.literal) + "\""
+                         if bind.literal._attributes and 'datatype' of bind.literal._attributes
+                             value += "^^" + App.replacePrefixes(bind.literal._attributes.datatype, namespaces, colors)
+                         if bind.literal._attributes and 'xml:lang' of bind.literal._attributes
+                             value += "@" + bind.literal._attributes['xml:lang']
+                     else if 'bnode' of bind
+                         value = "_:" + bind.bnode
+                     varbinding[bind._attributes.name] = value
             for varname,index of varorder
                 if varbinding[varname]
                     presult[index] = varbinding[varname]
