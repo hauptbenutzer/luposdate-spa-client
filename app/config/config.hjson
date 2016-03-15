@@ -68,6 +68,8 @@
         # "sendRDF": true
         # for hiding the inference radio buttons (except the checked one in case it is not "NONE"):
 		# "inference": true
+		# for hiding the withGraph checkbox
+		# "withGraph": true
         // Hidden tabs are still functional but not visible to the user
         // Tabs are: ["sparql", "rdf", "rif", "results", "graph"]
         "tabs": [""]

@@ -108,6 +108,12 @@ getGraphData = (data, urlPrefix, method,target)->
     error: (xhr, status, error) ->
       App.logError error
 
+App.showWithGraph = ->
+    if App.config.hide.withGraph
+        $('.label-with-graph').hide()
+    else
+        $('.label-with-graph').show()
+
 App.bindEvents = ->
     $('#getgraphdata').click ->
       $('#graphsettings').show()
@@ -125,7 +131,7 @@ App.bindEvents = ->
 
             $('a[href$="#rif-tab"]').hide()
         else
-            $('.label-with-graph').show()
+            App.showWithGraph();
             $('a[href$="#rif-tab"]').show()
 
     $('#getopgraphdata').click ->
@@ -577,6 +583,8 @@ App.initConfigComponents = ->
                s = '#rule_'+radio
                $(s).hide()
                $(s + '_label').hide()
+
+    App.showWithGraph()
 
     for tab in App.config.readOnlyTabs
         # $("##{tab}-tab, a[href=##{tab}-tab]").addClass 'read-only'
