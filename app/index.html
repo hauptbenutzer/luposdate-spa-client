@@ -9,10 +9,10 @@
 
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/foundation/css/foundation.css" />
-    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css" />
-    <link rel="stylesheet" href="bower_components/font-source-sans-pro/source-sans-pro.css" />
-    <link rel="stylesheet" href="bower_components/please-wait/build/please-wait.css" />
+    <link rel="stylesheet" href="bower_components/foundation/css/foundation.css"/>
+    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css"/>
+    <link rel="stylesheet" href="bower_components/font-source-sans-pro/source-sans-pro.css"/>
+    <link rel="stylesheet" href="bower_components/please-wait/build/please-wait.css"/>
     <!-- endbower -->
     <link rel="stylesheet" href="bower_components/codemirror/addon/fold/foldgutter.css"/>
     <!-- endbuild -->
@@ -21,6 +21,7 @@
     <link href='//fonts.googleapis.com/css?family=Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/vis/4.13.0/vis.min.css" rel="stylesheet">
 
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
@@ -87,26 +88,27 @@
                                 <ul class="off-canvas-list">
                                     <li><label>Preferences</label></li>
                                     <li>
-                                            <label>Source<br/>
-                                                <em>Choose the client's endpoint:</em>
-                                                <select id="endpoint_selector">
-                                                </select><br/>
-                                                <!--<em>or enter your own:</em>
-                                                <input type="text" name="endpoint"/>-->
-                                            </label>
+                                        <label>Source<br/>
+                                            <em>Choose the client's endpoint:</em>
+                                            <select id="endpoint_selector">
+                                            </select><br/>
+                                            <!--<em>or enter your own:</em>
+                                            <input type="text" name="endpoint"/>-->
+                                        </label>
                                     </li>
                                     <li>
-                                            <label>Processing<br/>
-                                                <em>Choose the evaluator:</em>
-                                                <select id="evaluator_selector">
-                                                </select><br/>
-                                                <!--<em>or enter your own:</em>
-                                                <input type="text" name="endpoint"/>-->
-                                            </label>
+                                        <label>Processing<br/>
+                                            <em>Choose the evaluator:</em>
+                                            <select id="evaluator_selector">
+                                            </select><br/>
+                                            <!--<em>or enter your own:</em>
+                                            <input type="text" name="endpoint"/>-->
+                                        </label>
                                     </li>
                                     <li>
                                         <label>Special<br/>
-                                            <input type="checkbox" id="checkbox_downloadResult"><em> Download Result Button</em><br>
+                                            <input type="checkbox" id="checkbox_downloadResult"><em> Download Result
+                                                Button</em><br>
                                         </label>
                                     </li>
                                 </ul>
@@ -116,7 +118,7 @@
                                 <div id="query" class="medium-6 columns tabs-container left-side">
                                     <dl class="tabs" data-tab>
                                         <dd class="active sparql-tab"><a href="#sparql-tab">SPARQL-Query</a></dd>
-                                        <dd><a href="#rdf-tab">RDF</a> <input type="checkbox" id="send_rdf"> </dd>
+                                        <dd><a href="#rdf-tab">RDF</a> <input type="checkbox" id="send_rdf"></dd>
                                         <dd class="rif-tab"><a href="#rif-tab">RIF</a></dd>
                                     </dl>
                                     <div class="tabs-content">
@@ -134,15 +136,21 @@
                                                     <input class="rule" type="radio" name="rule" value="RDFS"
                                                            id="rule_rdfs"><label id="rule_rdfs_label" for="rule_rdfs">RDFs</label>
                                                     <input class="rule" type="radio" name="rule" value="OWL2RL"
-                                                           id="rule_owl"><label id="rule_owl_label" for="rule_owl">OWL</label>
+                                                           id="rule_owl"><label id="rule_owl_label"
+                                                                                for="rule_owl">OWL</label>
                                                     <input class="rule" type="radio" name="rule" value="RIF"
-                                                           id="rule_rif"><label id="rule_rif_label" for="rule_rif">RIF</label>
+                                                           id="rule_rif"><label id="rule_rif_label"
+                                                                                for="rule_rif">RIF</label>
                                                     <input class="rule" type="radio" name="rule" value="NONE"
-                                                           id="rule_without"><label id="rule_without_label" for="rule_without">None</label>
-                                                    <a href="#" data-target="sparql"
-                                                       class="evaluate button">Evaluate</a><a
-                                                    href="#" id="getGraph" class="button get-graph">get
-                                                    Graph</a>
+                                                           id="rule_without"><label id="rule_without_label"
+                                                                                    for="rule_without">None</label>
+                                                    <span class="link-checkbox-wrapper">
+                                                        <a href="#" data-target="sparql" class="evaluate button">Evaluate</a>
+                                                            <label class="label-with-graph">
+                                                                <input title="with Graph" type="checkbox" class="eval-get-graph" id="eval-graph-sparql"> with Graph
+                                                            </label>
+                                                    </span>
+                                                    <a href="#" id="getGraph" data-target="sparql" class="button get-graph">get Graph</a>
                                                 </div>
                                             </form>
                                         </div>
@@ -169,7 +177,12 @@
                                                     </textarea>
 
                                                 <div class="buttonarea">
+                                                    <span class="link-checkbox-wrapper">
                                                     <a href="#" data-target="rif" class="button evaluate">Evaluate</a>
+                                                    <label class="label-with-graph">
+                                                        <input title="with Graph" type="checkbox" class="eval-get-graph" id="eval-graph-rif"> with Graph
+                                                    </label>
+                                                        </span>
                                                 </div>
                                             </form>
                                         </div>
@@ -177,27 +190,116 @@
                                 </div>
                                 <div id="result" class="medium-6 columns tabs-container right-side">
                                     <dl class="tabs" data-tab>
-                                        <dd class="active right-side-tab results-tab"><a href="#results-tab">Result</a></dd>
-                                        <dd class="right-side-tab"><a href="#graph-tab">Graph</a></dd>
+                                        <dd class="active right-side-tab results-tab" id="result-tab"><a href="#results-tab">Result</a>
+                                        </dd>
+                                        <dd class="right-side-tab" style="display: none;"><a id="getgraphdata" href="#graph-tab">Abstract
+                                            Syntax Tree</a>
+                                        </dd>
+                                        <dd class="right-side-tab" style="display: none;"><a id="getopgraphdata" href="#op-graph-tab">Operator
+                                            Graph</a>
+                                        </dd>
                                     </dl>
                                     <div class="tabs-content">
-                                        <div class="content active right-side-tab-content" id="results-tab">
-
-                                        </div>
+                                        <div class="content active right-side-tab-content" id="results-tab"></div>
                                         <div class="content right-side-tab-content" id="graph-tab">
-                                            <p>Achtung Graph.</p>
-                                            <div id="luposgraph">
+                                            <div class="luposgraphwrapper">
+                                                <div class="astChooser">
+                                                <input type="radio" name="ASTGraph" value="0" id="ASTradio" checked><label for="ASTradio">AST</label>
+                                                <input type="radio" name="ASTGraph" value="1" id="coreASTradio"><label for="coreASTradio">CoreSPARQL AST</label>
+                                                </div>
+                                                    <div id="luposgraph"></div>
+                                                <div id="luposlegend"></div>
 
+                                            </div>
+                                        </div>
+                                        <div class="content right-side-tab-content" id="op-graph-tab"
+                                             style="overflow: hidden;">
+                                            <div style="text-align: center">
+                                                <button href="#" id="op-graph-down" class="button tiny disabled"
+                                                        disabled><i class="fa fa-arrow-left"></i></button>
+                                                <select data-lang="sparql" name="" id="graph-select"
+                                                        style="height: 40px;">
+
+                                                </select>
+                                                <button href="#" id="op-graph-up" class="button tiny"><i
+                                                        class="fa fa-arrow-right"></i></button>
+                                            </div>
+                                            <div style="height: calc(100% - 40px);">
+                                                <div id="luposgraphOP"></div>
+                                                <div id="opluposlegend"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <a class="exit-off-canvas"></a>
+                                <a class="exit-off-canvas"></a>
+                            </div>
+                            <aside class="right-off-canvas-menu">
+                                <ul class="off-canvas-list">
+                                    <div id="graphsettings-ast">
+
+                                        <li><label><h4 style="color: #fff">Abstract Syntax Tree Preferences</h4></label>
+                                        </li>
+                                        <li>
+                                            <label>Level Separation:
+                                                <input id="lupo-setting-levelseparation" type="number" value="100"
+                                                       min="20"
+                                                       max="500">
+                                            </label>
+                                            <label>Node Spacing:
+                                                <input id="lupo-setting-nodespacing" type="number" value="400" min="20"
+                                                       max="500">
+
+                                            </label>
+
+                                            <label>Select Direction
+                                                <select id="lupo-setting-direction">
+                                                    <option value="UD">Up-Down</option>
+                                                    <option value="DU">Down-Up</option>
+                                                    <option value="LR">Left-Right</option>
+                                                    <option value="RL">Right-Left</option>
+                                                </select>
+                                            </label>
+                                        </li>
+                                        <li><h4></h4></li>
+
+                                    </div>
+                                    <div id="graphsettings-operator">
+                                        <li><label><h4 style="color: #fff">Operator Graph Preferences</h4></label></li>
+                                        <li>
+                                            <label>Level Separation:
+                                                <input id="lupo-op-setting-levelseparation" type="number" value="100"
+                                                       min="20" max="500">
+                                            </label>
+                                            <label>Node Spacing:
+                                                <input id="lupo-op-setting-nodespacing" type="number" value="400"
+                                                       min="20"
+                                                       max="500">
+
+                                            </label>
+                                            <label>Select Direction
+                                                <select id="lupo-op-setting-direction">
+                                                    <option value="UD">Up-Down</option>
+                                                    <option value="DU">Down-Up</option>
+                                                    <option value="LR">Left-Right</option>
+                                                    <option value="RL">Right-Left</option>
+                                                </select>
+                                            </label>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </aside>
                         </div>
                     </div>
+
                 </div>
+
+                <div class="side-nav-graph" >
+                    <ul>
+                        <li><a class="right-off-canvas-toggle" id="graphsettings" href="#"><i class="fa fa-cog"></i></a></li>
+                    </ul>
+                </div>
+
             </div>
         </section>
     </div>
@@ -206,6 +308,8 @@
 <script src="bower_components/please-wait/build/please-wait.js"></script>
 <script src="scripts/loading.js"></script>
 <!-- endbuild -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.15.0/vis.js"></script>
 
 <!-- build:js scripts/vendor.js -->
 <!-- bower:js -->
@@ -220,7 +324,6 @@
 <script src="bower_components/codemirror/lib/codemirror.js"></script>
 <script src="bower_components/x2js/xml2json.min.js"></script>
 <script src="bower_components/randomcolor/randomColor.js"></script>
-<script src="bower_components/d3/d3.js"></script>
 <script src="bower_components/uri.js/src/URI.js"></script>
 <script src="bower_components/uri.js/src/IPv6.js"></script>
 <script src="bower_components/uri.js/src/SecondLevelDomains.js"></script>
@@ -261,9 +364,8 @@
 <!-- build:js scripts/modules.js -->
 <!-- inject:js -->
 <script src="scripts/jst.js"></script>
-<script src="scripts/algos/forceDirected.js"></script>
-<script src="scripts/algos/horTree.js"></script>
-<script src="scripts/algos/vertTree.js"></script>
+<script src="scripts/algos/createGraph.js"></script>
+<script src="scripts/algos/createOPGraph.js"></script>
 <script src="scripts/codemirror-modes/rif/rif.js"></script>
 <script src="scripts/codemirror-modes/N3/N3.js"></script>
 <!-- endinject -->
@@ -273,5 +375,7 @@
 <script src="scripts/main.js">
 </script>
 <!-- endbuild -->
+
+
 </body>
 </html>

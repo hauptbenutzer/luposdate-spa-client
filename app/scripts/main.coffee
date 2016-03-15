@@ -20,6 +20,8 @@ App.init = ->
         else
             App.play()
 
+    #$('#graphsettings').hide()
+
 App.play = ->
     App.loadEditors()
     App.bindEvents()
@@ -80,23 +82,98 @@ App.setSelectedEndpoint = ->
             App.config.selectedEndpoint = i
         i++
 
+getGraphData = (data, urlPrefix, method,target)->
+
+  # AST Request
+  request = {
+    query: data.query
+    evaluator: $('#evaluator_selector').val()
+  }
+  $.ajax
+    url: urlPrefix + "/info"
+    method: method
+    data: JSON.stringify(request)
+    success: (data) ->
+      createGraph(data,target)
+    error: (xhr, status, error) ->
+      App.logError error
+
+  # Operator-Graph Request
+  $.ajax
+    url: urlPrefix + "/graphs"
+    method: method
+    data: JSON.stringify(data)
+    success: (data) ->
+      createOPGraph(data,target)
+    error: (xhr, status, error) ->
+      App.logError error
+
 App.bindEvents = ->
-    $('.query .get-graph').click ->
-        request = {
-            query: "SELECT * WHERE { ?s ?p ?o. } LIMIT 10"
-        }
-        $.ajax
-            url: 'http://localhost:8080/nonstandard/sparql/info'
-            method: 'POST'
-            data: JSON.stringify(request)
-            success: (data) ->
-                createVerticalTree(data)
-            error: (xhr, status, error) ->
-                App.logError error
+    $('#getgraphdata').click ->
+      $('#graphsettings').show()
+      $('#graphsettings-ast').show()
+      $('#graphsettings-operator').hide()
+
+    $('#evaluator_selector').change ->
+        evaluator = $(this).val()
+        if(evaluator == "Jena" || evaluator == "Sesame")
+            $('#eval-graph-sparql').prop('checked', false)
+            $('#eval-graph-rif').prop('checked', false)
+            $('.label-with-graph').hide()
+            if( $('a[href$="#rif-tab"]').attr("aria-selected") == "true")
+                $('a[href$="#sparql-tab"]').click()
+
+            $('a[href$="#rif-tab"]').hide()
+        else
+            $('.label-with-graph').show()
+            $('a[href$="#rif-tab"]').show()
+
+    $('#getopgraphdata').click ->
+      $('#graphsettings').show()
+      $('#graphsettings-operator').show()
+      $('#graphsettings-ast').hide()
+
+    $('#result-tab').click ->
+      $('#graphsettings').hide()
+
+    $('#op-graph-down').click ->
+
+       value = $('#graph-select').val()
+       value =  parseInt(value, 10)
+       $('#op-graph-up').prop('disabled', false)
+       $('#op-graph-up').removeClass('disabled')
+       if (value != 0)
+         value = value - 1
+         graphSelect = $('#graph-select')
+
+         graphValue = graphSelect.val(value)
+         graphSelect.trigger('change')
+         if (value == 0)
+           $(this).addClass('disabled')
+#           $(this).prop('disabled', true);
+
+
+    $('#op-graph-up').click ->
+       value = $('#graph-select').val()
+       value =  parseInt(value, 10)
+       $('#op-graph-down').prop('disabled', false)
+       $('#op-graph-down').removeClass('disabled')
+       graphSelect = $('#graph-select')
+       max = graphSelect.children('option').length - 1
+
+       if (value != max)
+         value = value + 1
+
+         graphValue = graphSelect.val(value)
+         graphSelect.trigger('change')
+         if (value == max)
+           $(this).addClass('disabled')
+#           $(this).prop('disabled', true);
 
 
     # Send query to endpoint
     $('.query .evaluate').click ->
+
         # Copy changes to textarea
         for key of App.cm
             App.cm[key].save()
@@ -106,6 +183,11 @@ App.bindEvents = ->
         endpoint = App.config.endpoints[App.config.selectedEndpoint]
         data =
             query: $(this).parents('.query').find('.editor').val()
+
+        if target == 'sparql'
+            withGraph = $('#eval-graph-sparql').prop('checked')
+        else
+            withGraph = $('#eval-graph-rif').prop('checked')
 
         if endpoint.nonstandard
             folder = endpoint[target]
@@ -126,12 +208,29 @@ App.bindEvents = ->
                 data['rif'] = $('#codemirror_rif').val()
             data['evaluator'] = $('#evaluator_selector').val()
             # Nonstandard endpoints expect JSON-string as request body
-            data = JSON.stringify(data)
+            # data = JSON.stringify(data)
         else
             method = 'GET'
             locator = endpoint.without
 
         url = "#{App.config.endpoints[App.config.selectedEndpoint].url}#{locator}"
+
+
+
+
+        if withGraph
+#            $('.query .get-graph').trigger("click");
+            getGraphData(data, url, method, target)
+            $('#getgraphdata').parent("dd").show()
+            $('#getopgraphdata').parent("dd").show()
+        else
+            $('.results-tab a').click()
+            $('#getgraphdata').parent("dd").hide()
+            $('#getopgraphdata').parent("dd").hide()
+
+        # Nonstandard endpoints expect JSON-string as request body
+        data = JSON.stringify(data)
+
 
         # Switch to results tab if needed
         if App.isMergeView
@@ -245,7 +344,7 @@ App.processResults = (data, lang) ->
     resultSets = App.preprocessResults(data, namespaces, colors)
 
     if resultSets.length
-        resultTab = 
+        resultTab =
             JST['results']({
                 resultSets: resultSets
                 prefixes: namespaces
@@ -454,7 +553,7 @@ App.initConfigComponents = ->
     for tab in App.config.hide.tabs
         $("##{tab}-tab").hide().removeClass 'active'
         $("a[href=##{tab}-tab]").parent("dd").hide().removeClass 'active'
-    # do not show getGraph button if graph tab is disabled... 
+    # do not show getGraph button if graph tab is disabled...
     if 'graph' in App.config.hide.tabs
         $('#getGraph').hide()
     # no RIF inference radio button if rif tab is disabled

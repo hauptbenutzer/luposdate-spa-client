@@ -70,7 +70,7 @@
 		# "inference": true
         // Hidden tabs are still functional but not visible to the user
         // Tabs are: ["sparql", "rdf", "rif", "results", "graph"]
-        "tabs": ["graph"]
+        "tabs": [""]
 	}
     "readOnlyTabs": []
 

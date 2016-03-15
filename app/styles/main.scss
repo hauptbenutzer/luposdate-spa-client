@@ -87,7 +87,7 @@ ul.off-canvas-list li label {
         max-width: none;
     }
     .off-canvas-wrap {
-        width: 97%;
+        width: 94%;
     }
     .side-nav {
         margin-left: 0;
@@ -237,4 +237,182 @@ div.read-only {
 
 .tabs dd.active a {
     box-shadow: inset $primary-color 0 3px 0 0;
+}
+
+#luposgraph, #luposgraphOP {
+  height: 100%;
+  width: 100%; }
+
+#luposlegend {
+  position: absolute;
+  left: 0;
+  text-align: center;
+  bottom: 0px;
+  background: #fff;
+  width: 100%;
+  height: 40px;
+  padding: 0;
+  box-sizing:border-box;
+  z-index:12;
+}
+
+#coreSparqlQuery{
+  display: block;
+  position: absolute;
+  top: 20px;
+  left: 0;
+  white-space: pre-wrap;
+  font-size: 14px;
+  padding: 10px 15px 0 0;
+  z-index: 10;
+  background-color: #fff;
+  height: calc(100% - 35px);
+}
+
+.luposgraphwrapper{
+  border:0;
+  height: 100%;
+  position: relative;
+}
+.astChooser{
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 20px;
+  z-index:11;
+  background: #fff;
+}
+#opluposlegend {
+  position: absolute;
+  left: 0;
+  text-align: center;
+  bottom: 0px;
+  background: #fff;
+  width: 100%;
+  height: 40px;
+  padding: 0px 10px;
+  box-sizing:border-box;
+  z-index:12;
+}
+
+#luposlegend .box{
+
+  height: 30px;
+  margin:5px;
+  width: 30px;
+  background: teal;
+  float:left;
+}
+#luposlegend .box-desc{
+  line-height: 40px;
+  float:left;
+}
+
+
+.legendDiv {
+  float: left;
+  padding: 0.1em;
+  width: 9.5em;
+  text-align: center;
+  margin: 0.5em;
+}
+
+
+
+.side-nav-graph {
+  position: absolute;
+  right: 0;
+  top: 0px;
+  margin-right: 0%;
+  width: 3%;
+  display: block;
+  font-family: 'Source Sans Pro', sans-serif;
+  list-style-position: outside;
+  list-style-type: none;
+  padding: 0.875rem 0
+}
+.side-nav-graph img {
+  width: 20px;
+  margin-left: 10px; }
+
+
+.side-nav-graph ul {
+  list-style: none;
+  margin: 0; }
+
+.side-nav-graph li a:not(.button) {
+  padding-left: 0;
+  padding-right: 0;
+  display: block;
+  text-align: center; }
+
+.side-nav-graph svg {
+  width: 17px;
+  height: 17px; }
+
+
+.side-nav-graph li {
+  font-size: 0.875rem;
+  font-weight: normal;
+  margin: 0 0 0.4375rem 0; }
+
+.side-nav-graph li a:not(.button) {
+  color: #008CBA;
+  display: block;
+  margin: 0;
+  padding: 0.4375rem 0.875rem; }
+
+.side-nav-graph li a:not(.button):hover, .side-nav-graph li a:not(.button):focus {
+  background: rgba(0, 0, 0, 0.025);
+  color: #1cc7ff; }
+
+.side-nav-graph li a:not(.button):active {
+  color: #1cc7ff; }
+
+.side-nav-graph li.active > a:first-child:not(.button) {
+  color: #1cc7ff;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: normal; }
+
+.side-nav-graph li.divider {
+  border-top: 1px solid;
+  height: 0;
+  list-style: none;
+  padding: 0;
+  border-top-color: #e6e6e6; }
+
+.side-nav-graph li.heading {
+  color: #008CBA;
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-transform: uppercase; }
+.link-checkbox-wrapper{
+  position: relative;
+}
+
+.eval-get-graph {
+  /*position: absolute;*/
+  /*top: 0;*/
+  /*left: 0;*/
+  /*margin: 0.3rem 0rem 0rem 1rem; */
+  margin:0;
+  float:left;
+}
+
+#getGraph {
+  display: none; }
+
+.label-with-graph{
+  font-size: 10px;
+  position: absolute;
+  bottom:-10px;
+  left:0;
+  right:0;
+  height: 10px;
+  line-height: 10px;
+  margin: 0;
+  margin-left: calc(2rem + 5px);
+  text-align: left;
+  color: #fff;
 }
