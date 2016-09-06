@@ -2,7 +2,7 @@
 	"endpoints": [
 		{
             // URL with ending slash
-			"url": "http://server01.pool.ifis.uni-luebeck.de:8080/",
+			"url": "https://www.ifis.uni-luebeck.de/sparql-endpoint/",
 			"name": "IFIS",
             "nonstandard": true,
             // Define standard endpoint (ignored if nonstandard is true)
