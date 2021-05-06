@@ -7,26 +7,14 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- build:css styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/foundation/css/foundation.css"/>
-    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css"/>
-    <link rel="stylesheet" href="bower_components/font-source-sans-pro/source-sans-pro.css"/>
-    <link rel="stylesheet" href="bower_components/please-wait/build/please-wait.css"/>
-    <!-- endbower -->
-    <link rel="stylesheet" href="bower_components/codemirror/addon/fold/foldgutter.css"/>
-    <!-- endbuild -->
-
+    <link rel="stylesheet" href="styles/vendor.css"/>
     <!-- TODO: Keep fonts in this repo? -->
     <link href='//fonts.googleapis.com/css?family=Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="//cdnjs.cloudflare.com/ajax/libs/vis/4.13.0/vis.min.css" rel="stylesheet">
 
-    <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
-
 </head>
 <body>
 <!--[if lt IE 10]>
@@ -306,72 +294,16 @@
         </section>
     </div>
 </div>
-<!-- build:js scripts/pleasewait.js -->
-<script src="bower_components/please-wait/build/please-wait.js"></script>
-<script src="scripts/loading.js"></script>
-<!-- endbuild -->
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.15.0/vis.js"></script>
 
-<!-- build:js scripts/vendor.js -->
-<!-- bower:js -->
-<script src="bower_components/modernizr/modernizr.js"></script>
-<script src="bower_components/jquery/dist/jquery.js"></script>
-<script src="bower_components/fastclick/lib/fastclick.js"></script>
-<script src="bower_components/jquery.cookie/jquery.cookie.js"></script>
-<script src="bower_components/jquery-placeholder/jquery.placeholder.js"></script>
-<script src="bower_components/foundation/js/foundation.js"></script>
-<script src="bower_components/underscore/underscore.js"></script>
-<script src="bower_components/backbone/backbone.js"></script>
-<script src="bower_components/codemirror/lib/codemirror.js"></script>
-<script src="bower_components/x2js/xml2json.min.js"></script>
-<script src="bower_components/randomcolor/randomColor.js"></script>
-<script src="bower_components/uri.js/src/URI.js"></script>
-<script src="bower_components/uri.js/src/IPv6.js"></script>
-<script src="bower_components/uri.js/src/SecondLevelDomains.js"></script>
-<script src="bower_components/uri.js/src/punycode.js"></script>
-<script src="bower_components/uri.js/src/URITemplate.js"></script>
-<script src="bower_components/uri.js/src/jquery.URI.js"></script>
-<script src="bower_components/uri.js/src/URI.min.js"></script>
-<script src="bower_components/uri.js/src/jquery.URI.min.js"></script>
-<script src="bower_components/uri.js/src/URI.fragmentQuery.js"></script>
-<script src="bower_components/uri.js/src/URI.fragmentURI.js"></script>
-<!-- endbower -->
-
-<script src="bower_components/codemirror/addon/edit/matchbrackets.js"></script>
-<script src="bower_components/codemirror/addon/edit/closebrackets.js"></script>
-<script src="bower_components/codemirror/mode/sparql/sparql.js"></script>
-<!-- endbuild -->
-
-<!-- build:js scripts/plugins.js -->
-<script src="bower_components/foundation/js/foundation/foundation.abide.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.accordion.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.alert.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.clearing.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.dropdown.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.equalizer.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.interchange.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.joyride.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.magellan.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.offcanvas.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.orbit.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.reveal.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.slider.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.tab.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.tooltip.js"></script>
-<script src="bower_components/foundation/js/foundation/foundation.topbar.js"></script>
-<!-- endbuild -->
-
-<!-- build:js scripts/modules.js -->
-<!-- inject:js -->
+<script src="scripts/vendor.js"></script>
+<script src="scripts/loading.js"></script>
 <script src="scripts/jst.js"></script>
 <script src="scripts/algos/createGraph.js"></script>
 <script src="scripts/algos/createOPGraph.js"></script>
 <script src="scripts/codemirror-modes/rif/rif.js"></script>
 <script src="scripts/codemirror-modes/N3/N3.js"></script>
-<!-- endinject -->
-<!-- endbuild -->
 
 <!-- build:js scripts/main.js -->
 <script src="scripts/main.js">
